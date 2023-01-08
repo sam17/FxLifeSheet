@@ -1,6 +1,8 @@
-import React from 'react';
-import * as d3 from 'd3';
-import './App.scss';
+import React from "react";
+import * as d3 from "d3";
+import "./App.scss";
+import { createImportSpecifier } from "typescript";
+import { treemapBinary } from "d3";
 
 // Copyright 2021 Observable, Inc.
 // Released under the ISC license.
@@ -121,64 +123,62 @@ import './App.scss';
 //   return Object.assign(svg.node(), {scales: {color}});
 // }
 
-interface IProps {
+interface IProps {}
 
-}
-
-interface IState {
-
-}
+interface IState {}
 
 interface CalendarData {
-  date: Date
-  values: number
+  date: Date;
+  values: number;
+}
+
+class ArrayCalendarData {
+  data: Array<CalendarData> = [];
+
+  // constructor(data: Array<CalendarData>) {
+  //   this.data = data;
+  // } 
+
+  get(date: Date) {
+    return this.data.find(d => d.date.getTime() === date.getTime())?.values;
+  }
+
+  // get list of dates as string
+  getDates() : Array<string>{
+    return this.data.map(d => new Date(d.date).toISOString().split('T')[0]);
+  }
+
+  // get value for date
+  getValue(date: Date) : number {
+    return this.data[this.isDateInArrayIndex(date)].values;   
+  }
+
+  // compare two dates
+  compareDates(a: Date, b: Date) : boolean {
+    let x = new Date(a);
+    let y = new Date(b);
+    x.setHours(0,0,0);
+    y.setHours(0,0,0);
+    return x.getTime() === y.getTime();
+  }
+
+  isDateInArray(a: Date) {
+    return this.data.some(d => this.compareDates(d.date, a));
+  } 
+
+  // above function but returns the index
+  isDateInArrayIndex(a: Date) {
+    return this.data.findIndex(d => this.compareDates(d.date, a));
+  }
+
+
+  public getData() : Array<CalendarData> {
+    return this.data;
+  }
 }
 
 class App extends React.Component<IProps, IState> {
   ref!: SVGSVGElement;
-
-  calendar_data = [{ date: new Date(2019, 0, 1), value: 1 },
-  { date: new Date(2019, 0, 2), value: 2 },
-  { date: new Date(2019, 0, 3), value: 3 },
-  { date: new Date(2019, 0, 4), value: 3 },
-  { date: new Date(2019, 0, 5), value: 3 },
-  { date: new Date(2019, 0, 6), value: 3 },
-  { date: new Date(2019, 0, 7), value: 3 }];
-
-  private buildGraph(data: Array<number>) {
-    const width = 200,
-      scaleFactor = 10,
-      barHeight = 20;
-
-    const graph = d3.select(this.ref)
-      .attr("width", width)
-      .attr("height", barHeight * data.length);
-
-    const bar = graph.selectAll("g")
-      .data(data)
-      .enter()
-      .append("g")
-      .attr("transform", function (d, i) {
-        return "translate(0," + i * barHeight + ")";
-      });
-
-    bar.append("rect")
-      .attr("width", function (d) {
-        return d * scaleFactor;
-      })
-      .attr("height", barHeight - 1);
-
-    bar.append("text")
-      .attr("x", function (d) { return (d * scaleFactor); })
-      .attr("y", barHeight / 2)
-      .attr("dy", ".35em")
-      .text(function (d) { return d; });
-
-  }
-
-
-
-
 
   private buildCalendar() {
     // Set the dimensions of the calendar heatmap
@@ -187,72 +187,104 @@ class App extends React.Component<IProps, IState> {
     const cellSize = 17;
 
     // Set the colors for the calendar heatmap
-    const color = d3.scaleQuantize<string>()
-      .range(['#ffffd9', '#edf8b1', '#c7e9b4', '#7fcdbb', '#41b6c4', '#1d91c0', '#225ea8', '#253494', '#081d58']);
+    const color = d3
+      .scaleQuantize<string>()
+      .range([
+        "#ffffd9",
+        "#edf8b1",
+        "#c7e9b4",
+        "#7fcdbb",
+        "#41b6c4",
+        "#1d91c0",
+        "#225ea8",
+        "#253494",
+        "#081d58",
+      ]);
 
     // Create the SVG element for the calendar heatmap
-    const svg = d3.select('body')
-      .selectAll('svg')
-      .data(d3.range(2017, 2021))
-      .enter().append('svg')
-      .attr('width', width)
-      .attr('height', height)
-      .attr('class', 'RdYlGn')
-      .append('g')
-      .attr('transform', 'translate(' + ((width - cellSize * 53) / 2) + ',' + (height - cellSize * 7 - 1) + ')');
+    const svg = d3
+      .select("body")
+      .selectAll("svg")
+      .data(d3.range(2017, 2020))
+      .enter()
+      .append("svg")
+      .attr("width", width)
+      .attr("height", height)
+      .attr("class", "RdYlGn")
+      .append("g")
+      .attr(
+        "transform",
+        "translate(" +
+          (width - cellSize * 53) / 2 +
+          "," +
+          (height - cellSize * 7 - 1) +
+          ")"
+      );
 
     // Append the month labels to the calendar heatmap
-    svg.append('text')
-      .attr('transform', 'translate(-6,' + cellSize * 3.5 + ')rotate(-90)')
-      .style('text-anchor', 'middle')
-      .text(function (d) { return d; });
+    svg
+      .append("text")
+      .attr("transform", "translate(-6," + cellSize * 3.5 + ")rotate(-90)")
+      .style("text-anchor", "middle")
+      .text(function(d) {
+        return d;
+      });
 
     // Append the day labels to the calendar heatmap
-    const rect = svg.append('g')
-      .attr('fill', 'none')
-      .attr('stroke', '#ccc')
-      .selectAll('rect')
-      .data(function (d) { return d3.timeDays(new Date(d, 0, 1), new Date(d + 1, 0, 1)); })
-      .enter().append('rect')
-      .attr('width', cellSize)
-      .attr('height', cellSize)
-      .attr('x', function (d) { return d3.timeWeek.count(d3.timeYear(d), d) * cellSize; })
-      .attr('y', function (d) { return d.getDay() * cellSize; })
-      .datum(d3.timeFormat('%Y-%m-%d'));
+    const rect = svg
+      .append("g")
+      .attr("fill", "none")
+      .attr("stroke", "#ccc")
+      .selectAll("rect")
+      .data(function(d) {
+        return d3.timeDays(new Date(d, 0, 1), new Date(d + 1, 0, 1));
+      })
+      .enter()
+      .append("rect")
+      .attr("width", cellSize)
+      .attr("height", cellSize)
+      .attr("x", function(d) {
+        return d3.timeWeek.count(d3.timeYear(d), d) * cellSize;
+      })
+      .attr("y", function(d) {
+        return d.getDay() * cellSize;
+      })
+      .datum(d3.timeFormat("%Y-%m-%d"));
 
-    // Load the data for the calendar heatmap
-    // d3.csv('https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/heatmap_data.csv', function (error, data): void {
-    //   if (error) throw error;
+    d3.json("https://gist.githubusercontent.com/sam17/cb0c4a4134e169c86f76beecb91e4aa7/raw/95b93d68460df68a4d07e62a6c3519d5399e76bc/data.json").then(data => {
 
-    //   // Set the domain of the color scale based on the data
-    //   color.domain([0, d3.max(data, function (d) { return +d.value; })]);
+      let d3data = Object.assign(new ArrayCalendarData(), data);
 
-    //   // Append the data points to the calendar heatmap
-    //   rect.filter(function (d) { return d in data; })
-    //     .attr('fill', function (d) { return color(data[d].value); })
-    //     .append('title')
-    //     .text(function (d) { return d + ': ' + data[d].value; });
-    // });
+      color.domain([0, 4]);
 
-d3.text('https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/heatmap_data.csv', function(error, data) {
-  if (error) throw error;
-
-  const csvData = d3.csvParse(data);
-  console.log(csvData);
-});
-
+       console.log(typeof d3data.getDates() )
+    
+        rect.filter(function (d) { 
+          return d3data.isDateInArray(new Date(d));
+        })
+        .attr('fill', function (d) { return color(d3data.getValue(new Date(d))); })
+      console.log(data);
+    })
+ 
   }
 
   componentDidMount() {
-    // activate   
+    // activate
     // this.buildGraph([5, 10, 12]);
     this.buildCalendar();
   }
 
   render() {
-    return (<div className="svg">
-      <svg className="container" ref={(ref: SVGSVGElement) => this.ref = ref} width='100' height='100'></svg>
-    </div>);
+    return (
+      <div className="svg">
+        <svg
+          className="container"
+          ref={(ref: SVGSVGElement) => (this.ref = ref)}
+          width="100"
+          height="100"
+        ></svg>
+      </div>
+    );
   }
 }
 
