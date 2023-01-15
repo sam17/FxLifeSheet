@@ -3,7 +3,7 @@
         "description": "Track my current mood during the day",
         "schedule": "eightTimesADay",
         "questions": [{
-            "key": "happy/excited",
+            "key": "happyLevels",
             "question": "How happy/excited are you feeling right now?",
             "type": "range",
             "buttons": {
