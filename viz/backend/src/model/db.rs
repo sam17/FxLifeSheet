@@ -2,26 +2,24 @@ use sqlx::postgres::PgPoolOptions;
 use sqlx::{Pool, Postgres, Connection};
 use std::fs;
 use std::time::Duration;
+use dotenv::dotenv;
 
-// const PG_HOST: &str = "157.245.96.119:5432";
-const PG_HOST: &str = "206.189.140.208:5432";
-
-// app db
-const PG_APP_DB: &str = "soumyadeepmukherjee";
-const PG_APP_USER: &str = "soumyadeepmukherjee";
-const PG_APP_PWD: &str = "ILovePostgres";
 const PG_APP_MAX_CON: u32 = 5;
-// sql files
-const SQL_DIR: &str = "sql/";
-const SQL_RECREATE: &str = "sql/00-recreate-db.sql";
 
 pub type Db = Pool<Postgres>;
 
 pub async fn init_db() -> Result<Db, sqlx::Error> {
-	new_db_pool(PG_HOST, PG_APP_DB, PG_APP_USER, PG_APP_PWD, PG_APP_MAX_CON).await
+	dotenv().ok();
+	
+	let host = std::env::var("HOST").unwrap_or("localhost".to_string());
+	let db_name = std::env::var("DB_NAME").unwrap_or("viz".to_string());
+	let db_user = std::env::var("DB_USER").unwrap_or("viz".to_string());
+	let db_pass = std::env::var("DB_PASS").unwrap_or("viz".to_string());
+
+	new_db_pool(host, db_name, db_user, db_pass, PG_APP_MAX_CON).await
 }
 
-async fn new_db_pool(host: &str, db: &str, user: &str, pwd: &str, max_con: u32) -> Result<Db, sqlx::Error> {
+async fn new_db_pool(host: std::string::String, db: std::string::String, user: std::string::String, pwd: std::string::String, max_con: u32) -> Result<Db, sqlx::Error> {
 	let con_string = format!("postgres://{}:{}@{}/{}", user, pwd, host, db);
 	PgPoolOptions::new()
 		.max_connections(max_con)
