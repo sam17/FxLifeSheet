@@ -248,7 +248,6 @@ function triggerNextQuestionFromQueue(ctx) {
       [getButtonText("1")],
       [getButtonText("0")]
     ];
-    shuffleArray(allButtons);
     keyboard = Markup.keyboard(allButtons)
       .oneTime()
       .extra();

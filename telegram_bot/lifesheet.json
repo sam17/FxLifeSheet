@@ -3,23 +3,46 @@
         "description": "Track my current mood during the day",
         "schedule": "eightTimesADay",
         "questions": [{
-            "key": "mood",
-            "question": "How are you feeling today?",
+            "key": "happyLevels",
+            "question": "How happy/excited are you feeling right now?",
             "type": "range",
             "buttons": {
-                "5": "pumped, energized",
-                "4": "happy, excited",
-                "3": "good",
-                "2": "tired",
-                "1": "sad, unhappy",
-                "0": "nervous, anxious"
-            },
-            "replies": {
-                "5": "💫 Awesome to hear, maybe take 2 minutes to reflect on why you're feeling great, and maybe add a note by running /track moodNotes",
-                "1": "Feeling down sometimes is okay. Maybe take 2 minutes to reflect on why you're not feeling better. Sending hugs 🤗🤗🤗 write them down using /track moodNotes",
-                "0": "Feeling down sometimes is okay. Maybe take 2 minutes to reflect on why you're not feeling better. Sending hugs 🤗🤗🤗 write them down using /track moodNotes"
+                "5": "Very happy/excited",
+                "4": "Happy/excited",
+                "3": "Moderate",
+                "2": "Sad/dull",
+                "1": "Very sad/dull",
+                "0": "Extremely sad/dull"
             }
-        }]
+        },
+        {
+            "key": "anxietyLevels",
+            "question": "How anxious/stressed are you feeling right now?",
+            "type": "range",
+            "buttons": {
+                "5": "Not at all",
+                "4": "A little",
+                "3": "Moderate",
+                "2": "Quite a bit",
+                "1": "Very much",
+                "0": "Extremely"
+            }
+        },
+        {
+            "key": "energyLevels",
+            "question": "How much energy do you have right now?",
+            "type": "range",
+            "buttons": {
+                "5": "Very high",
+                "4": "High",
+                "3": "Moderate",
+                "2": "Low",
+                "1": "Very low",
+                "0": "Extremely low"
+            }
+        }
+
+    ]
     },
     "awake": {
         "description": "Use this right when you woke up",
@@ -34,63 +57,36 @@
                 "type": "boolean"
             },
             {
-                "key": "gratefulFor",
-                "question": "I am grateful for? [item 1]",
-                "type": "text"
-            },
-            {
-                "key": "gratefulFor",
-                "question": "I am grateful for? [item 2] /skip",
-                "type": "text"
-            },
-            {
-                "key": "gratefulFor",
-                "question": "I am grateful for? [item 3] /skip",
-                "type": "text"
+                "key": "didVomit",
+                "question": "Did you vomit this morning?",
+                "type": "boolean"
             },
             {
                 "key": "whatWouldMakeTodayGreat",
-                "question": "What would make today great? [item 1]",
+                "question": "What would make today great?",
                 "type": "text"
             },
             {
-                "key": "whatWouldMakeTodayGreat",
-                "question": "What would make today great? [item 2] /skip",
-                "type": "text"
-            },
-            {
-                "key": "whatWouldMakeTodayGreat",
-                "question": "What would make today great? [item 3] /skip",
-                "type": "text"
-            },
-            {
-                "key": "dailyAffirmations",
-                "question": "Daily affirmations, I am...",
-                "type": "text"
-            },
-            {
-                "key": "weight",
-                "question": "Current weight, in kg",
-                "type": "number"
+                "key": "pomodoroPredicted",
+                "question": "How many pomodoros do you think you'll get done today?",
+                "type": "range",
+                "buttons": {
+                    "5": "16+",
+                    "4": "12-15",
+                    "3": "8-11",
+                    "2": "4-7",
+                    "1": "1-3",
+                    "0": "0"
+                }
             }
-        ]
+       ]
     },
     "asleep": {
         "description": "Use this right when going to bed",
         "schedule": "daily",
         "questions": [{
                 "key": "amazingThingsThatHappenedToday",
-                "question": "3 amazing things that happened today... [item 1]",
-                "type": "text"
-            },
-            {
-                "key": "amazingThingsThatHappenedToday",
-                "question": "3 amazing things that happened today... [item 2] /skip",
-                "type": "text"
-            },
-            {
-                "key": "amazingThingsThatHappenedToday",
-                "question": "3 amazing things that happened today... [item 3] /skip",
+                "question": "The most amazing thing that happened today...",
                 "type": "text"
             },
             {
@@ -126,32 +122,14 @@
             {
                 "key": "numberOfMeals",
                 "question": "How many meals did you have today?",
-                "type": "number"
-            },
-            {
-                "key": "energy",
-                "question": "Have you felt energized overall today?",
                 "type": "range",
                 "buttons": {
-                    "5": "Felt full of energy",
-                    "4": "Great energy",
-                    "3": "Good energy",
-                    "2": "Average energy",
-                    "1": "Felt tired/sluggish",
-                    "0": "Didn't feel like doing a lot"
-                }
-            },
-            {
-                "key": "stress",
-                "question": "Did you feel stressed today?",
-                "type": "range",
-                "buttons": {
-                    "5": "Very calm and aware",
-                    "4": "Calm & relaxed",
-                    "3": "Neutral",
-                    "2": "Somewhat stressed",
-                    "1": "Stressed & Overwhelmed",
-                    "0": "Very stressed, not sure where to start"
+                    "5": "5",
+                    "4": "4",
+                    "3": "3",
+                    "2": "2",
+                    "1": "1",
+                    "0": "What is food?"
                 }
             },
             {
@@ -191,24 +169,30 @@
                 "type": "boolean"
             },
             {
-                "key": "nap",
-                "question": "Did you nap today?",
-                "type": "boolean"
-            },
-            {
-                "key": "headache",
-                "question": "Did you have headache today?",
-                "type": "boolean"
-            },
-            {
                 "key": "coke",
-                "question": "Did you have coke today?",
-                "type": "boolean"
+                "question": "How many aerated drinks did you have today?",
+                "type": "range",
+                "buttons": {
+                    "5": "0",
+                    "4": "1",
+                    "3": "2",
+                    "2": "3",
+                    "1": "4",
+                    "0": "5 or more"
+                }
             },
             {
                 "key": "lays",
-                "question": "Did you have lays today?",
-                "type": "boolean"
+                "question": "How many packages of junk food did you have today?",
+                "type": "range",
+                "buttons": {
+                    "5": "0",
+                    "4": "1",
+                    "3": "2",
+                    "2": "3",
+                    "1": "4",
+                    "0": "5 or more"
+                }
             },
             {
                 "question": "👥 Let's talk social life",
@@ -216,7 +200,7 @@
             },
             {
                 "key": "parents",
-                "question": "Did you call parents today?",
+                "question": "Did you talk to parents today?",
                 "type": "boolean"
             },
             {
@@ -238,13 +222,13 @@
                 "question": "Did you learn/try something new? (skill or activity)",
                 "type": "range",
                 "buttons": {
-                    "5": "Learned multiple new things",
-                    "4": "Learned some new things",
+                    "5": "Learned so much my head will explode",
+                    "4": "Learned a lot of new things",
                     "3": "Learned something new",
-                    "2": "Improved something existing",
-                    "1": "Didn't learn anything",
-                    "0": "I feel like I should learn more"
-                }
+                    "2": "I learned a little bit",
+                    "1": "Barely learned anything",
+                    "0": "Not at all, Grey matter might have turned to mush"
+                }                
             },
             {
                 "key": "didRead",
@@ -261,18 +245,18 @@
                 "type": "header"
             },
             {
+                "key": "pomodoroDone",
+                "question": "How many pomodoros did you complete today? /skip ",
+                "type": "number"
+            },
+            {
                 "key": "watchedTV",
-                "question": "Did you watch TV or a movie?",
+                "question": "Did you watch TV or a movie, outside of food?",
                 "type": "boolean"
             },
             {
                 "key": "numberOfWorkMeetings",
                 "question": "How many work meetings did you have today? This includes work-related phone calls",
-                "type": "number"
-            },
-            {
-                "key": "numberOfPersonalMeetings",
-                "question": "How many personal meetings did you have today? This includes all 1:1 meet-ups, coffees and lunches with friends",
                 "type": "number"
             },
             {
@@ -299,12 +283,12 @@
                 "question": "Do you feel excited about what's ahead in the future?",
                 "type": "range",
                 "buttons": {
-                    "5": "Pumped about what's next",
-                    "4": "Excited about what's next",
-                    "3": "Optimistic about what's next",
-                    "2": "Feeling pretty good about it",
-                    "1": "Some uncertainty about what's coming up",
-                    "0": "Worried about what's next"
+                    "5": "Yes, Super excited",
+                    "4": "Yes, I'm excited about some things",
+                    "3": "I'm excited but still worried about some things",
+                    "2": "A little, but mostly worried",
+                    "1": "Freaking out",
+                    "0": "No, I'm not excited about anything"
                 }
             },
             {
@@ -362,16 +346,6 @@
                 }
             },
             {
-                "key": "openTrelloTasks",
-                "question": "How many open todos do you currently have?",
-                "type": "number"
-            },
-            {
-                "key": "inboxZero",
-                "question": "Do you have less than 5 emails in your inbox?",
-                "type": "boolean"
-            },
-            {
                 "question": "👥 Let's talk social life",
                 "type": "header"
             },
@@ -415,6 +389,6 @@
                 "question": "Did you play computer games with friends last week?",
                 "type": "boolean"
             }
-        ]
+         ]
     }
 }
