@@ -1,10 +1,10 @@
 mod db;
-mod todo;
+mod raw_data_dao;
 
 // re-export
 pub use db::init_db;
 pub use db::Db;
-pub use todo::{Todo, TodoMac, TodoPatch, TodoStatus};
+pub use raw_data_dao::{RawData, RawDataObj};
 
 // region:    Error
 #[derive(thiserror::Error, Debug)]

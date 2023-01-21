@@ -1,5 +1,5 @@
 use super::todo_rest_filters;
-use crate::model::{init_db, Todo, TodoMac, TodoStatus};
+use crate::model::{init_db, RawData, RawData, TodoStatus};
 use crate::security::utx_from_token;
 use crate::web::handle_rejection;
 use anyhow::{Context, Result};
@@ -30,7 +30,7 @@ async fn web_todo_list() -> Result<()> {
 	assert_eq!(200, resp.status(), "http status");
 
 	// extract response .data
-	let todos: Vec<Todo> = extract_body_data(resp)?;
+	let todos: Vec<RawData> = extract_body_data(resp)?;
 
 	// -- CHECK - todos
 	assert_eq!(2, todos.len(), "number of todos");
@@ -60,7 +60,7 @@ async fn web_todo_get_ok() -> Result<()> {
 	assert_eq!(200, resp.status(), "http status");
 
 	// extract response .data
-	let todo: Todo = extract_body_data(resp)?;
+	let todo: RawData = extract_body_data(resp)?;
 
 	// -- CHECK - .data (todo)
 	assert_eq!(100, todo.id);
@@ -95,7 +95,7 @@ async fn web_todo_create_ok() -> Result<()> {
 	assert_eq!(200, resp.status(), "http status");
 
 	// extract response .data
-	let todo: Todo = extract_body_data(resp)?;
+	let todo: RawData = extract_body_data(resp)?;
 
 	// -- CHECK - .data (todo)
 	assert!(todo.id >= 1000, "todo.id should be >= to 1000");
@@ -131,7 +131,7 @@ async fn web_todo_update_ok() -> Result<()> {
 	assert_eq!(200, resp.status(), "http status");
 
 	// extract response .data
-	let todo: Todo = extract_body_data(resp)?;
+	let todo: RawData = extract_body_data(resp)?;
 
 	// -- CHECK - .data (todo)
 	assert_eq!(100, todo.id, "todo.id");
@@ -160,7 +160,7 @@ async fn web_todo_delete_ok() -> Result<()> {
 	assert_eq!(200, resp.status(), "http status");
 
 	// extract response .data
-	let todo: Todo = extract_body_data(resp)?;
+	let todo: RawData = extract_body_data(resp)?;
 
 	// -- CHECK - .data (todos)
 	assert_eq!(100, todo.id);
@@ -169,7 +169,7 @@ async fn web_todo_delete_ok() -> Result<()> {
 
 	// -- CHECK - list .len() should be 1
 	let utx = utx_from_token(&db, "123").await?;
-	let todos = TodoMac::list(&db, &utx).await?;
+	let todos = RawData::list(&db, &utx).await?;
 	assert_eq!(1, todos.len(), "todos length");
 	assert_eq!(101, todos[0].id, "Todo remaining should be 101");
 

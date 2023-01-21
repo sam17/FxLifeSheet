@@ -3,7 +3,9 @@ use sqlx::{Pool, Postgres, Connection};
 use std::fs;
 use std::time::Duration;
 
-const PG_HOST: &str = "157.245.96.119:5432";
+// const PG_HOST: &str = "157.245.96.119:5432";
+const PG_HOST: &str = "206.189.140.208:5432";
+
 // app db
 const PG_APP_DB: &str = "soumyadeepmukherjee";
 const PG_APP_USER: &str = "soumyadeepmukherjee";

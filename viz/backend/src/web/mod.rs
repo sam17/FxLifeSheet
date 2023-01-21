@@ -1,6 +1,6 @@
 use crate::model::{self, Db};
 use crate::security;
-use crate::web::todo::todo_rest_filters;
+use crate::web::raw_data::todo_rest_filters;
 use serde_json::json;
 use std::convert::Infallible;
 use std::path::Path;
@@ -8,7 +8,7 @@ use std::sync::Arc;
 use warp::{Filter, Rejection, Reply};
 
 mod filter_utils;
-mod todo;
+mod raw_data;
 
 pub async fn start_web(web_folder: &str, web_port: u16, db: Arc<Db>) -> Result<(), Error> {
 	// validate web_folder
@@ -27,8 +27,10 @@ pub async fn start_web(web_folder: &str, web_port: u16, db: Arc<Db>) -> Result<(
 		.and(warp::fs::file(format!("{}/index.html", web_folder)));
 	let static_site = content.or(root_index);
 
+	let cors = warp::cors().allow_any_origin();
+
 	// Combine all routes
-	let routes = apis.or(static_site).recover(handle_rejection);
+	let routes = apis.or(static_site).recover(handle_rejection).with(cors);
 
 	println!("Start 127.0.0.1:{} at {}", web_port, web_folder);
 	warp::serve(routes).run(([127, 0, 0, 1], web_port)).await;
