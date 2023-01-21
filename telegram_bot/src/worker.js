@@ -1,8 +1,7 @@
 "use strict";
 exports.__esModule = true;
 var moment = require("moment");
-var needle = require("needle");
-var _a = require("telegraf"), Router = _a.Router, Markup = _a.Markup, Extra = _a.Extra;
+var _a = require("telegraf"), Markup = _a.Markup, Extra = _a.Extra;
 var config = require("./classes/config.js");
 var postgres = require("./classes/postgres.js");
 var telegram = require("./classes/telegram.js");

@@ -1,20 +1,19 @@
 // Third party dependencies
 const moment = require("moment");
-var needle = require("needle");
-const { Router, Markup, Extra } = require("telegraf");
+const { Markup, Extra } = require("telegraf");
 
 // Internal dependencies
 let config = require("./classes/config.js");
 let postgres = require("./classes/postgres.js");
 let telegram = require("./classes/telegram.js");
 
-import { Command, QuestionToAsk } from "./classes/config.js";
+import { QuestionToAsk } from "./classes/config.js";
 
 let bot = telegram.bot;
 
 // State
-var currentlyAskedQuestionObject: QuestionToAsk = null;
-var currentlyAskedQuestionMessageId: String = null; // The Telegram message ID reference
+let currentlyAskedQuestionObject: QuestionToAsk = null;
+let currentlyAskedQuestionMessageId: String = null; // The Telegram message ID reference
 let currentlyAskedQuestionQueue: Array<QuestionToAsk> = []; // keep track of all the questions about to be asked
 
 initBot();

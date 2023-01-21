@@ -1,12 +1,4 @@
-
 const needle = require("needle");
-
-// Interfaces
-interface Command {
-  description: String;
-  schedule: String;
-  questions: [QuestionToAsk];
-}
 
 interface QuestionToAsk {
   key: String;
@@ -14,6 +6,12 @@ interface QuestionToAsk {
   type: String;
   buttons: { [key: string]: String };
   replies: { [key: string]: String };
+}
+
+interface Command {
+  description: String;
+  schedule: String;
+  questions: [QuestionToAsk];
 }
 
 let url = process.env.LIFESHEET_JSON_URL;
