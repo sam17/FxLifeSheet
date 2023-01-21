@@ -13,19 +13,19 @@ services:
       - '5432:5432'
   worker:
     build:
-     context: .
+     context: telegram_bot
     command: npm run worker
     restart: always
     env_file:
-    - .env
+    - telegram_bot/.env
     depends_on:
       - db
   scheduler:
     build:
-     context: .
+     context: telegram_bot
     command: npm run scheduler
     restart: always
     env_file:
-      - .env
+      - telegram_bot/.env
     depends_on:
       - db

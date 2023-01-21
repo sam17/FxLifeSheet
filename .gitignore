@@ -22,5 +22,5 @@ checkins.json
 /manual_graph/_cache.json
 /ruby_importers/importers/spotify/full-archive
 data
-.env
-local.env
+telegram_bot/.env
+telegram_bot/local.env

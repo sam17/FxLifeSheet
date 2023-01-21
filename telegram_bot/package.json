@@ -1,0 +1,22 @@
+{
+    "scripts": {
+        "prettier": "./node_modules/.bin/prettier src/worker.ts classes/*.ts --write",
+        "typescript": "./node_modules/.bin/tsc --p tsconfig.json",
+        "worker-dev": "npm run prettier && npm run typescript && node src/worker.js",
+        "scheduler-dev": "npm run prettier && npm run typescript && node src/scheduler.js",
+        "worker": "node src/worker.js",
+        "scheduler": "node src/scheduler.js"
+    },
+    "dependencies": {
+        "moment": "^2.24.0",
+        "needle": "^2.3.3",
+        "node-cron": "^3.0.2",
+        "pg": "^8.7.1",
+        "prettier": "^1.19.1",
+        "telegraf": "^3.36.0",
+        "typescript": "^3.8.3"
+    },
+    "devDependencies": {
+        "@types/node": "~16.0.0"
+    }
+}
