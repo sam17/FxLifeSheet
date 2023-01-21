@@ -1,6 +1,5 @@
-declare var require: any;
 
-var needle = require("needle");
+const needle = require("needle");
 
 // Interfaces
 interface Command {

@@ -1,8 +1,8 @@
 var cron = require("node-cron");
 var moment = require("moment");
-var config = require("./classes/config.js");
-var postgres = require("./classes/postgres.js");
-var telegram = require("./classes/telegram.js");
+var config = require("./classes/config.ts");
+var postgres = require("./classes/postgres.ts");
+var telegram = require("./classes/telegram.ts");
 
 cron.schedule(`0 * * * *`, async () => {
   console.log("Checking if we need to send a reminder to the user...");

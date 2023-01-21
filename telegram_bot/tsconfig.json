@@ -8,7 +8,8 @@
     "types": ["node"]
   },
   "include": ["**/*.ts"],
-  "exclude": ["node_modules", "**/*.spec.ts"],
+  "exclude": [
+    "../node_modules", "**/*.spec.ts"],
   "types": [ "node" ],
   "typeRoots": [ "../node_modules/@types" ]
 }

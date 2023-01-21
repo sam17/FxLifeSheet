@@ -98,7 +98,7 @@ There are 2 ways to input data: by the user telling the bot to ask for all the v
 
 ### Configuration
 
-[`lifesheet.json`](./lifesheet.json)
+[`lifesheet.json`](telegram_bot/lifesheet.json)
 
 Available values for `schedule`:
 
