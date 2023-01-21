@@ -29,3 +29,11 @@ services:
       - telegram_bot/.env
     depends_on:
       - db
+  viz-fe:
+    build:
+      context: viz/frontend
+    restart: always
+    ports:
+      - '3000:80'
+    depends_on:
+      - db

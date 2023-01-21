@@ -3,7 +3,6 @@
     import CalendarViz from "./components/CalendarViz";
 
     interface IProps {}
-
     interface IState {}
 
     class App extends React.Component<IProps, IState> {
