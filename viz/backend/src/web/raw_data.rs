@@ -38,14 +38,12 @@ pub fn todo_rest_filters(
 }
 
 async fn data_get_all(db: Arc<Db>) -> Result<Json, warp::Rejection> {
-	// json_response(json!({ "id": "test" }))
-	println!("DB: {:?}", db);
 	let raw_data = RawData::list(&db).await?;
 	json_response(raw_data)
 }
 
 async fn data_get_by_key(db: Arc<Db>, key: String) -> Result<Json, warp::Rejection> {
-	let data = RawData::getByKey(&db,  key).await?;
+	let data = RawData::get_by_key(&db,  key).await?;
 	json_response(data)
 }
 
