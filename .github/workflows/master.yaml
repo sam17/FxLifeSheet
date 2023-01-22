@@ -7,9 +7,9 @@ on:
 jobs:
   build-and-push-telegram:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./telegram_bot
+    # defaults:
+      # run:
+        # working-directory: ./telegram_bot
     steps:
       -
         name: Checkout
@@ -26,6 +26,7 @@ jobs:
       - name: Build and push telegram
         uses: docker/build-push-action@v3
         with:
+          context: "{{defaultContext}}:telegram_bot"
           push: true
           tags: dementor/matrix-telegram:latest
   # build-and-push-viz:
