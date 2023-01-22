@@ -11,6 +11,10 @@ pub type Db = Pool<Postgres>;
 pub async fn init_db() -> Result<Db, sqlx::Error> {
 	dotenv().ok();
 	
+	for (key, value) in env::vars() {
+		println!("{key}: {value}");
+	}
+	
 	let host = std::env::var("HOST").unwrap_or("localhost".to_string());
 	let db_name = std::env::var("DB_NAME").unwrap_or("viz".to_string());
 	let db_user = std::env::var("DB_USER").unwrap_or("viz".to_string());
