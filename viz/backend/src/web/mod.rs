@@ -24,7 +24,7 @@ pub async fn start_web(web_port: u16, db: Arc<Db>) -> Result<(), Error> {
 	// Combine all routes
 	let routes = apis.or(static_s).recover(handle_rejection).with(cors);
 
-	println!("Start 0.0.0.0:{} at {}", web_port, web_folder);
+	println!("Start 0.0.0.0:{}", web_port);
 	warp::serve(routes).run(([0, 0, 0, 0], web_port)).await;
 
 	Ok(())
