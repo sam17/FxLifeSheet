@@ -1,9 +1,7 @@
 use crate::model::{self, Db};
-use crate::security;
 use crate::web::raw_data::todo_rest_filters;
 use serde_json::json;
 use std::convert::Infallible;
-use std::path::Path;
 use std::sync::Arc;
 use warp::{Filter, Rejection, Reply};
 
@@ -74,11 +72,6 @@ impl From<self::Error> for warp::Rejection {
 impl From<model::Error> for warp::Rejection {
 	fn from(other: model::Error) -> Self {
 		WebErrorMessage::rejection("model::Error", format!("{}", other))
-	}
-}
-impl From<security::Error> for warp::Rejection {
-	fn from(other: security::Error) -> Self {
-		WebErrorMessage::rejection("security::Error", format!("{}", other))
 	}
 }
 // endregion: Warp Custom Error

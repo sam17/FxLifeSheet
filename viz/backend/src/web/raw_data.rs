@@ -43,7 +43,7 @@ async fn data_get_all(db: Arc<Db>) -> Result<Json, warp::Rejection> {
 }
 
 async fn data_get_by_key(db: Arc<Db>, key: String) -> Result<Json, warp::Rejection> {
-	let data = RawData::getByKey(&db,  key).await?;
+	let data = RawData::get_by_key(&db,  key).await?;
 	json_response(data)
 }
 

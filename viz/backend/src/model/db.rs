@@ -1,6 +1,5 @@
 use sqlx::postgres::PgPoolOptions;
-use sqlx::{Pool, Postgres, Connection};
-use std::fs;
+use sqlx::{Pool, Postgres};
 use std::time::Duration;
 use dotenv::dotenv;
 

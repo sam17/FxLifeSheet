@@ -2,10 +2,7 @@ use model::init_db;
 use std::env;
 use std::sync::Arc;
 use web::start_web;
-use sqlx;
-
 mod model;
-mod security;
 mod web;
 
 const DEFAULT_WEB_PORT: u16 = 8080;
@@ -19,7 +16,6 @@ async fn main() {
     }
 	pretty_env_logger::init();
 
-	let mut args: Vec<String> = env::args().collect();
 	let web_port = DEFAULT_WEB_PORT;
 
 	// get the database
