@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - 'master'
+      - 'nginx-deploy'
 jobs:
   build-and-push-telegram:
     runs-on: ubuntu-latest
