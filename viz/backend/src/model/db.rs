@@ -11,7 +11,7 @@ pub type Db = Pool<Postgres>;
 pub async fn init_db() -> Result<Db, sqlx::Error> {
 	dotenv().ok();
 	
-	for (key, value) in env::vars() {
+	for (key, value) in std::env::vars() {
 		println!("{key}: {value}");
 	}
 	
