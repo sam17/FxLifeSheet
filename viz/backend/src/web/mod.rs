@@ -10,27 +10,19 @@ use warp::{Filter, Rejection, Reply};
 mod filter_utils;
 mod raw_data;
 
-pub async fn start_web(web_folder: &str, web_port: u16, db: Arc<Db>) -> Result<(), Error> {
-	// validate web_folder
-	if !Path::new(web_folder).exists() {
-		return Err(Error::FailStartWebFolderNotFound(web_folder.to_string()));
-	}
+pub async fn start_web(web_port: u16, db: Arc<Db>) -> Result<(), Error> {
 
-	println!("...1");
 	// Apis
 	let apis = todo_rest_filters("api", db);
 
 	// Static content
-	let content = warp::fs::dir(web_folder.to_string());
-	let root_index = warp::get()
-		.and(warp::path::end())
-		.and(warp::fs::file(format!("{}/index.html", web_folder)));
-	let static_site = content.or(root_index);
+	let static_s = warp::fs::dir("../frontend/build/");
+	// Combine all routes
 
 	let cors = warp::cors().allow_any_origin();
 
 	// Combine all routes
-	let routes = apis.or(static_site).recover(handle_rejection).with(cors);
+	let routes = apis.or(static_s).recover(handle_rejection).with(cors);
 
 	println!("Start 0.0.0.0:{} at {}", web_port, web_folder);
 	warp::serve(routes).run(([0, 0, 0, 0], web_port)).await;
