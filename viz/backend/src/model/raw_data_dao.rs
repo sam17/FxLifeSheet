@@ -1,8 +1,6 @@
 use super::db::Db;
 use crate::model;
-use crate::security::UserCtx;
 use serde::{Deserialize, Serialize};
-use sqlb::{HasFields, Raw};
 
 #[derive(sqlx::FromRow, Debug, Clone, Serialize, Deserialize)]
 pub struct RawDataObj {
@@ -29,13 +27,13 @@ impl RawData {
 /// Todo Model Access Controller
 impl RawData {
 
-	pub async fn getByKey(db: &Db, key: String) -> Result<Vec<RawDataObj>, model::Error> {
+	pub async fn get_by_key(db: &Db, key: String) -> Result<Vec<RawDataObj>, model::Error> {
 		let sb = sqlb::select()
 			.table(Self::TABLE)
 			.columns(Self::COLUMNS).and_where_eq("key", key);
 
-		let dataByKey = sb.fetch_all(db).await?;
-		Ok(dataByKey)
+		let data_by_key = sb.fetch_all(db).await?;
+		Ok(data_by_key)
 	}
 
 	// pub async fn getAll(db: &Db, id: i64) -> Result<RawData, model::Error> {
@@ -60,16 +58,16 @@ impl RawData {
 // endregion: TodoMac
 
 // region:    Utils
-fn handle_fetch_one_result(
-	result: Result<RawData, sqlx::Error>,
-	typ: &'static str,
-	id: i64,
-) -> Result<RawData, model::Error> {
-	result.map_err(|sqlx_error| match sqlx_error {
-		sqlx::Error::RowNotFound => model::Error::EntityNotFound(typ, id.to_string()),
-		other => model::Error::SqlxError(other),
-	})
-}
+// fn handle_fetch_one_result(
+// 	result: Result<RawData, sqlx::Error>,
+// 	typ: &'static str,
+// 	id: i64,
+// ) -> Result<RawData, model::Error> {
+// 	result.map_err(|sqlx_error| match sqlx_error {
+// 		sqlx::Error::RowNotFound => model::Error::EntityNotFound(typ, id.to_string()),
+// 		other => model::Error::SqlxError(other),
+// 	})
+// }
 // endregion: Utils
 
 // region:    Test

@@ -2,10 +2,7 @@ use model::init_db;
 use std::env;
 use std::sync::Arc;
 use web::start_web;
-use sqlx;
-
 mod model;
-mod security;
 mod web;
 
 const DEFAULT_WEB_PORT: u16 = 8080;
@@ -13,7 +10,12 @@ const DEFAULT_WEB_PORT: u16 = 8080;
 #[tokio::main]
 async fn main() {
 	// compute the web_folder
-	let mut args: Vec<String> = env::args().collect();
+	if env::var_os("RUST_LOG").is_none() {
+        // Set `RUST_LOG=logger_name1=debug,logger_name2=info` to see debug logs, this only shows access logs.
+        env::set_var("RUST_LOG", "access");
+    }
+	pretty_env_logger::init();
+
 	let web_port = DEFAULT_WEB_PORT;
 
 	// get the database
