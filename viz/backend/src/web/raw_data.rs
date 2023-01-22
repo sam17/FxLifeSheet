@@ -38,8 +38,6 @@ pub fn todo_rest_filters(
 }
 
 async fn data_get_all(db: Arc<Db>) -> Result<Json, warp::Rejection> {
-	// json_response(json!({ "id": "test" }))
-	println!("DB: {:?}", db);
 	let raw_data = RawData::list(&db).await?;
 	json_response(raw_data)
 }

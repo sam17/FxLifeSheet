@@ -11,7 +11,6 @@ mod filter_utils;
 mod raw_data;
 
 pub async fn start_web(web_port: u16, db: Arc<Db>) -> Result<(), Error> {
-
 	// Apis
 	let apis = todo_rest_filters("api", db);
 
@@ -20,7 +19,8 @@ pub async fn start_web(web_port: u16, db: Arc<Db>) -> Result<(), Error> {
 	// Combine all routes
 
 	let cors = warp::cors().allow_any_origin();
-	let routes = apis.or(static_s).recover(handle_rejection).with(cors);
+	let log = warp::log("access");
+	let routes = apis.or(static_s).recover(handle_rejection).with(cors).with(log);
 
 	println!("Start 127.0.0.1:{}", web_port);
 	warp::serve(routes).run(([0, 0, 0, 0], web_port)).await;
