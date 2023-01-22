@@ -38,3 +38,11 @@ services:
       - telegram_bot/.env
     depends_on:
       - db
+  viz-be:
+    build:
+      context: viz/backend
+    restart: always
+    ports:
+      - '8080:8080'
+    depends_on:
+      - db
