@@ -13,13 +13,13 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Build and push
+      - name: Build and push telegram
         uses: docker/build-push-action@v3
         working-directory: ./telegram_bot
         with:
           push: true
           tags: dementor/matrix-telegram:latest
-      - name: Build and push
+      - name: Build and push viz
         uses: docker/build-push-action@v3
         working-directory: ./viz
         with:
