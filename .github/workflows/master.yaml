@@ -22,6 +22,8 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push telegram
         uses: docker/build-push-action@v3
+        run: |
+          ls
         with:
           push: true
           tags: dementor/matrix-telegram:latest
