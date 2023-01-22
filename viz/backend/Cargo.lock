@@ -46,23 +46,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d468802bab17cbc0cc575e9b053f41e72aa36bfa6b7f55e3529ffa43161b97fa"
 
 [[package]]
-name = "backend"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "dotenv",
- "futures",
- "serde",
- "serde_derive",
- "serde_json",
- "sqlb",
- "sqlx",
- "thiserror",
- "tokio",
- "warp",
-]
-
-[[package]]
 name = "base64"
 version = "0.13.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1540,6 +1523,23 @@ name = "version_check"
 version = "0.9.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "49874b5167b65d7193b8aba1567f5c7d93d001cafc34600cee003eda787e483f"
+
+[[package]]
+name = "viz-backend"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "dotenv",
+ "futures",
+ "serde",
+ "serde_derive",
+ "serde_json",
+ "sqlb",
+ "sqlx",
+ "thiserror",
+ "tokio",
+ "warp",
+]
 
 [[package]]
 name = "want"
