@@ -20,6 +20,11 @@ pub async fn init_db() -> Result<Db, sqlx::Error> {
 	let db_user = std::env::var("DB_USER").unwrap_or("viz".to_string());
 	let db_pass = std::env::var("DB_PASS").unwrap_or("viz".to_string());
 
+	println!("host: {}", host);
+	println!("db_name: {}", db_name);
+	println!("db_user: {}", db_user);
+	println!("db_pass: {}", db_pass);
+
 	new_db_pool(host, db_name, db_user, db_pass, PG_APP_MAX_CON).await
 }
 
