@@ -21,8 +21,7 @@ services:
     ports:
       - '5432:5432'
   worker:
-    build:
-     context: telegram_bot
+    image: dementor/matrix-telegram:latest
     command: npm run worker
     restart: always
     env_file:
@@ -30,8 +29,7 @@ services:
     depends_on:
       - db
   scheduler:
-    build:
-     context: telegram_bot
+    image: dementor/matrix-telegram:latest
     command: npm run scheduler
     restart: always
     env_file:
@@ -39,8 +37,7 @@ services:
     depends_on:
       - db
   viz:
-    build:
-      context: viz
+    image: dementor/matrix-viz:latest
     restart: always
     ports:
       - '8080:8080'
