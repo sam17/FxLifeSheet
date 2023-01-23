@@ -18,9 +18,11 @@ pub async fn start_web(web_port: u16, db: Arc<Db>) -> Result<(), Error> {
 
 	let cors = warp::cors().allow_any_origin();
 	let log = warp::log("access");
+
+	// Combine all routes
 	let routes = apis.or(static_s).recover(handle_rejection).with(cors).with(log);
 
-	println!("Start 127.0.0.1:{}", web_port);
+	println!("Start 0.0.0.0:{}", web_port);
 	warp::serve(routes).run(([0, 0, 0, 0], web_port)).await;
 
 	Ok(())

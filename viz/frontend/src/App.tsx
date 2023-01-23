@@ -7,7 +7,7 @@
 
     class App extends React.Component<IProps, IState> {
 
-      baseUrl: string = "http://localhost:8080/api/data/";
+      baseUrl: string = "/api/data/";
 
       render() {
         return (
