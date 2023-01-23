@@ -39,6 +39,8 @@ services:
   viz:
     image: dementor/matrix-viz:latest
     restart: always
+    env_file:
+      - viz/backend/.env
     ports:
       - '8080:8080'
     depends_on:
