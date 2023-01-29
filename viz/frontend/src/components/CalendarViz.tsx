@@ -1,5 +1,7 @@
 import React from "react";
 import * as d3 from "d3";
+import { Col } from "antd";
+import styles from "../stylesheets.module.scss";
 
 interface IProps {
   name: string;
@@ -8,6 +10,7 @@ interface IProps {
   maxRange: number;
   minRange: number;
   isPositive: boolean;
+  isReverse: boolean;
 }
 
 interface IState {}
@@ -32,14 +35,16 @@ class ArrayCalendarData {
   maxRange: number = 0;
   minRange: number = 0; 
   isPositive: boolean = true;
+  isReverse: boolean = false;
 
-  constructor(arrayOfRawData: Array<RawCalendarData>, maxRange: number, minRange: number, isPositive: boolean) {
+  constructor(arrayOfRawData: Array<RawCalendarData>, maxRange: number, minRange: number, isPositive: boolean, isReverse: boolean) {
     this.data = arrayOfRawData["data"].map(
       (d) => new CalendarData(d.timestamp, d.value)
     );
     this.maxRange = maxRange;
     this.minRange = minRange;
     this.isPositive = isPositive;
+    this.isReverse = isReverse;
   }
 
   getDates(): Array<string> {
@@ -52,7 +57,7 @@ class ArrayCalendarData {
 
   getValueModified(date: Date): number {
     let value = this.getAverageValueForDate(date)
-    if (!this.isPositive) {
+    if (this.isReverse) {
         value = this.maxRange - value;
         return value + this.minRange;
     } else {
@@ -99,6 +104,7 @@ class CalendarViz extends React.Component<IProps, IState> {
   maxRange: number = this.props.maxRange;
   minRange: number = this.props.minRange;
   isPositive: boolean = this.props.isPositive;
+  isReverse: boolean = this.props.isReverse;
   displayName: string = this.props.displayName;
 
   private buildCalendar(url: string, name: string) {
@@ -156,6 +162,12 @@ class CalendarViz extends React.Component<IProps, IState> {
       })
       .enter()
       .append("rect")
+      .filter(function(d) {
+        if (d.getMonth() === 3 && d.getDate() === 30) {
+          return false;
+        }
+        return d.getMonth() <= 3 ;
+        })
       .attr("width", cellSize)
       .attr("height", cellSize)
       .attr("x", function(d) {
@@ -166,9 +178,10 @@ class CalendarViz extends React.Component<IProps, IState> {
       })
       .datum(d3.timeFormat("%Y-%m-%d"));
 
+
     d3.json(url).then((data) => {
       let d3data = Object.assign(new Array<RawCalendarData>(), data);
-      let calendarData = new ArrayCalendarData(d3data, this.props.maxRange, this.props.minRange, this.props.isPositive);
+      let calendarData = new ArrayCalendarData(d3data, this.props.maxRange, this.props.minRange, this.props.isPositive, this.props.isReverse);
 
       let color = this.props.isPositive ? positiveColors : negativeColors;
       color.domain([this.props.minRange, this.props.maxRange]);
@@ -188,15 +201,17 @@ class CalendarViz extends React.Component<IProps, IState> {
 
   render() {
     return (
+      <Col xs={24} sm={6}  >
       <div className={this.name}>
-        <h1>{this.displayName}</h1>
+        <h2 className={styles.vizHeading}>{this.displayName}</h2>
         <svg
           className="container"
           ref={(ref: SVGSVGElement) => (this.ref = ref)}
-          width="100"
-          height="100"
+          width="0"
+          height="0"
         ></svg>
       </div>
+    </Col>
     );
   }
 }
