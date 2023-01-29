@@ -12,15 +12,15 @@
       render() {
         return (
             <div className="App">
-              <CalendarViz name="happyLevels"  url={this.baseUrl}/>
-              <CalendarViz name="anxietyLevels"  url={this.baseUrl}/>
-              <CalendarViz name="energyLevels"  url={this.baseUrl}/>
-              <CalendarViz name="learned"  url={this.baseUrl}/>
-              <CalendarViz name="socializing"  url={this.baseUrl}/>
-              <CalendarViz name="parents"  url={this.baseUrl}/>
-              <CalendarViz name="lays"  url={this.baseUrl}/>
-              <CalendarViz name="gym"  url={this.baseUrl}/>
-              <CalendarViz name="numberOfMeals"  url={this.baseUrl}/>
+              <CalendarViz isPositive={true} minRange={0} maxRange={5} name="happyLevels"  url={this.baseUrl}/>
+              <CalendarViz isPositive={false} minRange={0} maxRange={5} name="anxietyLevels"  url={this.baseUrl}/>
+              <CalendarViz isPositive={true} minRange={0} maxRange={5} name="energyLevels"  url={this.baseUrl}/>
+              <CalendarViz isPositive={true} minRange={0} maxRange={5} name="learned"  url={this.baseUrl}/>
+              <CalendarViz isPositive={true} minRange={0} maxRange={1} name="socializing"  url={this.baseUrl}/>
+              <CalendarViz isPositive={true} minRange={0} maxRange={1} name="parents"  url={this.baseUrl}/>
+              <CalendarViz isPositive={false} minRange={0} maxRange={5} name="lays"  url={this.baseUrl}/>
+              <CalendarViz isPositive={true} minRange={0} maxRange={1} name="gym"  url={this.baseUrl}/>
+              <CalendarViz isPositive={true} minRange={0} maxRange={1} name="numberOfMeals"  url={this.baseUrl}/>
             </div>
         );
       }
