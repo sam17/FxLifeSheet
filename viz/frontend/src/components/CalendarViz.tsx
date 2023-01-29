@@ -50,7 +50,7 @@ class ArrayCalendarData {
   }
 
   getValueModified(date: Date): number {
-    let value = this.data[this.isDateInArrayIndex(date)].value;
+    let value = this.getAverageValueForDate(date)
     if (!this.isPositive) {
         value = this.maxRange - value;
         return value + this.minRange;
@@ -73,6 +73,17 @@ class ArrayCalendarData {
   // above function but returns the index
   isDateInArrayIndex(a: Date) {
     return this.data.findIndex((d) => this.compareDates(d.date, a));
+  }
+
+  getAllDataForDate(a: Date) {
+    return this.data.filter((d) => this.compareDates(d.date, a));
+  }
+
+  getAverageValueForDate(a: Date) {
+    let values = this.getAllDataForDate(a).map((d) => d.value);
+    values = values.map((d) => Number(d));
+    let average =  values.reduce((a, b) => a + b, 0) / values.length;
+    return Math.round(average);
   }
 
   public getData(): Array<CalendarData> {
