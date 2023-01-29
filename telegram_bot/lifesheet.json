@@ -90,11 +90,6 @@
                 "type": "text"
             },
             {
-                "key": "madeTodayEvenBetter",
-                "question": "How could I have made today even better?",
-                "type": "text"
-            },
-            {
                 "key": "city",
                 "question": "Please share your location, this is used to get your city, country, continent, currency, and weather details",
                 "type": "location"
@@ -147,7 +142,7 @@
             },
             {
                 "key": "caffeineLastDrink",
-                "question": "When was your last caffein drink?",
+                "question": "When was your last caffeine drink?",
                 "type": "range",
                 "buttons": {
                     "5": "Before 3pm",
@@ -160,7 +155,7 @@
             },
             {
                 "key": "vitamins",
-                "question": "Did you take vitamins",
+                "question": "Did you take vitamins?",
                 "type": "boolean"
             },
             {
@@ -319,18 +314,44 @@
                 }
             },
             {
-                "key": "trainingNotes",
-                "question": "Notes about your training, anything that stood out?",
-                "type": "text"
-            },
-            {
                 "question": "🧠 Let's talk productivity",
                 "type": "header"
             },
             {
-                "question": "🕺 If you could describe the last week in one sentence, what stood out?",
-                "type": "text",
-                "key": "lastWeekSummaryText"
+                "key": "branding",
+                "question": "Did you work on your personal branding last week?",
+                "type": "boolean",
+                "buttons": {
+                    "true": "Yes",
+                    "false": "No"
+                }
+            },
+            {
+                "key": "writing",
+                "question": "Did you write last week?",
+                "type": "boolean",
+                "buttons": {
+                    "true": "Yes",
+                    "false": "No"
+                }
+            },
+            {
+                "key": "sidey",
+                "question": "Did you publish a side project last week?",
+                "type": "boolean",
+                "buttons": {
+                    "true": "Yes",
+                    "false": "No"
+                }
+            },
+            {
+                "key": "teach",
+                "question": "Did you spend time on teaching last week? Can be a teaching blog OR a talk. But should be replayable",
+                "type": "boolean",
+                "buttons": {
+                    "true": "Yes",
+                    "false": "No"
+                }
             },
             {
                 "key": "weekLifeProgress",
@@ -350,19 +371,6 @@
                 "type": "header"
             },
             {
-                "key": "enoughTimeFamily",
-                "question": "Do you feel like you've took enough time last week to spend with your family (siblings, parents and greater family)? If based outside Austria, apply this to FaceTime calls",
-                "type": "range",
-                "buttons": {
-                    "5": "Spent enough time",
-                    "4": "Spent a good amount of time",
-                    "3": "Spent time with them",
-                    "2": "Spent some time with them",
-                    "1": "Should spend more time",
-                    "0": "Wasn't able to spend time"
-                }
-            },
-            {
                 "key": "deepConversations",
                 "question": "Did you have deep conversations with close friends/family last week?",
                 "type": "range",
@@ -372,22 +380,17 @@
                     "3": "Some, but could be more",
                     "2": "Some, but should be more",
                     "1": "No real deep conversations",
-                    "0": "No deep converations, but I need it"
+                    "0": "No deep conversations, but I need it"
                 }
+            },
+            {
+                "key": "deep-conversation-person",
+                "question": "Who did you have deep conversations with?",
+                "type": "text"
             },
             {
                 "question": "🎁 Let's wrap things up",
                 "type": "header"
-            },
-            {
-                "key": "playedComputerGamesAlone",
-                "question": "Did you play computer games by yourself last week?",
-                "type": "boolean"
-            },
-            {
-                "key": "playedComputerGamesFriends",
-                "question": "Did you play computer games with friends last week?",
-                "type": "boolean"
             }
          ]
     }
