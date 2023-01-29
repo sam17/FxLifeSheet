@@ -3,6 +3,7 @@ import * as d3 from "d3";
 
 interface IProps {
   name: string;
+  displayName: string;
   url: string;
   maxRange: number;
   minRange: number;
@@ -95,9 +96,10 @@ class CalendarViz extends React.Component<IProps, IState> {
   ref!: SVGSVGElement;
   name: string = this.props.name;
   url: string = this.props.url + this.name;
-    maxRange: number = this.props.maxRange;
-    minRange: number = this.props.minRange;
-    isPositive: boolean = this.props.isPositive;
+  maxRange: number = this.props.maxRange;
+  minRange: number = this.props.minRange;
+  isPositive: boolean = this.props.isPositive;
+  displayName: string = this.props.displayName;
 
   private buildCalendar(url: string, name: string) {
     // Set the dimensions of the calendar heatmap
@@ -187,7 +189,7 @@ class CalendarViz extends React.Component<IProps, IState> {
   render() {
     return (
       <div className={this.name}>
-        <h1>{this.name}</h1>
+        <h1>{this.displayName}</h1>
         <svg
           className="container"
           ref={(ref: SVGSVGElement) => (this.ref = ref)}
