@@ -6,6 +6,7 @@
             "key": "happyLevels",
             "question": "How happy/excited are you feeling right now?",
             "type": "range",
+            "isVisibleInVisualizer": true,
             "buttons": {
                 "5": "Very happy/excited",
                 "4": "Happy/excited",
@@ -18,6 +19,7 @@
         {
             "key": "anxietyLevels",
             "question": "How anxious/stressed are you feeling right now?",
+            "isVisibleInVisualizer": true,
             "type": "range",
             "buttons": {
                 "5": "Not at all",
@@ -31,6 +33,7 @@
         {
             "key": "energyLevels",
             "question": "How much energy do you have right now?",
+            "isVisibleInVisualizer": true,
             "type": "range",
             "buttons": {
                 "5": "Very high",
@@ -53,11 +56,13 @@
             },
             {
                 "key": "sleepWokeUpYourself",
+                "isVisibleInVisualizer": true,
                 "question": "Did you wake up by yourself?",
                 "type": "boolean"
             },
             {
                 "key": "didVomit",
+                "isVisibleInVisualizer": true,
                 "question": "Did you vomit this morning?",
                 "type": "boolean"
             },
@@ -101,6 +106,7 @@
             {
                 "key": "alcoholIntake",
                 "question": "How much alcohol did you drink today?",
+                "isVisibleInVisualizer": true,
                 "type": "range",
                 "buttons": {
                     "5": "No alcohol",
@@ -116,6 +122,7 @@
             },
             {
                 "key": "numberOfMeals",
+                "isVisibleInVisualizer": true,
                 "question": "How many meals did you have today?",
                 "type": "range",
                 "buttons": {
@@ -130,6 +137,7 @@
             {
                 "key": "caffeine",
                 "question": "How much caffeine did you drink today? (Coffee, Club Mate, Energy Drinks)",
+                "isVisibleInVisualizer": true,
                 "type": "range",
                 "buttons": {
                     "5": "No caffeine",
@@ -155,17 +163,20 @@
             },
             {
                 "key": "vitamins",
+                "isVisibleInVisualizer": true,
                 "question": "Did you take vitamins?",
                 "type": "boolean"
             },
             {
                 "key": "gym",
+                "isVisibleInVisualizer": true,
                 "question": "Did you work out in a gym today?",
                 "type": "boolean"
             },
             {
                 "key": "coke",
                 "question": "How many aerated drinks did you have today?",
+                "isVisibleInVisualizer": true,
                 "type": "range",
                 "buttons": {
                     "5": "0",
@@ -179,6 +190,7 @@
             {
                 "key": "lays",
                 "question": "How many packages of junk food did you have today?",
+                "isVisibleInVisualizer": true,
                 "type": "range",
                 "buttons": {
                     "5": "0",
@@ -195,17 +207,20 @@
             },
             {
                 "key": "parents",
+                "isVisibleInVisualizer": true,
                 "question": "Did you talk to parents today?",
                 "type": "boolean"
             },
             {
                 "key": "socializing",
                 "question": "Did you socialize today?",
+                "isVisibleInVisualizer": true,
                 "type": "boolean"
             },
             {
                 "key": "out",
                 "question": "Did you go out today?",
+                "isVisibleInVisualizer": true,
                 "type": "boolean"
             },
             {
@@ -216,6 +231,7 @@
                 "key": "learned",
                 "question": "Did you learn/try something new? (skill or activity)",
                 "type": "range",
+                "isVisibleInVisualizer": true,
                 "buttons": {
                     "5": "Learned so much my head will explode",
                     "4": "Learned a lot of new things",
@@ -228,11 +244,13 @@
             {
                 "key": "didRead",
                 "question": "Did you read today?",
+                "isVisibleInVisualizer": true,
                 "type": "boolean"
             },
             {
                 "key": "chess",
                 "question": "Did you play chess today?",
+                "isVisibleInVisualizer": true,
                 "type": "boolean"
             },
             {
@@ -247,6 +265,7 @@
             {
                 "key": "watchedTV",
                 "question": "Did you watch TV or a movie, outside of food?",
+                "isVisibleInVisualizer": true,
                 "type": "boolean"
             },
             {
@@ -257,6 +276,7 @@
             {
                 "key": "goalsNextDay",
                 "question": "Did you set goals for the next day?",
+                "isVisibleInVisualizer": true,
                 "type": "boolean"
             },
             {
@@ -276,6 +296,7 @@
             {
                 "key": "excitedAboutFuture",
                 "question": "Do you feel excited about what's ahead in the future?",
+                "isVisibleInVisualizer": true,
                 "type": "range",
                 "buttons": {
                     "5": "Yes, Super excited",
