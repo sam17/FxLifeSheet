@@ -18,7 +18,7 @@ class App extends React.Component<IProps, IState> {
   }
 
   development: boolean = !process.env.NODE_ENV || process.env.NODE_ENV === "development";
-  baseUrl: string = this.development ? "https://metrics.soumyadeep.in/api/" : "/api/data/";
+  baseUrl: string = this.development ? "https://metrics.soumyadeep.in/api/" : "/api/";
   dataUrl = this.baseUrl + "data/";
 
   getMetadata = () => {
