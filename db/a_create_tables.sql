@@ -3,7 +3,7 @@
 
 -- Table Definition ----------------------------------------------
 
-CREATE TABLE raw_data (
+CREATE TABLE IF NOT EXISTS raw_data (
     id SERIAL PRIMARY KEY,
     timestamp bigint,
     "yearmonth" int,
@@ -30,12 +30,20 @@ CREATE TABLE raw_data (
 
 -- Table Definition ----------------------------------------------
 
-CREATE TABLE last_run (
+CREATE TABLE IF NOT EXISTS last_run (
     id SERIAL PRIMARY KEY,
     command text,
     last_run bigint,
     last_message bigint,
     UNIQUE (command)
+);
+
+
+CREATE TABLE IF NOT EXISTS metadata(
+    id SERIAL PRIMARY KEY,
+    key text,
+    value text,
+    UNIQUE (key)
 );
 
 
@@ -61,7 +69,7 @@ exception
 end;
 $$ language plpgsql immutable;
 
-CREATE VIEW raw_data_for_metabase AS
+CREATE VIEW IF NOT EXISTS raw_data_for_metabase AS
   SELECT *,
   cast_to_int(value) AS valueAsInt,
   cast_to_float(value) AS valueAsFloat
