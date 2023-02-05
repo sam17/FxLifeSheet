@@ -1,16 +1,16 @@
-.svg {
-  svg {
-      rect {
-          fill: orange;
-      }
-
-      text {
-          fill: white;
-          font: 10px sans-serif;
-          text-anchor: end;
-      }
-  }
-}
+//.svg {
+//  svg {
+//      rect {
+//          fill: orange;
+//      }
+//
+//      text {
+//          fill: white;
+//          font: 10px sans-serif;
+//          text-anchor: end;
+//      }
+//  }
+//}
 
 .App {
   padding: 30px;
@@ -20,4 +20,32 @@ ant-divider {
     background-color: #111;
     font-size: 100px !important;
     border-top: 1px #111 !important;
+}
+
+#rangedChart {
+  background: #fff;
+  width: 90%;
+  margin: 1em auto;
+}
+
+/*-- Point --*/
+.c3-circle {
+  fill: red;
+}
+
+.c3-area {
+  opacity:1 !important;
+}
+
+//.c3-target-data1 {
+//  opacity: 0.3 !important;
+//}
+
+.c3-line-data1 {
+  //stroke: red !important;
+  opacity: 1 !important;
+}
+
+.c3-line-data3 {
+  stroke: hsl(39, 41, 94) !important;
 }

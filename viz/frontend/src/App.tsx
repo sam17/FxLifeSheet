@@ -3,6 +3,7 @@ import "./App.scss";
 import { Row, Col, Divider } from "antd";
 import CalendarViz from "./components/CalendarViz";
 import styles from "./stylesheets.module.scss";
+import RangedAreaViz from "./components/RangedAreaViz";
 
 interface IProps {}
 interface IState {
@@ -31,7 +32,6 @@ class App extends React.Component<IProps, IState> {
   componentDidMount() {
     this.getMetadata()
       .then((data) => {
-        console.log(data);
         this.setState({ name: data.name });
       })
       .catch((error) => {
@@ -46,6 +46,7 @@ class App extends React.Component<IProps, IState> {
         <h1>
           <center> How is {this.state.name} ?</center>
         </h1>
+          <RangedAreaViz/>
         <Divider orientation="left" className={styles.divider}>
           {" "}
           Mental Health{" "}
