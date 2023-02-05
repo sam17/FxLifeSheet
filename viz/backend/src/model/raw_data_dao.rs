@@ -8,6 +8,7 @@ pub struct RawDataObj {
 	pub value: String,
 }
 
+
 // #[derive(sqlx::Type, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 // #[sqlx(type_name = "todo_status_enum")]
 // #[sqlx(rename_all = "lowercase")]
@@ -24,7 +25,6 @@ impl RawData {
 	const COLUMNS: &'static [&'static str] = &["timestamp", "value"];
 }
 
-/// Todo Model Access Controller
 impl RawData {
 
 	pub async fn get_by_key(db: &Db, key: String) -> Result<Vec<RawDataObj>, model::Error> {
@@ -36,17 +36,6 @@ impl RawData {
 		Ok(data_by_key)
 	}
 
-	// pub async fn getAll(db: &Db, id: i64) -> Result<RawData, model::Error> {
-	// 	let sb = sqlb::select()
-	// 		.table(Self::TABLE)
-	// 		.columns(Self::COLUMNS);
-	// 		// .and_where_eq("id", id);
-	//
-	// 	let result = sb.fetch_one(db).await;
-	//
-	// 	handle_fetch_one_result(result, Self::TABLE, id)
-	// }
-
 	pub async fn list(db: &Db) -> Result<Vec<RawDataObj>, model::Error> {
 		let sb = sqlb::select().table(Self::TABLE).columns(Self::COLUMNS);
 
@@ -57,18 +46,6 @@ impl RawData {
 }
 // endregion: TodoMac
 
-// region:    Utils
-// fn handle_fetch_one_result(
-// 	result: Result<RawData, sqlx::Error>,
-// 	typ: &'static str,
-// 	id: i64,
-// ) -> Result<RawData, model::Error> {
-// 	result.map_err(|sqlx_error| match sqlx_error {
-// 		sqlx::Error::RowNotFound => model::Error::EntityNotFound(typ, id.to_string()),
-// 		other => model::Error::SqlxError(other),
-// 	})
-// }
-// endregion: Utils
 
 // region:    Test
 #[cfg(test)]
