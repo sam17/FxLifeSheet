@@ -5,8 +5,6 @@ use std::sync::Arc;
 use warp::reply::Json;
 use warp::Filter;
 
-
-
 pub fn viz_metadata_rest_filters(
     base_path: &'static str,
     db: &Arc<Db>,
