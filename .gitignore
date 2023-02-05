@@ -24,3 +24,4 @@ checkins.json
 data
 telegram_bot/.env
 telegram_bot/local.env
+.idea/

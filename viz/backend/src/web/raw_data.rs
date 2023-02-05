@@ -5,15 +5,15 @@ use std::sync::Arc;
 use warp::reply::Json;
 use warp::Filter;
 
-pub fn todo_rest_filters(
+pub fn raw_data_rest_filters(
 	base_path: &'static str,
-	db: Arc<Db>,
+	db: &Arc<Db>,
 ) -> impl Filter<Extract = impl warp::Reply, Error = warp::Rejection> + Clone {
 	let data_path = warp::path(base_path).and(warp::path("data"));
 	// let common = super::filter_utils::with_db(db.clone()).and(do_auth(db.clone()));
 	let common = super::filter_utils::with_db(db.clone());
 
-	// LIST todos `GET todos/`
+	// LIST raw_data `GET data/`
 	let list = data_path
 		.and(warp::get())
 		.and(warp::path::end())
@@ -27,7 +27,6 @@ pub fn todo_rest_filters(
 	// 	.and(warp::path::param())
 	// 	.and_then(data_get);
 
-	// GET todo `GET /data/happyLevels`
 	let get = data_path
 		.and(warp::get())
 		.and(common.clone())
@@ -46,11 +45,6 @@ async fn data_get_by_key(db: Arc<Db>, key: String) -> Result<Json, warp::Rejecti
 	let data = RawData::get_by_key(&db,  key).await?;
 	json_response(data)
 }
-
-// async fn data_get(db: Arc<Db>, id: i64) -> Result<Json, warp::Rejection> {
-// 	let todo = RawData::getAll(&db, id).await?;
-// 	json_response(todo)
-// }
 
 // region:    Utils
 fn json_response<D: Serialize>(data: D) -> Result<Json, warp::Rejection> {

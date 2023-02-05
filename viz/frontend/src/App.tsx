@@ -17,12 +17,8 @@ class App extends React.Component<IProps, IState> {
     };
   }
 
-  development: boolean =
-    !process.env.NODE_ENV || process.env.NODE_ENV === "development";
-  // baseUrl : string = this.development?"https://metrics.soumyadeep.in/api/data/": "/api/data/";
-  baseUrl: string = this.development
-    ? "https://metrics.charutak.xyz/api/data/"
-    : "/api/data/";
+  development: boolean = !process.env.NODE_ENV || process.env.NODE_ENV === "development";
+  baseUrl: string = this.development ? "https://metrics.charutak.xyz/api/data/" : "/api/data/";
 
   getMetadata = () => {
     return fetch(this.baseUrl + "metadata").then((response) => response.json());

@@ -1,5 +1,5 @@
-use super::todo_rest_filters;
-use crate::model::{init_db, RawData, RawData, TodoStatus};
+use super::raw_data_rest_filters;
+use crate::model::{init_db, RawData, TodoStatus};
 use crate::security::utx_from_token;
 use crate::web::handle_rejection;
 use anyhow::{Context, Result};
@@ -16,7 +16,7 @@ async fn web_todo_list() -> Result<()> {
 	// -- FIXTURE
 	let db = init_db().await?;
 	let db = Arc::new(db);
-	let todo_apis = todo_rest_filters("api", db.clone()).recover(handle_rejection);
+	let todo_apis = raw_data_rest_filters("api", db.clone()).recover(handle_rejection);
 
 	// -- ACTION
 	let resp = warp::test::request()
@@ -46,7 +46,7 @@ async fn web_todo_get_ok() -> Result<()> {
 	// -- FIXTURE
 	let db = init_db().await?;
 	let db = Arc::new(db);
-	let todo_apis = todo_rest_filters("api", db).recover(handle_rejection);
+	let todo_apis = raw_data_rest_filters("api", db).recover(handle_rejection);
 
 	// -- ACTION
 	let resp = warp::test::request()
@@ -75,7 +75,7 @@ async fn web_todo_create_ok() -> Result<()> {
 	// -- FIXTURE
 	let db = init_db().await?;
 	let db = Arc::new(db);
-	let todo_apis = todo_rest_filters("api", db.clone()).recover(handle_rejection);
+	let todo_apis = raw_data_rest_filters("api", db.clone()).recover(handle_rejection);
 	// new todo fixture
 	const TITLE: &str = "test - web_todo_create_ok";
 	let body = json!({
@@ -110,7 +110,7 @@ async fn web_todo_update_ok() -> Result<()> {
 	// -- FIXTURE
 	let db = init_db().await?;
 	let db = Arc::new(db);
-	let todo_apis = todo_rest_filters("api", db.clone()).recover(handle_rejection);
+	let todo_apis = raw_data_rest_filters("api", db.clone()).recover(handle_rejection);
 	// udpated todo
 	const TITLE: &str = "test - todo 100 updated";
 	let body = json!({
@@ -146,7 +146,7 @@ async fn web_todo_delete_ok() -> Result<()> {
 	// -- FIXTURE
 	let db = init_db().await?;
 	let db = Arc::new(db);
-	let todo_apis = todo_rest_filters("api", db.clone()).recover(handle_rejection);
+	let todo_apis = raw_data_rest_filters("api", db.clone()).recover(handle_rejection);
 
 	// -- ACTION
 	let resp = warp::test::request()
