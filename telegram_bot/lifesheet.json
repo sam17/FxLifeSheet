@@ -96,12 +96,7 @@
     "asleep": {
         "description": "Use this right when going to bed",
         "schedule": "daily",
-        "questions": [{
-                "key": "amazingThingsThatHappenedToday",
-                "question": "The most amazing thing that happened today...",
-                "category": "Mental Health",
-                "type": "text"
-            },
+        "questions": [
             {
                 "key": "city",
                 "question": "Please share your location, this is used to get your city, country, continent, currency, and weather details",
@@ -336,12 +331,6 @@
                     "1": "Freaking out",
                     "0": "No, I'm not excited about anything"
                 }
-            },
-            {
-                "key": "moodNotes",
-                "question": "What do you think was the main influence to your mood ratings today?",
-                "category": "Mental Health",
-                "type": "text"
             }
         ]
     },
