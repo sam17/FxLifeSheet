@@ -6,28 +6,37 @@ use serde::{Deserialize, Serialize};
 pub struct VizQuestionsObj {
     pub key: String,
     pub question: String,
-	pub question_type : String,
-	pub max_value: i32,
-	pub min_value: i32,
+    pub question_type: String,
+    pub max_value: Option<i32>,
+    pub min_value: Option<i32>,
+	pub buttons: Option<String>,
 }
 
 pub struct VizQuestions;
 
 impl VizQuestions {
     const TABLE: &'static str = "questions";
-    const COLUMNS: &'static [&'static str] = &["key", "question", "question_type", "max_value", "min_value"];
+    const COLUMNS: &'static [&'static str] =
+        &["key", "question", "question_type", "max_value", "min_value", "buttons"];
 }
 
 impl VizQuestions {
+    pub async fn get_questions_with_query(
+        db: &Db,
+        category: String,
+        is_visible: bool,
+    ) -> Result<Vec<VizQuestionsObj>, model::Error> {
+        let mut sb = sqlb::select().table(Self::TABLE).columns(Self::COLUMNS);
 
-	// get all where is_active = true
-	pub async fn get_visible_list(db: &Db) -> Result<Vec<VizQuestionsObj>, model::Error> {
-		let sb = sqlb::select()	
-			.table(Self::TABLE)
-			.columns(Self::COLUMNS)
-			.and_where_eq("is_visible_in_visualizer", true);
+		if is_visible {
+			sb = sb.and_where_eq("is_visible_in_visualizer", true);
+		}
 
-		let viz_questions_list = sb.fetch_all(db).await?;
-		Ok(viz_questions_list)
-	}
+		if category != "" {
+			sb = sb.and_where_eq("category", category);
+		}	
+
+        let viz_questions_list = sb.fetch_all(db).await?;
+        Ok(viz_questions_list)
+    }
 }

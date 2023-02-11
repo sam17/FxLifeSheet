@@ -7,7 +7,7 @@ import requests
 
 
 class Question:
-    def __init__(self, key, question, type, maxValue, minValue, isVisibleInVisualizer, buttons):
+    def __init__(self, key, question, type, maxValue, minValue, isVisibleInVisualizer, buttons, category):
         self.key = key
         self.question = question
         self.questionType = type
@@ -15,6 +15,7 @@ class Question:
         self.minValue = minValue
         self.isVisibleInVisualizer = isVisibleInVisualizer
         self.buttons = buttons
+        self.category = category
 
     @classmethod
     def from_json(cls, data):
@@ -23,6 +24,8 @@ class Question:
             key = data['key']
             question = data['question']
             questionsType = data['type']
+            category = data['category']            
+
             if 'buttons' in data:
                 buttons = json.dumps(data['buttons'])
             else:
@@ -47,12 +50,12 @@ class Question:
             else:
                 isVisibleInVisualizer = False
 
-            return cls(key, question, questionsType, maxValue, minValue, isVisibleInVisualizer, buttons)
+            return cls(key, question, questionsType, maxValue, minValue, isVisibleInVisualizer, buttons, category)
         except KeyError:
             raise ValueError('Invalid data structure')
 
     def __repr__(self):
-        return f"Question(key={self.key}, question={self.question}, type={self.questionType}, maxValue={self.maxValue}, minValue={self.minValue}, isVisibleInVisualizer={self.isVisibleInVisualizer}, options={self.buttons})"
+        return f"Question(key={self.key}, question={self.question}, type={self.questionType}, maxValue={self.maxValue}, minValue={self.minValue}, isVisibleInVisualizer={self.isVisibleInVisualizer}, options={self.buttons}, category={self.category})"
 
 
 class Command:
@@ -107,7 +110,7 @@ cursor = conn.cursor()
 # Create the table if it doesn't exist
 table_name = 'questions'
 # create_table_query = f"CREATE TABLE IF NOT EXISTS {table_name} (column1 key, column2 question, column3 type, column4 maxValue, column5 minValue, column6 isVisibleInVisualizer, column7 buttons);"
-create_table_query = f"CREATE TABLE IF NOT EXISTS {table_name} (key VARCHAR(255), question VARCHAR(255), question_type VARCHAR(255), max_value int, min_value int, is_visible_in_visualizer BOOLEAN, buttons VARCHAR(255));"
+create_table_query = f"CREATE TABLE IF NOT EXISTS {table_name} (key VARCHAR(255), question VARCHAR(255), question_type VARCHAR(255), max_value int, min_value int, is_visible_in_visualizer BOOLEAN, buttons VARCHAR(255), category VARCHAR(255));"
 cursor.execute(create_table_query)
 conn.commit()
 
@@ -119,9 +122,9 @@ conn.commit()
 for item in questions:
     # insert_query = f"INSERT INTO {table_name} VALUES ({item.key}, {item.question}, {item.type}, {item.maxValue}, {item.minValue}, {item.isVisibleInVisualizer}, {item.buttons});"
     # insert_query = f"INSERT INTO {table_name} VALUES ('{item.key}', '{item.question}', '{item.type}', '{item.maxValue}', '{item.minValue}', '{item.isVisibleInVisualizer}', '{item.buttons}');"
-    insert_query = f"INSERT INTO {table_name} VALUES(%s, %s, %s, %s, %s, %s, %s);"
+    insert_query = f"INSERT INTO {table_name} VALUES(%s, %s, %s, %s, %s, %s, %s, %s);"
     cursor.execute(insert_query, (item.key, item.question, item.questionType,
-                   item.maxValue, item.minValue, item.isVisibleInVisualizer, item.buttons))
+                   item.maxValue, item.minValue, item.isVisibleInVisualizer, item.buttons, item.category))
 
 
 table_name = 'commands'
