@@ -97,8 +97,8 @@ questions = []
 commands = []
 
 r = requests.get(
-    # 'https://raw.githubusercontent.com/thebayesianconspiracy/FxLifeSheet/master/telegram_bot/lifesheet.json')
-    'https://raw.githubusercontent.com/thebayesianconspiracy/FxLifeSheet/seperateJSON/telegram_bot/lifesheet.json')
+    'https://raw.githubusercontent.com/thebayesianconspiracy/FxLifeSheet/master/telegram_bot/lifesheet.json')
+    # 'https://raw.githubusercontent.com/thebayesianconspiracy/FxLifeSheet/seperateJSON/telegram_bot/lifesheet.json')
 data = r.json()
 commands = [Command.from_json(data, name) for name in data]
 
