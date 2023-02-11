@@ -11,6 +11,8 @@ services:
       - /etc/cloudflare/metrics.soumyadeep.in:/etc/cloudflare/metrics.soumyadeep.in
     depends_on:
       - viz
+    profiles:
+      - with_nginx
   db:
     image: postgres
     restart: always
