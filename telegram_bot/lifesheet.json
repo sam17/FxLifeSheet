@@ -7,6 +7,7 @@
             "question": "How happy/excited are you feeling right now?",
             "type": "range",
             "isVisibleInVisualizer": true,
+            "category": "Mental Health",
             "buttons": {
                 "5": "Very happy/excited",
                 "4": "Happy/excited",
@@ -20,6 +21,7 @@
             "key": "anxietyLevels",
             "question": "How anxious/stressed are you feeling right now?",
             "isVisibleInVisualizer": true,
+            "category": "Mental Health",
             "type": "range",
             "buttons": {
                 "5": "Not at all",
@@ -34,6 +36,7 @@
             "key": "energyLevels",
             "question": "How much energy do you have right now?",
             "isVisibleInVisualizer": true,
+            "category": "Mental Health",
             "type": "range",
             "buttons": {
                 "5": "Very high",
@@ -57,23 +60,27 @@
             {
                 "key": "sleepWokeUpYourself",
                 "isVisibleInVisualizer": true,
+                "category": "Physical Health",
                 "question": "Did you wake up by yourself?",
                 "type": "boolean"
             },
             {
                 "key": "didVomit",
                 "isVisibleInVisualizer": true,
+                "category": "Physical Health",
                 "question": "Did you vomit this morning?",
                 "type": "boolean"
             },
             {
                 "key": "whatWouldMakeTodayGreat",
+                "category": "Mental Health",
                 "question": "What would make today great?",
                 "type": "text"
             },
             {
                 "key": "pomodoroPredicted",
                 "question": "How many pomodoros do you think you'll get done today?",
+                "category": "Productivity",
                 "type": "range",
                 "buttons": {
                     "5": "16+",
@@ -93,6 +100,7 @@
             {
                 "key": "city",
                 "question": "Please share your location, this is used to get your city, country, continent, currency, and weather details",
+                "category": "Metadata",
                 "type": "location"
             },
             {
@@ -103,6 +111,7 @@
                 "key": "alcoholIntake",
                 "question": "How much alcohol did you drink today?",
                 "isVisibleInVisualizer": true,
+                "category": "Physical Health",
                 "type": "range",
                 "buttons": {
                     "5": "No alcohol",
@@ -120,6 +129,7 @@
                 "key": "numberOfMeals",
                 "isVisibleInVisualizer": true,
                 "question": "How many meals did you have today?",
+                "category": "Physical Health",
                 "type": "range",
                 "buttons": {
                     "5": "5",
@@ -133,6 +143,7 @@
             {
                 "key": "caffeine",
                 "question": "How much caffeine did you drink today? (Coffee, Club Mate, Energy Drinks)",
+                "category": "Physical Health",
                 "isVisibleInVisualizer": true,
                 "type": "range",
                 "buttons": {
@@ -147,6 +158,7 @@
             {
                 "key": "caffeineLastDrink",
                 "question": "When was your last caffeine drink?",
+                "category": "Physical Health",
                 "type": "range",
                 "buttons": {
                     "5": "Before 3pm",
@@ -160,18 +172,21 @@
             {
                 "key": "vitamins",
                 "isVisibleInVisualizer": true,
+                "category": "Physical Health",
                 "question": "Did you take vitamins?",
                 "type": "boolean"
             },
             {
                 "key": "gym",
                 "isVisibleInVisualizer": true,
+                "category": "Physical Health",
                 "question": "Did you work out in a gym today?",
                 "type": "boolean"
             },
             {
                 "key": "coke",
                 "question": "How many aerated drinks did you have today?",
+                "category": "Physical Health",
                 "isVisibleInVisualizer": true,
                 "type": "range",
                 "buttons": {
@@ -186,6 +201,7 @@
             {
                 "key": "lays",
                 "question": "How many packages of junk food did you have today?",
+                "category": "Physical Health",
                 "isVisibleInVisualizer": true,
                 "type": "range",
                 "buttons": {
@@ -204,18 +220,21 @@
             {
                 "key": "parents",
                 "isVisibleInVisualizer": true,
+                "category": "Social",
                 "question": "Did you talk to parents today?",
                 "type": "boolean"
             },
             {
                 "key": "socializing",
                 "question": "Did you socialize today?",
+                "category": "Social",
                 "isVisibleInVisualizer": true,
                 "type": "boolean"
             },
             {
                 "key": "out",
                 "question": "Did you go out today?",
+                "category": "Social",
                 "isVisibleInVisualizer": true,
                 "type": "boolean"
             },
@@ -227,6 +246,7 @@
                 "key": "learned",
                 "question": "Did you learn/try something new? (skill or activity)",
                 "type": "range",
+                "category": "Productivity",
                 "isVisibleInVisualizer": true,
                 "buttons": {
                     "5": "Learned so much my head will explode",
@@ -240,12 +260,14 @@
             {
                 "key": "didRead",
                 "question": "Did you read today?",
+                "category": "Productivity",
                 "isVisibleInVisualizer": true,
                 "type": "boolean"
             },
             {
                 "key": "chess",
                 "question": "Did you play chess today?",
+                "category": "Hobbies",
                 "isVisibleInVisualizer": true,
                 "type": "boolean"
             },
@@ -256,23 +278,27 @@
             {
                 "key": "pomodoroDone",
                 "question": "How many pomodoros did you complete today? /skip ",
+                "category": "Productivity",
                 "type": "number"
             },
             {
                 "key": "watchedTV",
                 "question": "Did you watch TV or a movie, outside of food?",
                 "isVisibleInVisualizer": true,
+                "category": "Productivity",
                 "type": "boolean"
             },
             {
                 "key": "numberOfWorkMeetings",
                 "question": "How many work meetings did you have today? This includes work-related phone calls",
+                "category": "Productivity",
                 "type": "number"
             },
             {
                 "key": "goalsNextDay",
                 "question": "Did you set goals for the next day?",
                 "isVisibleInVisualizer": true,
+                "category": "Productivity",
                 "type": "boolean"
             },
             {
@@ -282,17 +308,20 @@
             {
                 "key": "worryNotes",
                 "question": "Write down the number one thing you're worried about right now, and try to describe why you think it's an issue. If none comes to mind, run /skip",
+                "category": "Mental Health",
                 "type": "text"
             },
             {
                 "key": "mainAccomplishment",
                 "question": "What was your main accomplishment of today",
+                "category": "Productivity",
                 "type": "text"
             },
             {
                 "key": "excitedAboutFuture",
                 "question": "Do you feel excited about what's ahead in the future?",
                 "isVisibleInVisualizer": true,
+                "category": "Mental Health",
                 "type": "range",
                 "buttons": {
                     "5": "Yes, Super excited",
@@ -315,6 +344,7 @@
             {
                 "key": "trainingAdherence",
                 "question": "How was last week's training sessions?",
+                "category": "Physical Health",
                 "type": "range",
                 "buttons": {
                     "5": "Increased volume in all exercises",
@@ -332,6 +362,7 @@
             {
                 "key": "branding",
                 "question": "Did you work on your personal branding last week?",
+                "category": "Productivity",
                 "type": "boolean",
                 "buttons": {
                     "true": "Yes",
@@ -341,6 +372,7 @@
             {
                 "key": "writing",
                 "question": "Did you write last week?",
+                "category": "Productivity",
                 "type": "boolean",
                 "buttons": {
                     "true": "Yes",
@@ -350,6 +382,7 @@
             {
                 "key": "sidey",
                 "question": "Did you publish a side project last week?",
+                "category": "Productivity",
                 "type": "boolean",
                 "buttons": {
                     "true": "Yes",
@@ -359,6 +392,7 @@
             {
                 "key": "teach",
                 "question": "Did you spend time on teaching last week? Can be a teaching blog OR a talk. But should be replayable",
+                "category": "Productivity",
                 "type": "boolean",
                 "buttons": {
                     "true": "Yes",
@@ -368,6 +402,7 @@
             {
                 "key": "weekLifeProgress",
                 "question": "Do you feel like you moved into the right direction in life the past week?",
+                "category": "Productivity",
                 "type": "range",
                 "buttons": {
                     "5": "Had a plan and executed successfully",
@@ -385,6 +420,7 @@
             {
                 "key": "deepConversations",
                 "question": "Did you have deep conversations with close friends/family last week?",
+                "category": "Social",
                 "type": "range",
                 "buttons": {
                     "5": "Had one or more multi-hour long talks",
@@ -397,6 +433,7 @@
             },
             {
                 "key": "deep-conversation-person",
+                "category": "Social",
                 "question": "Who did you have deep conversations with?",
                 "type": "text"
             },

@@ -46,6 +46,20 @@ CREATE TABLE IF NOT EXISTS metadata(
     UNIQUE (key)
 );
 
+CREATE TABLE IF NOT EXISTS category(
+    id SERIAL PRIMARY KEY,
+    name text,
+    priority int,
+    description text,
+    UNIQUE (name)
+);
+
+INSERT INTO category (name, priority, description) VALUES
+('Mental Health', 1, 'Health and wellbeing'),
+('Physical Health', 2, 'Health and wellbeing'),
+('Productivity', 3, 'Work and hobbies'),
+('Hobbies', 4, 'Work and hobbies'),
+('Social', 5, 'Relationships')
 
 -- View needed for metrics
 

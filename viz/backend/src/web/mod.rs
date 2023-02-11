@@ -2,6 +2,7 @@ use crate::model::{self, Db};
 use crate::web::raw_data::raw_data_rest_filters;
 use crate::web::viz_metadata::viz_metadata_rest_filters;
 use crate::web::viz_questions::viz_questions_rest_filters;
+use crate::web::viz_categories::viz_categories_rest_filters;
 use serde_json::json;
 use std::convert::Infallible;
 use std::sync::Arc;
@@ -11,12 +12,14 @@ mod filter_utils;
 mod raw_data;
 mod viz_metadata;
 mod viz_questions;
+mod viz_categories;
 
 pub async fn start_web(web_port: u16, db: Arc<Db>) -> Result<(), Error> {
 	// Apis
 	let raw_data_apis = raw_data_rest_filters("api", &db);
 	let metadata_apis = viz_metadata_rest_filters("api", &db);
 	let questions_apis = viz_questions_rest_filters("api", &db);
+	let categories_apis = viz_categories_rest_filters("api", &db);
 
 	// Static content
 	let static_s = warp::fs::dir("../frontend/build/");
@@ -26,7 +29,7 @@ pub async fn start_web(web_port: u16, db: Arc<Db>) -> Result<(), Error> {
 	let log = warp::log("access");
 
 	// Combine all routes
-	let routes = raw_data_apis.or(metadata_apis).or(questions_apis)
+	let routes = raw_data_apis.or(metadata_apis).or(questions_apis).or(categories_apis)
 		.or(static_s).recover(handle_rejection).with(cors).with(log);
 
 	println!("Start 0.0.0.0:{}", web_port);
