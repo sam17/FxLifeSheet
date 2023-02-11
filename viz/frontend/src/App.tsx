@@ -19,7 +19,8 @@ class App extends React.Component<IProps, IState> {
   }
 
   development: boolean = !process.env.NODE_ENV || process.env.NODE_ENV === "development";
-  baseUrl: string = this.development ? "https://metrics.soumyadeep.in/api/" : "/api/";
+  // baseUrl: string = this.development ? "https://metrics.soumyadeep.in/api/" : "/api/";
+  baseUrl: string = this.development ? "https://metrics.charutak.xyz/api/" : "/api/";
   dataUrl = this.baseUrl + "data/";
 
   getMetadata = () => {
@@ -43,7 +44,7 @@ class App extends React.Component<IProps, IState> {
         <h1>
           <center> How is {this.state.name} ?</center>
         </h1>
-          <RangedAreaViz/>
+          <RangedAreaViz displayName={"Pomodoro Diff"} rangeKey={"pomodoroPredicted"} targetKey={"pomodoroDone"}  url={this.dataUrl}/>
         <Divider orientation="left" className={styles.divider}>
           {" "}
           Mental Health{" "}

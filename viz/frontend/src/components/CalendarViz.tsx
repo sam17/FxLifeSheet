@@ -2,6 +2,7 @@ import React from "react";
 import * as d3 from "d3";
 import { Col } from "antd";
 import styles from "../stylesheets.module.scss";
+import {DatedData} from "../models/DatedData";
 
 interface IProps {
   name: string;
@@ -20,18 +21,9 @@ interface RawCalendarData {
   value: number;
 }
 
-class CalendarData {
-  date: Date;
-  value: number;
-
-  constructor(timestamp: string, value: number) {
-    this.date = new Date(timestamp);
-    this.value = value;
-  }
-}
 
 class ArrayCalendarData {
-  data: Array<CalendarData> = [];
+  data: Array<DatedData> = [];
   maxRange: number = 0;
   minRange: number = 0; 
   isPositive: boolean = true;
@@ -39,7 +31,7 @@ class ArrayCalendarData {
 
   constructor(arrayOfRawData: Array<RawCalendarData>, maxRange: number, minRange: number, isPositive: boolean, isReverse: boolean) {
     this.data = arrayOfRawData["data"].map(
-      (d) => new CalendarData(d.timestamp, d.value)
+      (d) => new DatedData(d.timestamp, d.value)
     );
     this.maxRange = maxRange;
     this.minRange = minRange;
@@ -92,7 +84,7 @@ class ArrayCalendarData {
     return Math.round(average);
   }
 
-  public getData(): Array<CalendarData> {
+  public getData(): Array<DatedData> {
     return this.data;
   }
 }
