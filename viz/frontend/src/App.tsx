@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from "react";
 import "./App.scss";
-import { Row, Col, Divider } from "antd";
-import CalendarViz from "./components/CalendarViz";
-import styles from "./stylesheets.module.scss";
 import VizBuilder from "./components/VizBuilder";
 
 function App() {
@@ -10,7 +7,7 @@ function App() {
   const development: boolean =
     !process.env.NODE_ENV || process.env.NODE_ENV === "development";
   const baseUrl: string = development
-    ? "http://localhost:8080/api/"
+    ? "http://msi.local:8080/api/"
     : "/api/";
   const dataUrl = baseUrl + "data/";
 

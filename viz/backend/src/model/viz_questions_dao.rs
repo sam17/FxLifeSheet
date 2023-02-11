@@ -10,6 +10,9 @@ pub struct VizQuestionsObj {
     pub max_value: Option<i32>,
     pub min_value: Option<i32>,
 	pub buttons: Option<String>,
+    pub is_positive: bool,
+    pub is_reverse: bool,
+    pub display_name: String,
 }
 
 pub struct VizQuestions;
@@ -17,7 +20,8 @@ pub struct VizQuestions;
 impl VizQuestions {
     const TABLE: &'static str = "questions";
     const COLUMNS: &'static [&'static str] =
-        &["key", "question", "question_type", "max_value", "min_value", "buttons"];
+        &["key", "question", "question_type", "max_value", "min_value", "buttons"
+        , "is_positive", "is_reverse", "display_name"];
 }
 
 impl VizQuestions {

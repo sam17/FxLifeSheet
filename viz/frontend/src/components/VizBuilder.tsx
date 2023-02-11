@@ -47,8 +47,6 @@ function VizBuilder(props: props) {
       getQuestionsForCategory(element.name)
         .then((data) => {
           setQuestionsForCategory((prev) => {
-            // if element.category already exists, update it
-            // else add it
             const index = prev.findIndex(
               (item) => item.category === element.name
             );
@@ -81,12 +79,12 @@ function VizBuilder(props: props) {
             <Row gutter={[16, 16]}>
                 {item.questions.map((question) => {
                     return <CalendarViz
-                    isPositive={true}
-                    isReverse={false}
-                    minRange={0}
-                    maxRange={5}
+                    isPositive={question.is_positive}
+                    isReverse={question.is_reverse}
+                    minRange={question.min_value}
+                    maxRange={question.max_value}
                     name={question.key}
-                    displayName={question.key}
+                    displayName={question.display_name}
                     url={baseUrl + "data/"}
                     />
                 })}

@@ -5,6 +5,9 @@ interface QuestionData {
     question: string;
     question_type: string;
     buttons: string;
+    is_positive: boolean;
+    is_reverse: boolean;
+    display_name: string;
 }
 
 export default QuestionData;

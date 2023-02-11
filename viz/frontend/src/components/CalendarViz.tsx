@@ -201,7 +201,7 @@ class CalendarViz extends React.Component<IProps, IState> {
 
   render() {
     return (
-      <Col xs={24} sm={6}  >
+      <Col xxl={6} xl={8} lg={8} md={12} sm={24} xs={24} >
       <div className={this.name}>
         <h2 className={styles.vizHeading}>{this.displayName}</h2>
         <svg
