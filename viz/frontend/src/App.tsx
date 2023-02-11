@@ -19,7 +19,8 @@ class App extends React.Component<IProps, IState> {
   }
 
   development: boolean = !process.env.NODE_ENV || process.env.NODE_ENV === "development";
-  baseUrl: string = this.development ? "https://metrics.charutak.xyz/api/data/" : "/api/data/";
+  baseUrl: string = this.development ? "https://metrics.soumyadeep.in/api/" : "/api/";
+  dataUrl = this.baseUrl + "data/";
 
   getMetadata = () => {
     return fetch(this.baseUrl + "metadata").then((response) => response.json());
@@ -55,7 +56,7 @@ class App extends React.Component<IProps, IState> {
             maxRange={5}
             name="energyLevels"
             displayName={"Energy"}
-            url={this.baseUrl}
+            url={this.dataUrl}
           />
            <CalendarViz
             isPositive={true}
@@ -64,7 +65,7 @@ class App extends React.Component<IProps, IState> {
             maxRange={5}
             name="happyLevels"
             displayName={"Happiness"}
-            url={this.baseUrl}
+            url={this.dataUrl}
           />
           <CalendarViz
             isPositive={false}
@@ -73,7 +74,7 @@ class App extends React.Component<IProps, IState> {
             maxRange={5}
             name="anxietyLevels"
             displayName={"Anxiety"}
-            url={this.baseUrl}
+            url={this.dataUrl}
           />
          <CalendarViz
             isPositive={true}
@@ -82,7 +83,7 @@ class App extends React.Component<IProps, IState> {
             maxRange={5}
             name="excitedAboutFuture"
             displayName={"Excitement about Future"}
-            url={this.baseUrl}
+            url={this.dataUrl}
           />
         </Row>
         <br />
@@ -99,7 +100,7 @@ class App extends React.Component<IProps, IState> {
             maxRange={1}
             name="gym"
             displayName={"Workout"}
-            url={this.baseUrl}
+            url={this.dataUrl}
           />
            <CalendarViz
             isPositive={false}
@@ -108,7 +109,7 @@ class App extends React.Component<IProps, IState> {
             maxRange={5}
             name="alcoholIntake"
             displayName={"Alcohol Intake"}
-            url={this.baseUrl}
+            url={this.dataUrl}
           />
          <CalendarViz
             isPositive={true}
@@ -117,7 +118,7 @@ class App extends React.Component<IProps, IState> {
             maxRange={5}
             name="numberOfMeals"
             displayName={"Number of Meals"}
-            url={this.baseUrl}
+            url={this.dataUrl}
           />
          <CalendarViz
             isPositive={false}
@@ -126,7 +127,7 @@ class App extends React.Component<IProps, IState> {
             maxRange={5}
             name="coke"
             displayName={"Aerated Drinks Intake"}
-            url={this.baseUrl}
+            url={this.dataUrl}
           />
           <CalendarViz
             isPositive={false}
@@ -135,7 +136,7 @@ class App extends React.Component<IProps, IState> {
             maxRange={5}
             name="lays"
             displayName={"Junk Food Intake"}
-            url={this.baseUrl}
+            url={this.dataUrl}
           />
            <CalendarViz
             isPositive={false}
@@ -144,7 +145,7 @@ class App extends React.Component<IProps, IState> {
             maxRange={5}
             name="caffeine"
             displayName={"Caffeine Intake"}
-            url={this.baseUrl}
+            url={this.dataUrl}
           />
           <CalendarViz
             isPositive={false}
@@ -153,7 +154,7 @@ class App extends React.Component<IProps, IState> {
             maxRange={1}
             name="didVomit"
             displayName={"Vomit in Morning"}
-            url={this.baseUrl}
+            url={this.dataUrl}
           />
           <CalendarViz
             isPositive={true}
@@ -162,7 +163,7 @@ class App extends React.Component<IProps, IState> {
             maxRange={1}
             name="sleepWokeUpYourself"
             displayName={"Woke up Yourself"}
-            url={this.baseUrl}
+            url={this.dataUrl}
           />
         </Row>
         <br />
@@ -179,7 +180,7 @@ class App extends React.Component<IProps, IState> {
             maxRange={5}
             name="learned"
             displayName={"Learning"}
-            url={this.baseUrl}
+            url={this.dataUrl}
           />
           <CalendarViz
             isPositive={true}
@@ -188,7 +189,7 @@ class App extends React.Component<IProps, IState> {
             maxRange={1}
             name="didRead"
             displayName={"Read"}
-            url={this.baseUrl}
+            url={this.dataUrl}
           />
           <CalendarViz
             isPositive={true}
@@ -197,7 +198,7 @@ class App extends React.Component<IProps, IState> {
             maxRange={1}
             name="goalsNextDay"
             displayName={"Planned Next Day"}
-            url={this.baseUrl}
+            url={this.dataUrl}
           />
           <CalendarViz
             isPositive={false}
@@ -206,7 +207,7 @@ class App extends React.Component<IProps, IState> {
             maxRange={1}
             name="watchedTV"
             displayName={"Did watch TV"}
-            url={this.baseUrl}
+            url={this.dataUrl}
           />
         </Row>
         <br />
@@ -223,7 +224,7 @@ class App extends React.Component<IProps, IState> {
             maxRange={1}
             name="parents"
             displayName={"Talked to Family"}
-            url={this.baseUrl}
+            url={this.dataUrl}
           />
           <CalendarViz
             isPositive={true}
@@ -232,7 +233,7 @@ class App extends React.Component<IProps, IState> {
             maxRange={1}
             name="socializing"
             displayName={"Socialized"}
-            url={this.baseUrl}
+            url={this.dataUrl}
           />
           <CalendarViz
             isPositive={true}
@@ -241,7 +242,7 @@ class App extends React.Component<IProps, IState> {
             maxRange={1}
             name="out"
             displayName={"Went Out"}
-            url={this.baseUrl}
+            url={this.dataUrl}
           />
         </Row>
         <br />
@@ -258,7 +259,7 @@ class App extends React.Component<IProps, IState> {
             maxRange={1}
             name="chess"
             displayName={"Played Chess"}
-            url={this.baseUrl}
+            url={this.dataUrl}
           />
         </Row>
         <br />
