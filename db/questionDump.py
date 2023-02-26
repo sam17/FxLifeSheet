@@ -26,44 +26,44 @@ class Question:
             # Validate the data structure
             key = data['key']
             question = data['question']
-            questionsType = data['type']
+            questions_type = data['type']
             category = data['category']
-            displayName = data['displayName']
+            display_name = data['displayName']
             if 'isPositive' in data:
-                isPositive = data['isPositive']
+                is_positive = data['isPositive']
             else:
-                isPositive = True
+                is_positive = True
 
             if 'isReverse' in data:
-                isReverse = data['isReverse']
+                is_reverse = data['isReverse']
             else:
-                isReverse = False
+                is_reverse = False
 
             if 'buttons' in data:
                 buttons = json.dumps(data['buttons'])
             else:
                 buttons = None
 
-            if questionsType == 'range':
+            if questions_type == 'range':
                 ranges = data['buttons']
-                listOfKeys = list(ranges.keys())
-                listOfKeys = [int(i) for i in listOfKeys]
-                maxValue = max(listOfKeys)
-                minValue = min(listOfKeys)
+                list_of_keys = list(ranges.keys())
+                list_of_keys = [int(i) for i in list_of_keys]
+                max_value = max(list_of_keys)
+                min_value = min(list_of_keys)
             else:
-                if questionsType == 'boolean':
-                    maxValue = 1
-                    minValue = 0
+                if questions_type == 'boolean':
+                    max_value = 1
+                    min_value = 0
                 else:
-                    maxValue = None
-                    minValue = None
+                    max_value = None
+                    min_value = None
 
             if 'isVisibleInVisualizer' in data:
-                isVisibleInVisualizer = data['isVisibleInVisualizer']
+                is_visible_in_visualizer = data['isVisibleInVisualizer']
             else:
-                isVisibleInVisualizer = False
+                is_visible_in_visualizer = False
 
-            return cls(key, question, questionsType, maxValue, minValue, isVisibleInVisualizer, buttons, category, displayName, isPositive, isReverse)
+            return cls(key, question, questions_type, max_value, min_value, is_visible_in_visualizer, buttons, category, display_name, is_positive, is_reverse)
         except KeyError:
             raise ValueError('Invalid data structure')
 
@@ -96,9 +96,7 @@ class Command:
 questions = []
 commands = []
 
-r = requests.get(
-    'https://raw.githubusercontent.com/thebayesianconspiracy/FxLifeSheet/master/telegram_bot/lifesheet.json')
-    # 'https://raw.githubusercontent.com/thebayesianconspiracy/FxLifeSheet/seperateJSON/telegram_bot/lifesheet.json')
+r = requests.get(sys.argv[2])
 data = r.json()
 commands = [Command.from_json(data, name) for name in data]
 
