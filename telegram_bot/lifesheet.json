@@ -1,0 +1,498 @@
+{
+    "mood": {
+        "description": "Track my current mood during the day",
+        "schedule": "eightTimesADay",
+        "questions": [{
+            "key": "happyLevels",
+            "displayName": "Happiness",
+            "question": "How happy/excited are you feeling right now?",
+            "type": "range",
+            "isVisibleInVisualizer": true,
+            "category": "Mental Health",
+            "buttons": {
+                "5": "Very happy/excited",
+                "4": "Happy/excited",
+                "3": "Moderate",
+                "2": "Sad/dull",
+                "1": "Very sad/dull",
+                "0": "Extremely sad/dull"
+            }
+        },
+        {
+            "key": "anxietyLevels",
+            "displayName": "Anxiety",
+            "question": "How anxious/stressed are you feeling right now?",
+            "isVisibleInVisualizer": true,
+            "isPositive": false,
+            "isReverse": true,
+            "category": "Mental Health",
+            "type": "range",
+            "buttons": {
+                "5": "Not at all",
+                "4": "A little",
+                "3": "Moderate",
+                "2": "Quite a bit",
+                "1": "Very much",
+                "0": "Extremely"
+            }
+        },
+        {
+            "key": "energyLevels",
+            "displayName": "Energy",
+            "question": "How much energy do you have right now?",
+            "isVisibleInVisualizer": true,
+            "category": "Mental Health",
+            "type": "range",
+            "buttons": {
+                "5": "Very high",
+                "4": "High",
+                "3": "Moderate",
+                "2": "Low",
+                "1": "Very low",
+                "0": "Extremely low"
+            }
+        }
+
+    ]
+    },
+    "awake": {
+        "description": "Use this right when you woke up",
+        "schedule": "daily",
+        "questions": [{
+                "question": "🌇 Good morning",
+                "type": "header"
+            },
+            {
+                "key": "sleepWokeUpYourself",
+                "displayName": "Woke up yourself",
+                "isVisibleInVisualizer": true,
+                "category": "Physical Health",
+                "question": "Did you wake up by yourself?",
+                "type": "boolean"
+            },
+            {
+                "key": "didVomit",
+                "isVisibleInVisualizer": true,
+                "displayName": "Vomited in morning",
+                "isPositive": false,
+                "category": "Physical Health",
+                "question": "Did you vomit this morning?",
+                "type": "boolean"
+            },
+            {
+                "key": "whatWouldMakeTodayGreat",
+                "displayName": "What would make today great?",
+                "category": "Mental Health",
+                "question": "What would make today great?",
+                "type": "text"
+            },
+            {
+                "key": "pomodoroPredicted",
+                "displayName": "Pomodoros predicted",
+                "question": "How many pomodoros do you think you'll get done today?",
+                "category": "Productivity",
+                "type": "range",
+                "buttons": {
+                    "5": "16+",
+                    "4": "12-15",
+                    "3": "8-11",
+                    "2": "4-7",
+                    "1": "1-3",
+                    "0": "0"
+                }
+            }
+       ]
+    },
+    "asleep": {
+        "description": "Use this right when going to bed",
+        "schedule": "daily",
+        "questions": [
+            {
+                "key": "city",
+                "displayName": "Location",
+                "question": "Please share your location, this is used to get your city, country, continent, currency, and weather details",
+                "category": "Metadata",
+                "type": "location"
+            },
+            {
+                "question": "💪 Let's talk fitness first",
+                "type": "header"
+            },
+            {
+                "key": "alcoholIntake",
+                "question": "How much alcohol did you drink today?",
+                "displayName": "Alcohol intake",
+                "isVisibleInVisualizer": true,
+                "isPositive": false,
+                "isReverse": true,
+                "category": "Physical Health",
+                "type": "range",
+                "buttons": {
+                    "5": "No alcohol",
+                    "4": "Had 1 drink",
+                    "3": "Had 2 drinks",
+                    "2": "Had 3 drinks",
+                    "1": "Had 4-5 drinks",
+                    "0": "Got wasted"
+                },
+                "replies": {
+                    "0": "Haha, hope you had a good time and the calories were all worth it. Make sure to still hit your protein goal and eat extra clean the next few days"
+                }
+            },
+            {
+                "key": "numberOfMeals",
+                "isVisibleInVisualizer": true,
+                "displayName": "Number of meals",
+                "question": "How many meals did you have today?",
+                "category": "Physical Health",
+                "type": "range",
+                "buttons": {
+                    "5": "5",
+                    "4": "4",
+                    "3": "3",
+                    "2": "2",
+                    "1": "1",
+                    "0": "What is food?"
+                }
+            },
+            {
+                "key": "caffeine",
+                "question": "How much caffeine did you drink today? (Coffee, Club Mate, Energy Drinks)",
+                "displayName": "Caffeine intake",
+                "category": "Physical Health",
+                "isPositive": false,
+                "isReverse": true,
+                "isVisibleInVisualizer": true,
+                "type": "range",
+                "buttons": {
+                    "5": "No caffeine",
+                    "4": "1 drink",
+                    "3": "2 drinks",
+                    "2": "3 drinks",
+                    "1": "4 drinks",
+                    "0": "5 drinks or more"
+                }
+            },
+            {
+                "key": "caffeineLastDrink",
+                "question": "When was your last caffeine drink?",
+                "displayName": "Last caffeine drink",
+                "category": "Physical Health",
+                "type": "range",
+                "buttons": {
+                    "5": "Before 3pm",
+                    "4": "Before 5pm",
+                    "3": "Before 7pm",
+                    "2": "Before 9pm",
+                    "1": "Before 11pm",
+                    "0": "Later"
+                }
+            },
+            {
+                "key": "vitamins",
+                "isVisibleInVisualizer": true,
+                "category": "Physical Health",
+                "displayName": "Vitamins",
+                "question": "Did you take vitamins?",
+                "type": "boolean"
+            },
+            {
+                "key": "gym",
+                "isVisibleInVisualizer": true,
+                "category": "Physical Health",
+                "displayName": "Workout",
+                "question": "Did you work out in a gym today?",
+                "type": "boolean"
+            },
+            {
+                "key": "coke",
+                "question": "How many aerated drinks did you have today?",
+                "category": "Physical Health",
+                "displayName": "Aerated drinks",
+                "isPositive": false,
+                "isReverse": true,
+                "isVisibleInVisualizer": true,
+                "type": "range",
+                "buttons": {
+                    "5": "0",
+                    "4": "1",
+                    "3": "2",
+                    "2": "3",
+                    "1": "4",
+                    "0": "5 or more"
+                }
+            },
+            {
+                "key": "lays",
+                "question": "How many packages of junk food did you have today?",
+                "category": "Physical Health",
+                "displayName": "Junk food",
+                "isPositive": false,
+                "isReverse": true,
+                "isVisibleInVisualizer": true,
+                "type": "range",
+                "buttons": {
+                    "5": "0",
+                    "4": "1",
+                    "3": "2",
+                    "2": "3",
+                    "1": "4",
+                    "0": "5 or more"
+                }
+            },
+            {
+                "question": "👥 Let's talk social life",
+                "type": "header"
+            },
+            {
+                "key": "parents",
+                "isVisibleInVisualizer": true,
+                "displayName": "Talked to Family",
+                "category": "Social",
+                "question": "Did you talk to parents today?",
+                "type": "boolean"
+            },
+            {
+                "key": "socializing",
+                "question": "Did you socialize today?",
+                "displayName": "Socialized",
+                "category": "Social",
+                "isVisibleInVisualizer": true,
+                "type": "boolean"
+            },
+            {
+                "key": "out",
+                "question": "Did you go out today?",
+                "displayName": "Went out",
+                "category": "Social",
+                "isVisibleInVisualizer": true,
+                "type": "boolean"
+            },
+            {
+                "question": "⚙️ Let's talk personal growth",
+                "type": "header"
+            },
+            {
+                "key": "learned",
+                "question": "Did you learn/try something new? (skill or activity)",
+                "type": "range",
+                "displayName": "Learnt",
+                "category": "Productivity",
+                "isVisibleInVisualizer": true,
+                "buttons": {
+                    "5": "Learned so much my head will explode",
+                    "4": "Learned a lot of new things",
+                    "3": "Learned something new",
+                    "2": "I learned a little bit",
+                    "1": "Barely learned anything",
+                    "0": "Not at all, Grey matter might have turned to mush"
+                }                
+            },
+            {
+                "key": "didRead",
+                "displayName": "Read",
+                "question": "Did you read today?",
+                "category": "Productivity",
+                "isVisibleInVisualizer": true,
+                "type": "boolean"
+            },
+            {
+                "key": "chess",
+                "displayName": "Played Chess",
+                "question": "Did you play chess today?",
+                "category": "Hobbies",
+                "isVisibleInVisualizer": true,
+                "type": "boolean"
+            },
+            {
+                "question": "🧠 Let's talk productivity",
+                "type": "header"
+            },
+            {
+                "key": "pomodoroDone",
+                "displayName": "Pomodoros Done",
+                "question": "How many pomodoros did you complete today? /skip ",
+                "category": "Productivity",
+                "type": "number"
+            },
+            {
+                "key": "watchedTV",
+                "question": "Did you watch TV or a movie, outside of food?",
+                "displayName": "Watched TV",
+                "isVisibleInVisualizer": true,
+                "isPositive": false,
+                "isReverse": false,
+                "category": "Productivity",
+                "type": "boolean"
+            },
+            {
+                "key": "numberOfWorkMeetings",
+                "displayName": "Work Meetings",
+                "question": "How many work meetings did you have today? This includes work-related phone calls",
+                "category": "Productivity",
+                "isPositive": false,
+                "type": "number"
+            },
+            {
+                "key": "goalsNextDay",
+                "question": "Did you set goals for the next day?",
+                "isVisibleInVisualizer": true,
+                "displayName": "Planned Next Day",
+                "category": "Productivity",
+                "type": "boolean"
+            },
+            {
+                "question": "🧩 Let's wrap things up",
+                "type": "header"
+            },
+            {
+                "key": "worryNotes",
+                "question": "Write down the number one thing you're worried about right now, and try to describe why you think it's an issue. If none comes to mind, run /skip",
+                "displayName": "Worries",
+                "isPositive": false,
+                "category": "Mental Health",
+                "type": "text"
+            },
+            {
+                "key": "mainAccomplishment",
+                "question": "What was your main accomplishment of today",
+                "category": "Productivity",
+                "displayName": "Main Accomplishment",
+                "type": "text"
+            },
+            {
+                "key": "excitedAboutFuture",
+                "question": "Do you feel excited about what's ahead in the future?",
+                "isVisibleInVisualizer": true,
+                "displayName": "Excited About Future",
+                "category": "Mental Health",
+                "type": "range",
+                "buttons": {
+                    "5": "Yes, Super excited",
+                    "4": "Yes, I'm excited about some things",
+                    "3": "I'm excited but still worried about some things",
+                    "2": "A little, but mostly worried",
+                    "1": "Freaking out",
+                    "0": "No, I'm not excited about anything"
+                }
+            }
+        ]
+    },
+    "week": {
+        "description": "Use this once a week, ideally Monday or Tuesday morning",
+        "schedule": "weekly",
+        "questions": [{
+                "question": "💪 Let's talk fitness first",
+                "type": "header"
+            },
+            {
+                "key": "trainingAdherence",
+                "question": "How was last week's training sessions?",
+                "category": "Physical Health",
+                "displayName": "Training Adherence",
+                "type": "range",
+                "buttons": {
+                    "5": "Increased volume in all exercises",
+                    "4": "Increased some volumes",
+                    "3": "Workouts felt great",
+                    "2": "Workouts were good",
+                    "1": "Not enough energy for good workouts",
+                    "0": "Worked out less than 3 times last week"
+                }
+            },
+            {
+                "question": "🧠 Let's talk productivity",
+                "type": "header"
+            },
+            {
+                "key": "branding",
+                "question": "Did you work on your personal branding last week?",
+                "category": "Productivity",
+                "displayName": "Personal Branding",
+                "type": "boolean",
+                "buttons": {
+                    "true": "Yes",
+                    "false": "No"
+                }
+            },
+            {
+                "key": "writing",
+                "question": "Did you write last week?",
+                "category": "Productivity",
+                "displayName": "Writing",
+                "type": "boolean",
+                "buttons": {
+                    "true": "Yes",
+                    "false": "No"
+                }
+            },
+            {
+                "key": "sidey",
+                "question": "Did you publish a side project last week?",
+                "category": "Productivity",
+                "displayName": "Side Project",
+                "type": "boolean",
+                "buttons": {
+                    "true": "Yes",
+                    "false": "No"
+                }
+            },
+            {
+                "key": "teach",
+                "question": "Did you spend time on teaching last week? Can be a teaching blog OR a talk. But should be replayable",
+                "category": "Productivity",
+                "displayName": "Teaching",
+                "type": "boolean",
+                "buttons": {
+                    "true": "Yes",
+                    "false": "No"
+                }
+            },
+            {
+                "key": "weekLifeProgress",
+                "question": "Do you feel like you moved into the right direction in life the past week?",
+                "category": "Productivity",
+                "displayName": "Life Progress",
+                "type": "range",
+                "buttons": {
+                    "5": "Had a plan and executed successfully",
+                    "4": "Followed previous plan and continued",
+                    "3": "Felt like it was the right direction",
+                    "2": "Not sure",
+                    "1": "Felt all over the place",
+                    "0": "Unsure where to go"
+                }
+            },
+            {
+                "question": "👥 Let's talk social life",
+                "type": "header"
+            },
+            {
+                "key": "deepConversations",
+                "question": "Did you have deep conversations with close friends/family last week?",
+                "category": "Social",
+                "displayName": "Deep Conversations",
+                "type": "range",
+                "buttons": {
+                    "5": "Had one or more multi-hour long talks",
+                    "4": "Had one more more insightful talks",
+                    "3": "Some, but could be more",
+                    "2": "Some, but should be more",
+                    "1": "No real deep conversations",
+                    "0": "No deep conversations, but I need it"
+                }
+            },
+            {
+                "key": "deep-conversation-person",
+                "category": "Social",
+                "displayName": "Deep Conversation Person",
+                "question": "Who did you have deep conversations with?",
+                "type": "text"
+            },
+            {
+                "question": "🎁 Let's wrap things up",
+                "type": "header"
+            }
+         ]
+    }
+}

@@ -9,4 +9,3 @@ telegram_bot/.env
 telegram_bot/local.env
 .idea/
 *.iml
-telegram_bot/lifesheet.json
