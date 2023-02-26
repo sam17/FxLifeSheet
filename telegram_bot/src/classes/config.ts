@@ -15,10 +15,11 @@ interface Command {
 }
 
 let url = process.env.LIFESHEET_JSON_URL;
+console.log("Lifesheet URL: ", url);
 if (url) {
   console.log("Loading remote JSON config...");
   needle.get(url, function(error, response, body) {
-    let userConfig: { [key: string]: Command } = body;
+    let userConfig: { [key: string]: Command } = JSON.parse(body);
     console.log("Successfully loaded remote user config");
     module.exports.userConfig = userConfig;
   });
