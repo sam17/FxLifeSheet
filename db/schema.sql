@@ -1,6 +1,6 @@
 
 
-CREATE DATABASE epoc_main;
+CREATE DATABASE IF NOT EXISTS epoc_main;
 
 CREATE TABLE IF NOT EXISTS metadata(
                                        id SERIAL PRIMARY KEY,
@@ -23,6 +23,12 @@ CREATE TABLE IF NOT EXISTS questions
     key         text PRIMARY KEY,
     question    text NOT NULL,
     answer_type text NOT NULL,
+
+    parent_question text,
+    constraint fk_parent_question FOREIGN KEY(parent_question) REFERENCES questions (key),
+    parent_question_option text,
+--     constraint fk_parent_question_option FOREIGN KEY(parent_question_option) REFERENCES options (name),
+
     category    int,
     constraint fk_category FOREIGN KEY(category) REFERENCES category (id),
     max         int,
