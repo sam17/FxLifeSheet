@@ -8,6 +8,7 @@ use serde_json::json;
 use std::convert::Infallible;
 use std::sync::Arc;
 use warp::{Filter, Rejection, Reply};
+use crate::models;
 
 mod filter_utils;
 mod raw_data;
@@ -80,6 +81,12 @@ impl WebErrorMessage {
 impl From<self::Error> for warp::Rejection {
     fn from(other: self::Error) -> Self {
         WebErrorMessage::rejection("web::Error", format!("{}", other))
+    }
+}
+
+impl From<models::Error> for warp::Rejection {
+    fn from(other: models::Error) -> Self {
+        WebErrorMessage::rejection("model::Error", format!("{}", other))
     }
 }
 

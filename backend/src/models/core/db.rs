@@ -22,7 +22,8 @@ pub async fn init_db() -> Result<Db, sqlx::Error> {
 	new_db_pool(host, db_name, db_user, db_pass, PG_APP_MAX_CON).await
 }
 
-async fn new_db_pool(host: std::string::String, db: std::string::String, user: std::string::String, pwd: std::string::String, max_con: u32) -> Result<Db, sqlx::Error> {
+async fn new_db_pool(host: std::string::String, db: std::string::String, user: std::string::String,
+					 pwd: std::string::String, max_con: u32) -> Result<Db, sqlx::Error> {
 	let con_string = format!("postgres://{}:{}@{}/{}", user, pwd, host, db);
 	println!("con_string: {}", con_string);
 	PgPoolOptions::new()

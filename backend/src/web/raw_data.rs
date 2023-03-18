@@ -1,9 +1,10 @@
-use crate::model::{Db, RawData};
 use serde::Serialize;
 use serde_json::json;
 use std::sync::Arc;
 use warp::reply::Json;
 use warp::Filter;
+use crate::models::collector::raw_data_dao::RawData;
+use crate::models::core::db::Db;
 
 pub fn raw_data_rest_filters(
 	base_path: &'static str,

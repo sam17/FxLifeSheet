@@ -1,9 +1,10 @@
-use crate::model::{Db, VizCategories};
 use serde::Serialize;
 use serde_json::json;
 use std::sync::Arc;
 use warp::reply::Json;
 use warp::Filter;
+use crate::models::core::db::Db;
+use crate::models::questions::viz_categories_dao::VizCategories;
 
 pub fn viz_categories_rest_filters(
     base_path: &'static str,

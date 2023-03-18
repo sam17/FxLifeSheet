@@ -1,9 +1,10 @@
-use crate::model::{Db, VizQuestions};
 use serde::{Serialize, Deserialize};
 use serde_json::json;
 use std::sync::Arc;
 use warp::reply::Json;
 use warp::Filter;
+use crate::models::core::db::Db;
+use crate::models::questions::viz_questions_dao::VizQuestions;
 
 #[derive(Serialize, Deserialize)]
 struct VizQuestionsQuery {
@@ -45,7 +46,9 @@ async fn questions_with_query(db: Arc<Db>, query: VizQuestionsQuery) -> Result<J
         None => "".to_string(),
     };
 
-    let questions = VizQuestions::get_questions_with_query(&db, unwrapped_category, unwrapped_visibility).await?;
+    let questions = VizQuestions::get_questions_with_query(&db,
+                                                           unwrapped_category,
+                                                           unwrapped_visibility).await?;
     let response = json!(questions);
     Ok(warp::reply::json(&response))
 }

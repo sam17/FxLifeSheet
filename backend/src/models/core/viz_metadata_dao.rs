@@ -1,5 +1,5 @@
-use super::db::Db;
 use serde::{Deserialize, Serialize};
+use crate::models::core::db::Db;
 use crate::models::Error;
 
 #[derive(sqlx::FromRow, Debug, Clone, Serialize, Deserialize)]

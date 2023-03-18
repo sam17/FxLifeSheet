@@ -1,6 +1,6 @@
-use super::db::Db;
-use crate::model;
 use serde::{Deserialize, Serialize};
+use crate::models::core::db::Db;
+use crate::models::Error;
 
 #[derive(sqlx::FromRow, Debug, Clone, Serialize, Deserialize)]
 pub struct VizQuestionsObj {
@@ -29,7 +29,7 @@ impl VizQuestions {
         db: &Db,
         category: String,
         is_visible: bool,
-    ) -> Result<Vec<VizQuestionsObj>, model::Error> {
+    ) -> Result<Vec<VizQuestionsObj>, Error> {
         let mut sb = sqlb::select().table(Self::TABLE).columns(Self::COLUMNS);
 
 		if is_visible {

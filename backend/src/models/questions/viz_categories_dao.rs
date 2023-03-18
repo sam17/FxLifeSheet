@@ -1,6 +1,6 @@
-use super::db::Db;
-use crate::model;
 use serde::{Deserialize, Serialize};
+use crate::models::core::db::Db;
+use crate::models::Error;
 
 #[derive(sqlx::FromRow, Debug, Clone, Serialize, Deserialize)]
 pub struct VizCategoriesObj {
@@ -18,7 +18,7 @@ impl VizCategories {
 }
 
 impl VizCategories {
-	pub async fn get_all_categories(db: &Db) -> Result<Vec<VizCategoriesObj>, model::Error> {
+	pub async fn get_all_categories(db: &Db) -> Result<Vec<VizCategoriesObj>, Error> {
 		let sb = sqlb::select()	
 			.table(Self::TABLE)
 			.columns(Self::COLUMNS);
