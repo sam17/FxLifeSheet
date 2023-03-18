@@ -260,3 +260,22 @@ The original implementation abused Google Sheets as a database, and I used Googl
 <img src="screenshots/Dashboard1.png" />
 <img src="screenshots/Dashboard2.png" />
 
+
+### Architecture for Rust server
+
+Module
+Questions:
+ - link
+ - Multi-ten
+ - Database
+ - Data modelling of Qs
+ - Conditional Qs
+ - Preset Qs vs User Qs
+
+Bot
+ - Respond to commands
+ - ADd to Database
+ - Multi-teen
+ - Questions to Commands map
+ - Scheduler
+
