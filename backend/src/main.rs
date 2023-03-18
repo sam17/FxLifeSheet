@@ -1,9 +1,10 @@
-use model::init_db;
 use std::env;
 use std::sync::Arc;
-use web::start_web;
-mod model;
-mod web;
+use crate::web::start_web;
+use crate::models::core::db::init_db;
+
+pub mod models;
+pub mod web;
 
 const DEFAULT_WEB_PORT: u16 = 8080;
 

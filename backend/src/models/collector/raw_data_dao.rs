@@ -1,6 +1,6 @@
-use super::db::Db;
-use crate::model;
 use serde::{Deserialize, Serialize};
+use crate::models::core::db::Db;
+use crate::models::Error;
 
 #[derive(sqlx::FromRow, Debug, Clone, Serialize, Deserialize)]
 pub struct RawDataObj {
@@ -27,7 +27,7 @@ impl RawData {
 
 impl RawData {
 
-	pub async fn get_by_key(db: &Db, key: String) -> Result<Vec<RawDataObj>, model::Error> {
+	pub async fn get_by_key(db: &Db, key: String) -> Result<Vec<RawDataObj>, Error> {
 		let sb = sqlb::select()
 			.table(Self::TABLE)
 			.columns(Self::COLUMNS).and_where_eq("key", key);
@@ -36,7 +36,7 @@ impl RawData {
 		Ok(data_by_key)
 	}
 
-	pub async fn list(db: &Db) -> Result<Vec<RawDataObj>, model::Error> {
+	pub async fn list(db: &Db) -> Result<Vec<RawDataObj>, Error> {
 		let sb = sqlb::select().table(Self::TABLE).columns(Self::COLUMNS);
 
 		// execute the query
@@ -44,11 +44,4 @@ impl RawData {
 		Ok(raw_data)
 	}
 }
-// endregion: TodoMac
 
-
-// region:    Test
-#[cfg(test)]
-#[path = "../_tests/model_todo.rs"]
-mod tests;
-// endregion: Test

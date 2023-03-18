@@ -29,7 +29,7 @@ async fn web_todo_list() -> Result<()> {
 	// -- CHECK
 	assert_eq!(200, resp.status(), "http status");
 
-	// extract response .data
+	// extract response .collector
 	let todos: Vec<RawData> = extract_body_data(resp)?;
 
 	// -- CHECK - todos
@@ -59,10 +59,10 @@ async fn web_todo_get_ok() -> Result<()> {
 	// -- CHECK - status
 	assert_eq!(200, resp.status(), "http status");
 
-	// extract response .data
+	// extract response .collector
 	let todo: RawData = extract_body_data(resp)?;
 
-	// -- CHECK - .data (todo)
+	// -- CHECK - .collector (todo)
 	assert_eq!(100, todo.id);
 	assert_eq!("todo 100", todo.title);
 	assert_eq!(TodoStatus::Close, todo.status);
@@ -94,10 +94,10 @@ async fn web_todo_create_ok() -> Result<()> {
 	// -- CHECK - status
 	assert_eq!(200, resp.status(), "http status");
 
-	// extract response .data
+	// extract response .collector
 	let todo: RawData = extract_body_data(resp)?;
 
-	// -- CHECK - .data (todo)
+	// -- CHECK - .collector (todo)
 	assert!(todo.id >= 1000, "todo.id should be >= to 1000");
 	assert_eq!(TITLE, todo.title);
 	assert_eq!(TodoStatus::Open, todo.status);
@@ -130,10 +130,10 @@ async fn web_todo_update_ok() -> Result<()> {
 	// -- CHECK - status
 	assert_eq!(200, resp.status(), "http status");
 
-	// extract response .data
+	// extract response .collector
 	let todo: RawData = extract_body_data(resp)?;
 
-	// -- CHECK - .data (todo)
+	// -- CHECK - .collector (todo)
 	assert_eq!(100, todo.id, "todo.id");
 	assert_eq!(TITLE, todo.title);
 	assert_eq!(TodoStatus::Open, todo.status);
@@ -159,10 +159,10 @@ async fn web_todo_delete_ok() -> Result<()> {
 	// -- CHECK - status
 	assert_eq!(200, resp.status(), "http status");
 
-	// extract response .data
+	// extract response .collector
 	let todo: RawData = extract_body_data(resp)?;
 
-	// -- CHECK - .data (todos)
+	// -- CHECK - .collector (todos)
 	assert_eq!(100, todo.id);
 	assert_eq!("todo 100", todo.title);
 	assert_eq!(TodoStatus::Close, todo.status);
@@ -186,10 +186,10 @@ where
 	let mut body: Value =
 		from_str(body).with_context(|| format!("Cannot parse resp.body to JSON. resp.body: '{}'", body))?;
 
-	// extract the data
-	let data = body["data"].take();
+	// extract the collector
+	let data = body["collector"].take();
 
-	// deserialize the data to D
+	// deserialize the collector to D
 	let data: D = from_value(data)?;
 
 	Ok(data)

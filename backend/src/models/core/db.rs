@@ -31,9 +31,3 @@ async fn new_db_pool(host: std::string::String, db: std::string::String, user: s
 		.connect(&con_string)
 		.await
 }
-
-// region:    Test
-#[cfg(test)]
-#[path = "../_tests/model_db.rs"]
-mod tests;
-// endregion: Test

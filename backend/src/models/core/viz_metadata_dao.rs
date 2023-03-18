@@ -1,6 +1,6 @@
 use super::db::Db;
-use crate::model;
 use serde::{Deserialize, Serialize};
+use crate::models::Error;
 
 #[derive(sqlx::FromRow, Debug, Clone, Serialize, Deserialize)]
 pub struct VizMetadataObj {
@@ -16,7 +16,7 @@ impl VizMetadata {
 }
 
 impl VizMetadata {
-    pub async fn get_by_key(db: &Db, key: String) -> Result<VizMetadataObj, model::Error> {
+    pub async fn get_by_key(db: &Db, key: String) -> Result<VizMetadataObj, Error> {
         let sb = sqlb::select()
             .table(Self::TABLE)
             .columns(Self::COLUMNS).and_where_eq("key", &key);
@@ -26,7 +26,7 @@ impl VizMetadata {
     	handle_fetch_one_result(result, Self::TABLE, &key)
     }
 
-	pub async fn list(db: &Db) -> Result<Vec<VizMetadataObj>, model::Error> {
+	pub async fn list(db: &Db) -> Result<Vec<VizMetadataObj>, Error> {
 		let sb = sqlb::select().table(Self::TABLE).columns(Self::COLUMNS);
 
 		// execute the query
@@ -41,10 +41,10 @@ fn handle_fetch_one_result(
 	result: Result<VizMetadataObj, sqlx::Error>,
 	typ: &'static str,
 	key: &String,
-) -> Result<VizMetadataObj, model::Error> {
+) -> Result<VizMetadataObj, Error> {
 	result.map_err(|sqlx_error| match sqlx_error {
-		sqlx::Error::RowNotFound => model::Error::EntityNotFound(typ, key.to_string()),
-		other => model::Error::SqlxError(other),
+		sqlx::Error::RowNotFound => Error::EntityNotFound(typ, key.to_string()),
+		other => Error::SqlxError(other),
 	})
 }
 //endregion: Utils
