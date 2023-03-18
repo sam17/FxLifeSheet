@@ -20,6 +20,8 @@ warp = "0.3"
 sqlx = { version = "0.6", features = [ "runtime-tokio-rustls", "postgres" ] }
 sqlb = "0.0.8"
 dotenv = "0.15.0"
+teloxide = { version = "0.12", features = ["macros"] }
+
 
 [dev-dependencies]
 anyhow = "1"
