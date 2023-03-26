@@ -8,12 +8,12 @@ name = "models"
 path = "src/lib.rs"
 
 [[bin]]
-name = "bot"
-path = "src/bin/bot.rs"
-
-[[bin]]
 name = "web"
 path = "src/bin/web/web.rs"
+
+[[bin]]
+name = "bot"
+path = "src/bin/bot/bot.rs"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [dependencies]
