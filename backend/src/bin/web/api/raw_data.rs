@@ -3,8 +3,12 @@ use serde_json::json;
 use std::sync::Arc;
 use warp::reply::Json;
 use warp::Filter;
-use crate::models::collector::raw_data_dao::RawData;
-use crate::models::core::db::Db;
+use crate::daos::raw_data_dao::RawData;
+use crate::utils::db::Db;
+use crate::utils::filter_utils;
+
+extern crate models;
+
 
 pub fn raw_data_rest_filters(
 	base_path: &'static str,
@@ -12,7 +16,7 @@ pub fn raw_data_rest_filters(
 ) -> impl Filter<Extract = impl warp::Reply, Error = warp::Rejection> + Clone {
 	let data_path = warp::path(base_path).and(warp::path("collector"));
 	// let common = super::filter_utils::with_db(db.clone()).and(do_auth(db.clone()));
-	let common = super::filter_utils::with_db(db.clone());
+	let common = filter_utils::with_db(db.clone());
 
 	// LIST raw_data `GET collector/`
 	let list = data_path
@@ -54,8 +58,4 @@ fn json_response<D: Serialize>(data: D) -> Result<Json, warp::Rejection> {
 }
 // endregion: Utils
 
-// region:    Test
-#[cfg(test)]
-#[path = "../_tests/web_todo.rs"]
-mod tests;
-// endregion: Test
+

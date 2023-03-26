@@ -18,8 +18,8 @@ COPY frontend/package-lock.json package-lock.json
 COPY frontend/tsconfig.json tsconfig.json
 RUN npm ci
 
-COPY frontend/public/ public
-COPY frontend/src/ src
+COPY frontend/public public
+COPY frontend/src src
 RUN npm run build
 
 

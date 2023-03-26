@@ -1,1 +1,1 @@
-pub mod raw_data_dao;
+pub mod raw_data;

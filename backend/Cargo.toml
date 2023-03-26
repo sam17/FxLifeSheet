@@ -3,6 +3,14 @@ name = "backend"
 version = "0.1.0"
 edition = "2021"
 
+[lib]
+name = "models"
+path = "src/lib.rs"
+
+[[bin]]
+name = "web"
+path = "src/bin/web/web.rs"
+
 [[bin]]
 name = "bot"
 path = "src/bin/bot/bot.rs"
