@@ -13,13 +13,13 @@ RUN chmod +x target/release/viz-backend
 FROM node:latest AS react-build
 WORKDIR /build
 
-COPY frontend/package.json package.json
-COPY frontend/package-lock.json package-lock.json
-COPY frontend/tsconfig.json tsconfig.json
+COPY viz/frontend/package.json package.json
+COPY viz/frontend/package-lock.json package-lock.json
+COPY viz/frontend/tsconfig.json tsconfig.json
 RUN npm ci
 
-COPY frontend/public/ public
-COPY frontend/src/ src
+COPY viz/frontend/public public
+COPY viz/frontend/src src
 RUN npm run build
 
 
