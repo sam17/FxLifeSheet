@@ -1,22 +1,21 @@
-use crate::web::raw_data::raw_data_rest_filters;
-use crate::web::viz_metadata::viz_metadata_rest_filters;
-use crate::web::viz_questions::viz_questions_rest_filters;
-use crate::web::viz_categories::viz_categories_rest_filters;
-use crate::models::core::db::Db;
+extern crate models;
+mod api;
+mod utils;
+mod daos;
 
+use std::env;
 use serde_json::json;
 use std::convert::Infallible;
 use std::sync::Arc;
 use warp::{Filter, Rejection, Reply};
-use crate::models;
+use crate::api::raw_data::raw_data_rest_filters;
+use crate::api::viz_categories::viz_categories_rest_filters;
+use crate::api::viz_metadata::viz_metadata_rest_filters;
+use crate::api::viz_questions::viz_questions_rest_filters;
+use crate::utils::db::{Db, init_db};
+use crate::utils::error::{Error, WebErrorMessage};
 
-mod filter_utils;
-mod raw_data;
-mod viz_metadata;
-mod viz_questions;
-mod viz_categories;
-
-pub async fn start_web(web_port: u16, db: Arc<Db>) -> Result<(), Error> {
+async fn start_web(web_port: u16, db: Arc<Db>) -> Result<(), Error> {
     // Apis
     let raw_data_apis = raw_data_rest_filters("api", &db);
     let metadata_apis = viz_metadata_rest_filters("api", &db);
@@ -58,35 +57,30 @@ async fn handle_rejection(err: Rejection) -> Result<impl Reply, Infallible> {
     Ok(warp::reply::with_status(result, warp::http::StatusCode::BAD_REQUEST))
 }
 
-#[derive(thiserror::Error, Debug)]
-pub enum Error {
-    #[error("Web server failed to start because web-folder '{0}' not found.")]
-    FailStartWebFolderNotFound(String),
-}
 
-// region:    Warp Custom Error
-#[derive(Debug)]
-pub struct WebErrorMessage {
-    pub typ: &'static str,
-    pub message: String,
-}
-impl warp::reject::Reject for WebErrorMessage {}
+const DEFAULT_WEB_PORT: u16 = 8080;
 
-impl WebErrorMessage {
-    pub fn rejection(typ: &'static str, message: String) -> warp::Rejection {
-        warp::reject::custom(WebErrorMessage { typ, message })
+#[tokio::main]
+async fn main() {
+    // compute the web_folder
+    if env::var_os("RUST_LOG").is_none() {
+        // Set `RUST_LOG=logger_name1=debug,logger_name2=info` to see debug logs, this only shows access logs.
+        env::set_var("RUST_LOG", "access");
     }
-}
+    pretty_env_logger::init();
 
-impl From<self::Error> for warp::Rejection {
-    fn from(other: self::Error) -> Self {
-        WebErrorMessage::rejection("web::Error", format!("{}", other))
-    }
-}
+    let web_port = DEFAULT_WEB_PORT;
 
-impl From<models::Error> for warp::Rejection {
-    fn from(other: models::Error) -> Self {
-        WebErrorMessage::rejection("model::Error", format!("{}", other))
+    // get the database
+    // TODO - loop until valid DB
+    let db = init_db().await.expect("Cannot init db");
+
+    let db = Arc::new(db);
+
+    // start the server
+    match start_web(web_port, db).await {
+        Ok(_) => println!("Server ended"),
+        Err(ex) => println!("ERROR - web server failed to start. Cause {:?}", ex),
     }
 }
 

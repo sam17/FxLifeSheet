@@ -1,10 +1,10 @@
-use serde::Serialize;
 use serde_json::json;
 use std::sync::Arc;
 use warp::reply::Json;
 use warp::Filter;
-use crate::models::core::db::Db;
-use crate::models::core::viz_metadata_dao::VizMetadata;
+use crate::daos::viz_metadata_dao::VizMetadata;
+use crate::utils::db::Db;
+use crate::utils::filter_utils;
 
 pub fn viz_metadata_rest_filters(
     base_path: &'static str,
@@ -12,7 +12,7 @@ pub fn viz_metadata_rest_filters(
 ) -> impl Filter<Extract = impl warp::Reply, Error = warp::Rejection> + Clone {
     let data_path = warp::path(base_path).and(warp::path("metadata"));
     // let common = super::filter_utils::with_db(db.clone()).and(do_auth(db.clone()));
-    let common = super::filter_utils::with_db(db.clone());
+    let common = filter_utils::with_db(db.clone());
 
     let get = data_path
         .and(warp::get())

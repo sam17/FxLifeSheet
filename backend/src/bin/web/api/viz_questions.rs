@@ -1,16 +1,11 @@
-use serde::{Serialize, Deserialize};
 use serde_json::json;
 use std::sync::Arc;
 use warp::reply::Json;
 use warp::Filter;
-use crate::models::core::db::Db;
-use crate::models::questions::viz_questions_dao::VizQuestions;
-
-#[derive(Serialize, Deserialize)]
-struct VizQuestionsQuery {
-    category: Option<String>,
-    is_visible: Option<bool>,
-}
+use models::models::questions::viz_questions::VizQuestionsQuery;
+use crate::daos::viz_questions_dao::VizQuestions;
+use crate::utils::db::Db;
+use crate::utils::filter_utils;
 
 pub fn viz_questions_rest_filters(
     base_path: &'static str,
@@ -18,7 +13,7 @@ pub fn viz_questions_rest_filters(
 ) -> impl Filter<Extract = impl warp::Reply, Error = warp::Rejection> + Clone {
     let data_path = warp::path(base_path).and(warp::path("questions"));
     // let common = super::filter_utils::with_db(db.clone()).and(do_auth(db.clone()));
-    let common = super::filter_utils::with_db(db.clone());
+    let common = filter_utils::with_db(db.clone());
 
     // get with query params `GET questions/?category=foo&is_visible=true`
     let get_with_query = data_path
