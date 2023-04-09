@@ -13,6 +13,8 @@ pub struct VizQuestionsObj {
     pub is_positive: bool,
     pub is_reverse: bool,
     pub display_name: String,
+    pub graph_type: String,
+    pub cadence: String,
 }
 
 pub struct VizQuestions;
@@ -21,7 +23,7 @@ impl VizQuestions {
     const TABLE: &'static str = "questions";
     const COLUMNS: &'static [&'static str] =
         &["key", "question", "question_type", "max_value", "min_value", "buttons"
-        , "is_positive", "is_reverse", "display_name"];
+        , "is_positive", "is_reverse", "display_name", "graph_type", "cadence"];
 }
 
 impl VizQuestions {

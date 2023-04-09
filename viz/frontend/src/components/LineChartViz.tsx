@@ -2,12 +2,15 @@ import React from "react";
 import * as d3 from "d3";
 import { Col } from "antd";
 import styles from "../stylesheets.module.scss";
+import { ArrayDateData, RawDateData } from "src/models/date_data";
 
 interface IProps {
   name: string;
   displayName: string;
+  maxRange: number;
+  minRange: number;
+  isPositive: boolean;
   url: string;
-  aggregation: "addition" | "minimum" | "maximum" | "average";
 }
 
 interface IState {}
@@ -17,115 +20,127 @@ class LineChartViz extends React.Component<IProps, IState> {
   name: string = this.props.name;
   url: string = this.props.url + this.name;
   displayName: string = this.props.displayName;
-  aggregation: "addition" | "minimum" | "maximum" | "average" = this.props.aggregation;
+  maxRange: number = this.props.maxRange;
+  minRange: number = this.props.minRange;
+  isPositive: boolean = this.props.isPositive;
 
-  private buildLineChart(url: string, name: string, aggregation: string) {
-    const margin = { top: 20, right: 20, bottom: 30, left: 50 };
-    const width = 960 - margin.left - margin.right;
-    const height = 500 - margin.top - margin.bottom;
-
-    const parseTime = d3.timeParse("%Y-%m-%d");
+  private buildChart(url: string, name: string) {
+    const margin = { top: 20, right: 20, bottom: 50, left: 50 };
+    const width = 500 - margin.left - margin.right;
+    const height = 200 - margin.top - margin.bottom;
 
     const x = d3.scaleTime().range([0, width]);
     const y = d3.scaleLinear().range([height, 0]);
 
+    const positiveColor = "#375F1B";
+    const negativeColor = "#5F1B1B";
+
+    const colour = this.isPositive ? positiveColor : negativeColor;
+
+    const positiveColorDark = "#1B3409";
+    const negativeColorDark = "#340909";
+
+    const colourDark = this.isPositive ? positiveColorDark : negativeColorDark;
+
     const line = d3
       .line<{ date: Date; value: number }>()
       .x((d) => x(d.date))
-      .y((d) => y(d.value));
+      .y((d) => y(Math.abs(d.value)));
 
     const svg = d3
-      .select("." + this.name)
+      .select("." + this.name + "12")
+      .selectAll("svg")
+      .data(d3.range(2022, 2024))
+      .enter()
       .append("svg")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
       .append("g")
-      .attr("transform", `translate(${margin.left},${margin.top})`);
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    d3.json(url).then((data: Array<RawCalendarData>) => {
-      const calendarData = new ArrayCalendarData(data, 0, 0, true, false);
-      let aggregatedData: { [key: string]: number } = {};
+    d3.json(url).then((data) => {
+      let d3data = Object.assign(new Array<RawDateData>(), data);
+      let chartData = new ArrayDateData(
+        d3data,
+        0,
+        0,
+        false,
+        false
+        // this.aggregation
+      );
 
-      calendarData.getData().forEach((d) => {
-        const dateStr = d.date.toISOString().split("T")[0];
-        if (aggregatedData[dateStr] === undefined) {
-          aggregatedData[dateStr] = d.value;
-        } else {
-          switch (aggregation) {
-            case "addition":
-              aggregatedData[dateStr] += d.value;
-              break;
-            case "minimum":
-              aggregatedData[dateStr] = Math.min(aggregatedData[dateStr], d.value);
-              break;
-            case "maximum":
-              aggregatedData[dateStr] = Math.max(aggregatedData[dateStr], d.value);
-              break;
-            case "average":
-              aggregatedData[dateStr] =
-                (aggregatedData[dateStr] + d.value) / 2;
-              break;
-            default:
-              break;
-          }
-        }
-      });
+      x.domain(
+        d3.extent(chartData.getArray(), (d) => new Date(d.date)) as [Date, Date]
+      );
 
-      const processedData = Object.entries(aggregatedData).map(([key, value]) => ({
-        date: parseTime(key),
-        value,
-      }));
+    let today = new Date();
 
-      x.domain(d3.extent(processedData, (d) => d.date));
-      y.domain(d3.extent(processedData, (d) => d.value));
+     x.domain([new Date("2023-01-01"), today]);
+      svg
+        .append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(d3.axisBottom(x))
+        .selectAll("text") 
+        .style("font-size", "8px") 
+        // .attr("y", 40); 
 
-       // Add the x-axis
-  svg
-  .append("g")
-  .attr("transform", `translate(0,${height})`)
-  .call(d3.axisBottom(x));
 
-// Add the y-axis
-svg.append("g").call(d3.axisLeft(y));
+      // eslint-disable-next-line eqeqeq
+      if (this.maxRange == 0 && this.minRange == 0) {
+        y.domain(
+          d3.extent(chartData.getArray(), (d) => Math.abs(d.value)) as [
+            number,
+            number
+          ]
+        );
+      } else {
+        y.domain([this.minRange, this.maxRange]);
+      }
+      svg.append("g").attr("class", "y axis").call(d3.axisLeft(y));
 
-// Add the line
-svg
-  .append("path")
-  .data([processedData])
-  .attr("class", "line")
-  .attr("d", line);
+      svg
+        .append("path")
+        .datum(chartData.getArray())
+        .attr("class", "line")
+        .attr("d", line)
+        .style("fill", "none")
+        .style("stroke", colour)
+        .style("stroke-width", 0.75);
 
-// Add the title
-svg
-  .append("text")
-  .attr("x", width / 2)
-  .attr("y", 0 - margin.top / 2)
-  .attr("text-anchor", "middle")
-  .style("font-size", "16px")
-  .style("font-weight", "bold")
-  .text(this.displayName);
-});
+        svg
+        .selectAll(".dot")
+        .data(chartData.getArray())
+        .enter()
+        .append("circle")
+        .attr("class", "dot")
+        .attr("cx", (d) => x(d.date))
+        .attr("cy", (d) => y(Math.abs(d.value)))
+        .attr("r", 1) // Adjust the radius of the dots as needed
+        .style("fill",  colourDark); // Change the fill color of the dots as needed
 
-}
+    });
+  }
 
-componentDidMount() {
-this.buildLineChart(this.url, this.name, this.aggregation);
-}
+  componentDidMount() {
+    this.buildChart(this.url, this.name);
+  }
 
-render() {
-return (
-<Col xxl={12} xl={12} lg={12} md={12} sm={24} xs={24}>
-<div className={this.name}>
-<svg
-className="container"
-ref={(ref: SVGSVGElement) => (this.ref = ref)}
-width="0"
-height="0"
-></svg>
-</div>
-</Col>
-);
-}
+  render() {
+    return (
+      <Col xxl={6} xl={8} lg={8} md={12} sm={24} xs={24}>
+        <div className={this.name + "12"}>
+          <h2 className={styles.vizHeading}>{this.displayName}</h2>
+          <svg
+            className="container"
+            ref={(ref: SVGSVGElement) => (this.ref = ref)}
+            width="0"
+            height="0"
+          ></svg>
+        </div>
+      </Col>
+    );
+  }
 }
 
 export default LineChartViz;
