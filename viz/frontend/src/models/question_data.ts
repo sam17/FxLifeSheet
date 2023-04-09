@@ -7,9 +7,9 @@ interface QuestionData {
     buttons: string;
     is_positive: boolean;
     is_reverse: boolean;
-    cadence: string
     graph_type: string;
     display_name: string;
+    cadence: string;
 }
 
 export default QuestionData;

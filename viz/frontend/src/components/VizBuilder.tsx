@@ -101,6 +101,7 @@ function VizBuilder(props: props) {
                       name={question.key}
                       displayName={question.display_name}
                       url={baseUrl + "data/"}
+                      cadence={question.cadence}
                     />
                   );
                 }
