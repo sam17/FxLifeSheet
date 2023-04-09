@@ -85,6 +85,7 @@ function VizBuilder(props: props) {
                     maxRange={question.max_value}
                     name={question.key}
                     displayName={question.display_name}
+                    cadence={question.cadence}
                     url={baseUrl + "data/"}
                     />
                 })}

@@ -11,6 +11,7 @@ interface IProps {
   minRange: number;
   isPositive: boolean;
   isReverse: boolean;
+  cadence: string;
 }
 
 interface IState {}
@@ -106,11 +107,12 @@ class CalendarViz extends React.Component<IProps, IState> {
   isPositive: boolean = this.props.isPositive;
   isReverse: boolean = this.props.isReverse;
   displayName: string = this.props.displayName;
+  cadence: string = this.props.cadence;
 
-  private buildCalendar(url: string, name: string) {
+  private buildCalendar(url: string, name: string, cadence: string) {
     // Set the dimensions of the calendar heatmap
     const width = 960;
-    const height = 136;
+    const height = 126;
     const cellSize = 17;
 
     // Set the colors for the calendar heatmap
@@ -142,46 +144,54 @@ class CalendarViz extends React.Component<IProps, IState> {
           ")"
       );
 
-    // Append the month labels to the calendar heatmap
-    svg
-      .append("text")
-      .attr("transform", "translate(-6," + cellSize * 3.5 + ")rotate(-90)")
-      .style("text-anchor", "middle")
-      .text(function(d) {
-        return d;
-      });
-
-    // Append the day labels to the calendar heatmap
     const rect = svg
-      .append("g")
-      .attr("fill", "none")
-      .attr("stroke", "#ccc")
-      .selectAll("rect")
-      .data(function(d) {
-        return d3.timeDays(new Date(d, 0, 1), new Date(d + 1, 0, 1));
-      })
-      .enter()
-      .append("rect")
-      .filter(function(d) {
-        if (d.getMonth() === 3 && d.getDate() === 30) {
-          return false;
-        }
-        return d.getMonth() <= 3 ;
+        .append("g")
+        .attr("fill", "none")
+        .attr("stroke", "#ccc")
+        .selectAll("rect")
+        .data(function(d) {
+          if (cadence === "week") {
+            return d3.timeWeeks(new Date(d, 0, 1), new Date(d + 1, 0, 1));
+          } else {
+            return d3.timeDays(new Date(d, 0, 1), new Date(d + 1, 0, 1));
+          }
         })
-      .attr("width", cellSize)
-      .attr("height", cellSize)
-      .attr("x", function(d) {
-        return d3.timeWeek.count(d3.timeYear(d), d) * cellSize;
-      })
-      .attr("y", function(d) {
-        return d.getDay() * cellSize;
-      })
-      .datum(d3.timeFormat("%Y-%m-%d"));
+        .enter()
+        .append("rect")
+        .filter(function(d) {
+          //TODO(dementor): Fix this hack of removing top right corner box
+          if (d.getMonth() === 3 && d.getDate() === 30) {
+            return false;
+          }
+          //TODO(dementor): Fix this hack of upto April only
+          return d.getMonth() <= 3;
+        })
+        .attr("width", cellSize)
+        .attr("height", cellSize*2)
+        .attr("x", function(d) {
+          return d3.timeWeek.count(d3.timeYear(d), d) * cellSize;
+        })
+        .attr("y", function(d) {
+          return d.getDay() * cellSize;
+        })
+        .datum(d3.timeFormat("%Y-%m-%d"));
 
+    let y_offset = cellSize * 3;
+    if (cadence === "daily") {
+      y_offset = y_offset + (cellSize * 7);
+    }
 
     d3.json(url).then((data) => {
-      let d3data = Object.assign(new Array<RawCalendarData>(), data);
-      let calendarData = new ArrayCalendarData(d3data, this.props.maxRange, this.props.minRange, this.props.isPositive, this.props.isReverse);
+      // let d3data = Object.assign(new Array<RawCalendarData>(), data);
+      // let calendarData = new ArrayCalendarData(d3data, this.props.maxRange, this.props.minRange, this.props.isPositive, this.props.isReverse);
+
+      const calendarData = new ArrayCalendarData(
+          data as Array<RawCalendarData>,
+          this.props.maxRange,
+          this.props.minRange,
+          this.props.isPositive,
+          this.props.isReverse
+      );
 
       let color = this.props.isPositive ? positiveColors : negativeColors;
       color.domain([this.props.minRange, this.props.maxRange]);
@@ -192,11 +202,34 @@ class CalendarViz extends React.Component<IProps, IState> {
         .attr("fill", function(d) {
           return color(calendarData.getValueModified(new Date(d)));
         });
+
+      //TODO(dementor): This will break when year changes but future soumyadeep can fix it
+      const year = calendarData['data'][0].date.getFullYear();
+
+      svg.append("text")
+          .attr("class", "yearLabel")
+          .attr("x", cellSize*20 / 2)
+          .attr("y", y_offset + cellSize)
+          .style("text-anchor", "middle")
+          .text(year);
     });
+
+    // Append the week labels to the calendar heatmap
+    //TODO(dementor): Fix this hack of upto April only - 18?
+    const weekLabels = svg.selectAll(".weekLabel")
+        .data(d3.range(1, 18))
+        .enter().append("text")
+        .text(function(d) { return "W" + d; })
+        .attr("x", function(d) { return (d - 1) * cellSize + (cellSize / 2); })
+        .attr("y", y_offset )
+        .style("text-anchor", "middle")
+        .attr("class", "weekLabel")
+        .attr("font-size", "6px");
+
   }
 
   componentDidMount() {
-    this.buildCalendar(this.url, this.name);
+    this.buildCalendar(this.url, this.name, this.cadence);
   }
 
   render() {

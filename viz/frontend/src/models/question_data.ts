@@ -8,6 +8,7 @@ interface QuestionData {
     is_positive: boolean;
     is_reverse: boolean;
     display_name: string;
+    cadence: string;
 }
 
 export default QuestionData;
