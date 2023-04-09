@@ -106,21 +106,7 @@ class CalendarViz extends React.Component<IProps, IState> {
 
       let color = this.props.isPositive ? positiveColors : negativeColors;
       color.domain([this.props.minRange, this.props.maxRange]);
-      // rect
-      //   .filter(function(d) {
-      //     if (cadence === "week") {
-      //       return calendarData.getValueInWeekOfDate(new Date(d)).date !== null;
-      //     } else {
-      //       return calendarData.dateExistsInArray(new Date(d));
-      //     }
-      //   })
-      //   .attr("fill", function(d) {
-      //     if(cadence === "week") {
-      //       return color(calendarData.getValueInWeekOfDate(new Date(d)).value);
-      //     } else {
-      //       return color(calendarData.getModifiedValue(new Date(d)));
-      //     }
-      //   });
+
       rect
           .filter(function (d) {
             if (cadence === "week") {
