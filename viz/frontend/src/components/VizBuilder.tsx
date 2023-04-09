@@ -4,6 +4,7 @@ import QuestionData from "../models/question_data";
 import styles from "../stylesheets.module.scss";
 import { Divider, Row } from "antd";
 import CalendarViz from "./CalendarViz";
+import LineChartViz from "./LineChartViz";
 
 interface QuestionsForCategory {
   category: string;
@@ -77,18 +78,34 @@ function VizBuilder(props: props) {
               {item.category}{" "}
             </Divider>
             <Row gutter={[16, 16]}>
-                {item.questions.map((question) => {
-                    return <CalendarViz
-                    isPositive={question.is_positive}
-                    isReverse={question.is_reverse}
-                    minRange={question.min_value}
-                    maxRange={question.max_value}
-                    name={question.key}
-                    displayName={question.display_name}
-                    cadence={question.cadence}
-                    url={baseUrl + "data/"}
+              {item.questions.map((question) => {
+                console.log(question)
+                if (question.graph_type === "line") {
+                  return (
+                    <LineChartViz
+                      isPositive={question.is_positive}
+                      minRange={question.min_value}
+                      maxRange={question.max_value}
+                      name={question.key}
+                      displayName={question.display_name}
+                      url={baseUrl + "data/"}
                     />
-                })}
+                  );
+                } else {
+                  return (
+                    <CalendarViz
+                      isPositive={question.is_positive}
+                      isReverse={question.is_reverse}
+                      minRange={question.min_value}
+                      maxRange={question.max_value}
+                      name={question.key}
+                      displayName={question.display_name}
+                      url={baseUrl + "data/"}
+                      cadence={question.cadence}
+                    />
+                  );
+                }
+              })}
             </Row>
             <br />
             <br />
