@@ -70,9 +70,10 @@ class ArrayDateData {
   }
 
   getAverageValueForDate(a: Date) {
-    const values = this.getAllDataForDate(a).map((d) => d.value);
-    const sum = values.reduce((a, b) => a + b, 0);
-    return Math.round(sum / values.length);
+    let values = this.getAllDataForDate(a).map((d) => d.value);
+    values = values.map((d) => Number(d));
+    let average =  values.reduce((a, b) => a + b, 0) / values.length;
+    return Math.round(average);
   }
 
   getModifiedDataArray() {
