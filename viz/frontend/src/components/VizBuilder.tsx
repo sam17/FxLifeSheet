@@ -43,7 +43,6 @@ function VizBuilder(props: props) {
   }, []);
 
   useEffect(() => {
-    console.log(categories);
     categories.forEach((element) => {
       getQuestionsForCategory(element.name)
         .then((data) => {
@@ -65,7 +64,6 @@ function VizBuilder(props: props) {
   }, [categories]);
 
   useEffect(() => {
-    console.log(questionsForCategory);
   }, [questionsForCategory]);
 
   return (
@@ -79,7 +77,6 @@ function VizBuilder(props: props) {
             </Divider>
             <Row gutter={[16, 16]}>
               {item.questions.map((question) => {
-                console.log(question)
                 if (question.graph_type === "line") {
                   return (
                     <LineChartViz

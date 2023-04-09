@@ -61,7 +61,7 @@ class LineChartViz extends React.Component<IProps, IState> {
     d3.json(url).then((data) => {
       let d3data = Object.assign(new Array<RawDateData>(), data);
       let chartData = new ArrayDateData(
-        d3data,
+        d3data['data'],
         0,
         0,
         false,
@@ -70,7 +70,7 @@ class LineChartViz extends React.Component<IProps, IState> {
       );
 
       x.domain(
-        d3.extent(chartData.getArray(), (d) => new Date(d.date)) as [Date, Date]
+        d3.extent(chartData.getData(), (d) => new Date(d.date)) as [Date, Date]
       );
 
     let today = new Date();
@@ -89,7 +89,7 @@ class LineChartViz extends React.Component<IProps, IState> {
       // eslint-disable-next-line eqeqeq
       if (this.maxRange == 0 && this.minRange == 0) {
         y.domain(
-          d3.extent(chartData.getArray(), (d) => Math.abs(d.value)) as [
+          d3.extent(chartData.getData(), (d) => Math.abs(d.value)) as [
             number,
             number
           ]
@@ -101,7 +101,7 @@ class LineChartViz extends React.Component<IProps, IState> {
 
       svg
         .append("path")
-        .datum(chartData.getArray())
+        .datum(chartData.getData())
         .attr("class", "line")
         .attr("d", line)
         .style("fill", "none")
@@ -110,7 +110,7 @@ class LineChartViz extends React.Component<IProps, IState> {
 
         svg
         .selectAll(".dot")
-        .data(chartData.getArray())
+        .data(chartData.getData())
         .enter()
         .append("circle")
         .attr("class", "dot")

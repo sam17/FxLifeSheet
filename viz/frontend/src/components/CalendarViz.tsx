@@ -102,17 +102,41 @@ class CalendarViz extends React.Component<IProps, IState> {
 
     d3.json(url).then((data) => {
       let d3data = Object.assign(new Array<RawDateData>(), data);
-      let calendarData = new ArrayDateData(d3data, this.props.maxRange, this.props.minRange, this.props.isPositive, this.props.isReverse);
+      let calendarData = new ArrayDateData(d3data['data'], this.props.maxRange, this.props.minRange, this.props.isPositive, this.props.isReverse);
 
       let color = this.props.isPositive ? positiveColors : negativeColors;
       color.domain([this.props.minRange, this.props.maxRange]);
+      // rect
+      //   .filter(function(d) {
+      //     if (cadence === "week") {
+      //       return calendarData.getValueInWeekOfDate(new Date(d)).date !== null;
+      //     } else {
+      //       return calendarData.dateExistsInArray(new Date(d));
+      //     }
+      //   })
+      //   .attr("fill", function(d) {
+      //     if(cadence === "week") {
+      //       return color(calendarData.getValueInWeekOfDate(new Date(d)).value);
+      //     } else {
+      //       return color(calendarData.getModifiedValue(new Date(d)));
+      //     }
+      //   });
       rect
-        .filter(function(d) {
-          return calendarData.isDateInArray(new Date(d));
-        })
-        .attr("fill", function(d) {
-          return color(calendarData.getValueModified(new Date(d)));
-        });
+          .filter(function (d) {
+            if (cadence === "week") {
+              return calendarData.getValueInWeekOfDate(new Date(d)).date !== null;
+            } else {
+              return calendarData.dateExistsInArray(new Date(d));
+            }
+          })
+          .attr("fill", function (d) {
+            if (cadence === "week") {
+              const value = calendarData.getValueInWeekOfDate(new Date(d)).value;
+              return value !== null ? color(value) : "gray"; // Replace "gray" with your default color
+            } else {
+              return color(calendarData.getModifiedValue(new Date(d)));
+            }
+          });
 
       //TODO(dementor): This will break when year changes but future soumyadeep can fix it
       const year = calendarData['data'][0].date.getFullYear();
