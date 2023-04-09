@@ -102,10 +102,19 @@ class ArrayDateData {
     }
   }
 
+  // private getWeekStart(d: Date): Date {
+  //   const date = new Date(d);
+  //   const day = date.getDay();
+  //   const diff = date.getDate() - day + (day === 0 ? -6 : day === 1 ? 0 : 1); // adjust for Monday
+  //   const weekStart = new Date(date.setDate(diff));
+  //   weekStart.setHours(0, 0, 0, 0);
+  //   return weekStart;
+  // }
+
   private getWeekStart(d: Date): Date {
     const date = new Date(d);
     const day = date.getDay();
-    const diff = date.getDate() - day + (day === 0 ? -6 : day === 1 ? 0 : 1); // adjust for Monday
+    const diff = date.getDate() - day + (day === 0 ? -6 : 1); // adjust for Sunday
     const weekStart = new Date(date.setDate(diff));
     weekStart.setHours(0, 0, 0, 0);
     return weekStart;
