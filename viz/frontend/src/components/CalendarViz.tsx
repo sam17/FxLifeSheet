@@ -96,7 +96,7 @@ class CalendarViz extends React.Component<IProps, IState> {
         .datum(d3.timeFormat("%Y-%m-%d"));
 
     let y_offset = cellSize * 3;
-    if (cadence === "daily") {
+    if (cadence === "day") {
       y_offset = y_offset + (cellSize * 7);
     }
 
