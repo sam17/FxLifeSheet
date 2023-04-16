@@ -18,7 +18,6 @@ function App() {
   useEffect(() => {
     getMetadata()
       .then((data) => {
-        console.log(data);
         setName(data.name);
       })
       .catch((error) => {
