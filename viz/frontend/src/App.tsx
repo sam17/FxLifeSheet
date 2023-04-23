@@ -6,10 +6,9 @@ function App() {
   const [name, setName] = useState("unnamed");
   const development: boolean =
     !process.env.NODE_ENV || process.env.NODE_ENV === "development";
-  // const baseUrl: string = development
-    // ? "https://metrics.soumyadeep.in/api/"
-    // : "/api/";
-  const baseUrl: string = "http://localhost:8080/api/";
+  const baseUrl: string = development
+    ? "http://localhost:8080/api/"
+    : "/api/";
 
   const dataUrl = baseUrl + "data/";
   const getMetadata = () => {
