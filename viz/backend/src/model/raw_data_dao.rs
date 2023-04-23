@@ -30,7 +30,8 @@ impl RawData {
 	pub async fn get_by_key(db: &Db, key: String) -> Result<Vec<RawDataObj>, model::Error> {
 		let sb = sqlb::select()
 			.table(Self::TABLE)
-			.columns(Self::COLUMNS).and_where_eq("key", key);
+			.columns(Self::COLUMNS).and_where_eq("key", key)
+			.order_by("timestamp");
 
 		let data_by_key = sb.fetch_all(db).await?;
 		Ok(data_by_key)

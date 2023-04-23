@@ -9,3 +9,4 @@ telegram_bot/.env
 telegram_bot/local.env
 .idea/
 *.iml
+temp/
