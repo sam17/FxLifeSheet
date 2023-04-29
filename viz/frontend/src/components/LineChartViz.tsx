@@ -3,6 +3,7 @@ import * as d3 from "d3";
 import { Col } from "antd";
 import styles from "../stylesheets.module.scss";
 import { ArrayDateData, RawDateData } from "src/models/date_data";
+import { getLastDateToBeShownInViz, getStartDateToBeShownInViz } from "src/utils/date";
 import {viz_details} from "../models/constants";
 
 interface IProps {
@@ -75,9 +76,11 @@ class LineChartViz extends React.Component<IProps, IState> {
         d3.extent(chartData.getData(), (d) => new Date(d.date)) as [Date, Date]
       );
 
-    let today = new Date();
+    let lastDayForViz = getLastDateToBeShownInViz(new Date());
+    let startDayForViz = getStartDateToBeShownInViz(new Date());
 
-     x.domain([new Date("2023-01-01"), today]);
+
+     x.domain([startDayForViz, lastDayForViz]);
       svg
         .append("g")
         .attr("class", "x axis")

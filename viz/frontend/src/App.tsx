@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./App.scss";
 import VizBuilder from "./components/VizBuilder";
+import DateElement from "./components/DateElements";
 
 function App() {
   const [name, setName] = useState("unnamed");
@@ -30,8 +31,13 @@ function App() {
   return (
     <div className="App">
       <h1>
-        <center> How is {name} ?</center>
+        <center> How is {name}? 🤔</center>
       </h1>
+      <div className="dateHeading">
+        <center>
+          <DateElement></DateElement>
+        </center>
+      </div>
       <VizBuilder baseUrl={baseUrl}></VizBuilder>
     </div>
   );
