@@ -80,6 +80,7 @@ function VizBuilder(props: props) {
                 if (question.graph_type === "line") {
                   return (
                     <LineChartViz
+                      key = {question.key}
                       isPositive={question.is_positive}
                       minRange={question.min_value}
                       maxRange={question.max_value}
@@ -91,6 +92,7 @@ function VizBuilder(props: props) {
                 } else {
                   return (
                     <CalendarViz
+                      key = {question.key}
                       isPositive={question.is_positive}
                       isReverse={question.is_reverse}
                       minRange={question.min_value}
