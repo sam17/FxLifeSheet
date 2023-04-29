@@ -4,6 +4,7 @@ import { Col } from "antd";
 import styles from "../stylesheets.module.scss";
 import { ArrayDateData, RawDateData } from "src/models/date_data";
 import { getLastDateToBeShownInViz, getStartDateToBeShownInViz, weeksToShowInViz } from "src/utils/date";
+import {viz_details} from "../models/constants";
 
 interface IProps {
   name: string;
@@ -30,9 +31,11 @@ class CalendarViz extends React.Component<IProps, IState> {
   cadence: string = this.props.cadence;
 
   private buildCalendar(url: string, name: string, cadence: string) {
+    const margin = { top: 20, right: 0, bottom: 50, left: 0 };
+
     // Set the dimensions of the calendar heatmap
-    const width = 960;
-    const height = 126;
+    const width = viz_details.viz_width - margin.left - margin.right;
+    const height = viz_details.viz_height - margin.top - margin.bottom;
     const cellSize = 17;
 
     // Set the colors for the calendar heatmap
@@ -58,15 +61,8 @@ class CalendarViz extends React.Component<IProps, IState> {
       .attr("width", width)
       .attr("height", height)
       .attr("class", "RdYlGn")
-      .append("g")
-      .attr(
-        "transform",
-        "translate(" +
-          (width - cellSize * 53) / 2 +
-          "," +
-          (height - cellSize * 7 - 1) +
-          ")"
-      );
+      .append("g");
+
 
     const rect = svg
         .append("g")

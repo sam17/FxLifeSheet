@@ -4,6 +4,7 @@ import { Col } from "antd";
 import styles from "../stylesheets.module.scss";
 import { ArrayDateData, RawDateData } from "src/models/date_data";
 import { getLastDateToBeShownInViz, getStartDateToBeShownInViz } from "src/utils/date";
+import {viz_details} from "../models/constants";
 
 interface IProps {
   name: string;
@@ -27,8 +28,9 @@ class LineChartViz extends React.Component<IProps, IState> {
 
   private buildChart(url: string, name: string) {
     const margin = { top: 20, right: 20, bottom: 50, left: 50 };
-    const width = 500 - margin.left - margin.right;
-    const height = 200 - margin.top - margin.bottom;
+
+    const width = viz_details.viz_width - margin.left - margin.right;
+    const height = viz_details.viz_height - margin.top - margin.bottom;
 
     const x = d3.scaleTime().range([0, width]);
     const y = d3.scaleLinear().range([height, 0]);
