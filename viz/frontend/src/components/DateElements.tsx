@@ -11,9 +11,6 @@ function getStringForDate() {
 function getDateInString(date: Date) {
     var dateString = date.toDateString();    
     return dateString.substring(4, dateString.length);
-    // const isoString = date.toISOString();
-    // const [year, month, day] = isoString.split('T')[0].split('-');
-    // return `${year}-${month}-${day}`;
 }
 
 function DateElement() {
