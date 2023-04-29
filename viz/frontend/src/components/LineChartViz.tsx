@@ -21,10 +21,6 @@ interface IState {
     visible: boolean;
     content: string;
   };
-  tooltipPosition: {
-    left: number;
-    top: number;
-  };
 }
 
 class LineChartViz extends React.Component<IProps, IState> {
@@ -42,11 +38,7 @@ class LineChartViz extends React.Component<IProps, IState> {
       tooltipData: {
         visible: false,
         content: '',
-      },
-      tooltipPosition: {
-        left: 0,
-        top: 0,
-      },
+      }
     };
   }
 
@@ -152,19 +144,7 @@ class LineChartViz extends React.Component<IProps, IState> {
             tooltipData: {
               visible: true,
               content: `Date: ${d.date}<br/>Value: ${d.value}`,
-            },
-            tooltipPosition: {
-              left: event.clientX,
-              top: event.clientY,
-            },
-          });
-        })
-        .on("mousemove", (event, d) => {
-          this.setState({
-            tooltipPosition: {
-              left: event.clientX,
-              top: event.clientY,
-            },
+            }
           });
         })
         .on("mouseout", () => {
@@ -195,7 +175,7 @@ class LineChartViz extends React.Component<IProps, IState> {
             width="0"
             height="0"
           ></svg>
-          <Tooltip tooltipData={this.state.tooltipData} position={this.state.tooltipPosition} />
+          <Tooltip tooltipData={this.state.tooltipData} />
         </div>
       </Col>
     );
