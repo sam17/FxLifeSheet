@@ -5,6 +5,8 @@ import styles from "../stylesheets.module.scss";
 import { ArrayDateData, RawDateData } from "src/models/date_data";
 import { getLastDateToBeShownInViz, getStartDateToBeShownInViz } from "src/utils/date";
 import {viz_details} from "../models/constants";
+import {timeDay} from "d3-time";
+import {timeFormat, timeMonth} from "d3";
 
 interface IProps {
   name: string;
@@ -79,50 +81,59 @@ class LineChartViz extends React.Component<IProps, IState> {
     let lastDayForViz = getLastDateToBeShownInViz(new Date());
     let startDayForViz = getStartDateToBeShownInViz(new Date());
 
+    const dateFormat = "%d-%m";
+    const formatDate = (domainValue: Date | d3.NumberValue, index: number) =>
+          timeFormat(dateFormat)(domainValue as Date);
 
-     x.domain([startDayForViz, lastDayForViz]);
+
+
+    x.domain([startDayForViz, lastDayForViz]);
+
+    svg
+      .append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(x).tickFormat(formatDate))
+      .selectAll("text")
+      .style("font-size", "7px")
+      .attr("transform", "rotate(-65)") // Rotate labels by -65 degrees
+        .attr("x", -15) // Adjust x position of labels
+        .attr("y", 10); // Adjust y position of labels
+
+
+
+    if (this.maxRange == 0 && this.minRange == 0) {
+      y.domain(
+        d3.extent(chartData.getData(), (d) => Math.abs(d.value)) as [
+          number,
+          number
+        ]
+      );
+    } else {
+      y.domain([this.minRange, this.maxRange]);
+    }
+
+    svg.append("g").attr("class", "y axis").call(d3.axisLeft(y));
+
+    svg
+      .append("path")
+      .datum(chartData.getData())
+      .attr("class", "line")
+      .attr("d", line)
+      .style("fill", "none")
+      .style("stroke", colour)
+      .style("stroke-width", 0.75);
+
       svg
-        .append("g")
-        .attr("class", "x axis")
-        .attr("transform", "translate(0," + height + ")")
-        .call(d3.axisBottom(x))
-        .selectAll("text") 
-        .style("font-size", "8px") 
-        // .attr("y", 40); 
-
-
-      // eslint-disable-next-line eqeqeq
-      if (this.maxRange == 0 && this.minRange == 0) {
-        y.domain(
-          d3.extent(chartData.getData(), (d) => Math.abs(d.value)) as [
-            number,
-            number
-          ]
-        );
-      } else {
-        y.domain([this.minRange, this.maxRange]);
-      }
-      svg.append("g").attr("class", "y axis").call(d3.axisLeft(y));
-
-      svg
-        .append("path")
-        .datum(chartData.getData())
-        .attr("class", "line")
-        .attr("d", line)
-        .style("fill", "none")
-        .style("stroke", colour)
-        .style("stroke-width", 0.75);
-
-        svg
-        .selectAll(".dot")
-        .data(chartData.getData())
-        .enter()
-        .append("circle")
-        .attr("class", "dot")
-        .attr("cx", (d) => x(d.date))
-        .attr("cy", (d) => y(Math.abs(d.value)))
-        .attr("r", 1) // Adjust the radius of the dots as needed
-        .style("fill",  colourDark); // Change the fill color of the dots as needed
+      .selectAll(".dot")
+      .data(chartData.getData())
+      .enter()
+      .append("circle")
+      .attr("class", "dot")
+      .attr("cx", (d) => x(d.date))
+      .attr("cy", (d) => y(Math.abs(d.value)))
+      .attr("r", 1) // Adjust the radius of the dots as needed
+      .style("fill",  colourDark); // Change the fill color of the dots as needed
 
     });
   }
