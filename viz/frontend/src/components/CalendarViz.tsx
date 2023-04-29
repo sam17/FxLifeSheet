@@ -31,7 +31,7 @@ class CalendarViz extends React.Component<IProps, IState> {
   cadence: string = this.props.cadence;
 
   private buildCalendar(url: string, name: string, cadence: string) {
-    const margin = { top: 20, right: 0, bottom: 50, left: 0 };
+    const margin = { top: 20, right: 0, bottom: 50, left: 20 };
 
     const cellSize = 17;
     // Set the dimensions of the calendar heatmap
@@ -62,7 +62,8 @@ class CalendarViz extends React.Component<IProps, IState> {
       .attr("width", width)
       .attr("height", height)
       .attr("class", "RdYlGn")
-      .append("g");
+      .append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 
     const rect = svg
@@ -133,6 +134,26 @@ class CalendarViz extends React.Component<IProps, IState> {
         .style("text-anchor", "middle")
         .attr("class", "weekLabel")
         .attr("font-size", "6px");
+
+    const dayFormat = d3.timeFormat("%a");
+    const dayIndices = [0, 1, 2, 3, 4, 5, 6];
+
+    if (cadence === "day") {
+      svg.selectAll(".dayLabel")
+          .data(dayIndices)
+          .enter().append("text")
+          .text(function (d) {
+            return dayFormat(new Date(2023, 0, d)).charAt(0);
+          }) // Get the first character of the day abbreviation
+          .attr("x", 0)
+          .attr("y", function (d, i) {
+            return i * cellSize;
+          })
+          // .style("text-anchor", "end")
+          .attr("transform", "translate(-10," + cellSize / 1.5 + ")")
+          .style("font-weight", "300")
+          .style("font-size", "8px");
+    }
 
   }
 
