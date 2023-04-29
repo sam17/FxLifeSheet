@@ -3,6 +3,7 @@ import * as d3 from "d3";
 import { Col } from "antd";
 import styles from "../stylesheets.module.scss";
 import { ArrayDateData, RawDateData } from "src/models/date_data";
+import { getLastDateToBeShownInViz, getStartDateToBeShownInViz, weeksToShowInViz } from "src/utils/date";
 
 interface IProps {
   name: string;
@@ -43,6 +44,10 @@ class CalendarViz extends React.Component<IProps, IState> {
       .scaleQuantize<string>()
       .range(["#F7E3E3", "#D77070", "#B03232", "#5F1B1B", "#340909"]);
 
+    
+    const startDayForViz = getStartDateToBeShownInViz(new Date())
+    const lastDayForViz = getLastDateToBeShownInViz(new Date())
+
     // Create the SVG element for the calendar heatmap
     const svg = d3
       .select("." + this.name)
@@ -78,15 +83,13 @@ class CalendarViz extends React.Component<IProps, IState> {
         .enter()
         .append("rect")
         .filter(function(d) {
-          //TODO(dementor): Fix this hack of removing top right corner box
-          if (d.getMonth() === 3 && d.getDate() === 30) {
+          if ( d > lastDayForViz || d < startDayForViz ){
             return false;
           }
-          //TODO(dementor): Fix this hack of upto April only
-          return d.getMonth() <= 3;
+          return true;
         })
         .attr("width", cellSize)
-        .attr("height", cellSize*2)
+        .attr("height", cellSize)
         .attr("x", function(d) {
           return d3.timeWeek.count(d3.timeYear(d), d) * cellSize;
         })
@@ -136,9 +139,8 @@ class CalendarViz extends React.Component<IProps, IState> {
     });
 
     // Append the week labels to the calendar heatmap
-    //TODO(dementor): Fix this hack of upto April only - 18?
     const weekLabels = svg.selectAll(".weekLabel")
-        .data(d3.range(1, 18))
+        .data(d3.range(1, weeksToShowInViz + 1))
         .enter().append("text")
         .text(function(d) { return "W" + d; })
         .attr("x", function(d) { return (d - 1) * cellSize + (cellSize / 2); })
