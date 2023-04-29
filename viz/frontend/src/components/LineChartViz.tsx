@@ -3,9 +3,8 @@ import * as d3 from "d3";
 import { Col } from "antd";
 import styles from "../stylesheets.module.scss";
 import { ArrayDateData, RawDateData } from "src/models/date_data";
-import { getLastDateToBeShownInViz, getStartDateToBeShownInViz } from "src/utils/date";
+import { getDateInString, getLastDateToBeShownInViz, getStartDateToBeShownInViz } from "src/utils/date";
 import { viz_details } from "src/models/constants";
-import Tooltip from './Tooltip';
 
 interface IProps {
   name: string;
@@ -14,13 +13,11 @@ interface IProps {
   minRange: number;
   isPositive: boolean;
   url: string;
+  setTooltipData: (tooltipData: { visible: boolean; content: string }) => void;
 }
 
 interface IState {
-  tooltipData: {
-    visible: boolean;
-    content: string;
-  };
+
 }
 
 class LineChartViz extends React.Component<IProps, IState> {
@@ -31,16 +28,6 @@ class LineChartViz extends React.Component<IProps, IState> {
   maxRange: number = this.props.maxRange;
   minRange: number = this.props.minRange;
   isPositive: boolean = this.props.isPositive;
-  constructor(props: IProps) {
-    super(props);
-
-    this.state = {
-      tooltipData: {
-        visible: false,
-        content: '',
-      }
-    };
-  }
 
   private buildChart(url: string, name: string) {
     const margin = { top: 20, right: 20, bottom: 50, left: 50 };
@@ -140,19 +127,15 @@ class LineChartViz extends React.Component<IProps, IState> {
         .attr("r", 3) // Adjust the radius of the dots as needed
         .style("fill",  colourDark) // Change the fill color of the dots as needed
         .on("mouseover", (event, d) => {
-          this.setState({
-            tooltipData: {
+            this.props.setTooltipData({
               visible: true,
-              content: `Date: ${d.date}<br/>Value: ${d.value}`,
-            }
+              content: `${d.date.toDateString()}: ${d.value}`,
           });
         })
         .on("mouseout", () => {
-          this.setState({
-            tooltipData: {
-              visible: false,
-              content: '',
-            },
+          this.props.setTooltipData({
+            visible: false,
+            content: "",
           });
         });
   
@@ -175,7 +158,6 @@ class LineChartViz extends React.Component<IProps, IState> {
             width="0"
             height="0"
           ></svg>
-          <Tooltip tooltipData={this.state.tooltipData} />
         </div>
       </Col>
     );

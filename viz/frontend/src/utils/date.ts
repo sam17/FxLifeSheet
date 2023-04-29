@@ -18,4 +18,9 @@ function getStartDateToBeShownInViz(date: Date) {
     return date;
 }
 
-export { getLastDateToBeShownInViz, getStartDateToBeShownInViz, weeksToShowInViz };
+function getDateInString(date: Date) {
+    var dateString = date.toDateString();    
+    return dateString.substring(4, dateString.length);
+}
+
+export { getLastDateToBeShownInViz, getStartDateToBeShownInViz, weeksToShowInViz, getDateInString };

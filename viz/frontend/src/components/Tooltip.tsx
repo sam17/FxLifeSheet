@@ -30,14 +30,19 @@ const Tooltip: React.FC<TooltipProps> = ({ tooltipData }) => {
   const tooltipRef = useRef<HTMLDivElement | null>(null);
   const [position, setPosition] = useState({ left: 0, top: 0 });
   const mousePosition = useMousePosition();
-
   useEffect(() => {
     if (tooltipData.visible && tooltipRef.current) {
+      console.log(tooltipData.content);
       const tooltipWidth = tooltipRef.current.clientWidth;
       const tooltipHeight = tooltipRef.current.clientHeight;
+      const offset = 10; // Adjust this offset as needed
+
+      const left = mousePosition.x + offset;
+      const top = mousePosition.y -  - offset;
+
       setPosition({
-        left: mousePosition.x - tooltipWidth / 2,
-        top: mousePosition.y - tooltipHeight - 10,
+        left,
+        top,
       });
     }
   }, [tooltipData.visible, mousePosition]);
@@ -47,8 +52,10 @@ const Tooltip: React.FC<TooltipProps> = ({ tooltipData }) => {
   }
 
   const style = {
-    left: position.left + 'px',
-    top: position.top + 'px',
+    // left: position.left + 'px',
+    // top: position.top + 'px',
+    left: '100px',
+    top: '100px',
   };
 
   return (

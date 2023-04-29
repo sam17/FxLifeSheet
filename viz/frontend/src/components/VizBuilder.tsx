@@ -5,6 +5,7 @@ import styles from "../stylesheets.module.scss";
 import { Divider, Row } from "antd";
 import CalendarViz from "./CalendarViz";
 import LineChartViz from "./LineChartViz";
+import Tooltip from "./Tooltip";
 
 interface QuestionsForCategory {
   category: string;
@@ -15,12 +16,21 @@ interface props {
   baseUrl: string;
 }
 
+interface tooltipData {
+  visible: boolean;
+  content: string;
+}
+
 function VizBuilder(props: props) {
   const { baseUrl } = props;
   const [categories, setCategories] = useState<CategoryData[]>([]);
   const [questionsForCategory, setQuestionsForCategory] = useState<
     QuestionsForCategory[]
   >([]);
+  const [tooltipData, setTooltipData] = useState<tooltipData>({
+    visible: false,
+    content: "",
+  });
 
   const getCategories = () => {
     return fetch(baseUrl + "categories").then((response) => response.json());
@@ -67,7 +77,8 @@ function VizBuilder(props: props) {
   }, [questionsForCategory]);
 
   return (
-    <div>
+    <div className="VizBuilder">
+      <Tooltip tooltipData={tooltipData} />
       {questionsForCategory.map((item) => {
         return (
           <div>
@@ -87,6 +98,7 @@ function VizBuilder(props: props) {
                       name={question.key}
                       displayName={question.display_name}
                       url={baseUrl + "data/"}
+                      setTooltipData={setTooltipData}
                     />
                   );
                 } else {
