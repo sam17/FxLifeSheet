@@ -3,7 +3,7 @@ import * as d3 from "d3";
 import { Col } from "antd";
 import styles from "../stylesheets.module.scss";
 import { ArrayDateData, RawDateData } from "src/models/date_data";
-import { getLastDateToBeShownInViz, getStartDateToBeShownInViz, weeksToShowInViz } from "src/utils/date";
+import { getDateInString, getLastDateToBeShownInViz, getStartDateToBeShownInViz, weeksToShowInViz } from "src/utils/date";
 import {viz_details} from "../models/constants";
 
 interface IProps {
@@ -15,6 +15,7 @@ interface IProps {
   isPositive: boolean;
   isReverse: boolean;
   cadence: string;
+  setTooltipData: (tooltipData: { visible: boolean; content: string }) => void;
 }
 
 interface IState {}
@@ -95,7 +96,7 @@ class CalendarViz extends React.Component<IProps, IState> {
           return d.getDay() * cellSize;
         })
         .datum(d3.timeFormat("%Y-%m-%d"));
-
+        
     let y_offset = cellSize * num_days;
 
     d3.json(url).then((data) => {
@@ -120,6 +121,21 @@ class CalendarViz extends React.Component<IProps, IState> {
             } else {
               return color(calendarData.getModifiedValue(new Date(d)));
             }
+          })
+          .on("mouseover", (event, d) => {
+            // Set the tooltip data and make it visible
+            const value = cadence === "week" ? calendarData.getValueInWeekOfDate(new Date(d)).value : calendarData.getModifiedValue(new Date(d));
+            this.props.setTooltipData({
+              visible: true,
+              content: `${value} </br> ${getDateInString(new Date(d))} `,
+            });
+          })
+          .on("mouseout", () => {
+            // Hide the tooltip
+            this.props.setTooltipData({
+              visible: false,
+              content: "",
+            });
           });
 
     });

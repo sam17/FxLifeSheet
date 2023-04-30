@@ -113,6 +113,7 @@ function VizBuilder(props: props) {
                       displayName={question.display_name}
                       url={baseUrl + "data/"}
                       cadence={question.cadence}
+                      setTooltipData={setTooltipData}
                     />
                   );
                 }

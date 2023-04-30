@@ -144,7 +144,7 @@ class LineChartViz extends React.Component<IProps, IState> {
         .on("mouseover", (event, d) => {
             this.props.setTooltipData({
               visible: true,
-              content: `${d.date.toDateString()}: ${d.value}`,
+              content: `${d.value} </br> ${getDateInString(d.date)} `,
           });
         })
         .on("mouseout", () => {
