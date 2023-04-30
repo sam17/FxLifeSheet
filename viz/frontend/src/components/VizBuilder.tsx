@@ -5,6 +5,7 @@ import styles from "../stylesheets.module.scss";
 import { Divider, Row } from "antd";
 import CalendarViz from "./CalendarViz";
 import LineChartViz from "./LineChartViz";
+import Tooltip, { tooltipData } from "./Tooltip";
 
 interface QuestionsForCategory {
   category: string;
@@ -21,6 +22,12 @@ function VizBuilder(props: props) {
   const [questionsForCategory, setQuestionsForCategory] = useState<
     QuestionsForCategory[]
   >([]);
+  const [tooltipData, setTooltipData] = useState<tooltipData>({
+    visible: false,
+    date: new Date(),
+    value: "",
+    isPositive: true,
+  });
 
   const getCategories = () => {
     return fetch(baseUrl + "categories").then((response) => response.json());
@@ -67,7 +74,8 @@ function VizBuilder(props: props) {
   }, [questionsForCategory]);
 
   return (
-    <div>
+    <div className="VizBuilder">
+      <Tooltip tooltipData={tooltipData} />
       {questionsForCategory.map((item) => {
         return (
           <div>
@@ -80,17 +88,20 @@ function VizBuilder(props: props) {
                 if (question.graph_type === "line") {
                   return (
                     <LineChartViz
+                      key = {question.key}
                       isPositive={question.is_positive}
                       minRange={question.min_value}
                       maxRange={question.max_value}
                       name={question.key}
                       displayName={question.display_name}
                       url={baseUrl + "data/"}
+                      setTooltipData={setTooltipData}
                     />
                   );
                 } else {
                   return (
                     <CalendarViz
+                      key = {question.key}
                       isPositive={question.is_positive}
                       isReverse={question.is_reverse}
                       minRange={question.min_value}
@@ -99,6 +110,7 @@ function VizBuilder(props: props) {
                       displayName={question.display_name}
                       url={baseUrl + "data/"}
                       cadence={question.cadence}
+                      setTooltipData={setTooltipData}
                     />
                   );
                 }

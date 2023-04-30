@@ -1,12 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import * as d3 from "d3";
 import { Col } from "antd";
 import styles from "../stylesheets.module.scss";
 import { ArrayDateData, RawDateData } from "src/models/date_data";
-import { getLastDateToBeShownInViz, getStartDateToBeShownInViz } from "src/utils/date";
-import {viz_details} from "../models/constants";
-import {timeDay} from "d3-time";
-import {timeFormat, timeMonth} from "d3";
+import {
+  getDateInString,
+  getLastDateToBeShownInViz,
+  getStartDateToBeShownInViz,
+} from "src/utils/date";
+import { viz_details } from "src/models/constants";
+import { timeDay } from "d3-time";
+import { timeFormat, timeMonth } from "d3";
+import { tooltipData } from "./Tooltip";
 
 interface IProps {
   name: string;
@@ -15,6 +20,7 @@ interface IProps {
   minRange: number;
   isPositive: boolean;
   url: string;
+  setTooltipData: (tooltipData: tooltipData) => void;
 }
 
 interface IState {}
@@ -66,7 +72,7 @@ class LineChartViz extends React.Component<IProps, IState> {
     d3.json(url).then((data) => {
       let d3data = Object.assign(new Array<RawDateData>(), data);
       let chartData = new ArrayDateData(
-        d3data['data'],
+        d3data["data"],
         0,
         0,
         false,
@@ -78,63 +84,87 @@ class LineChartViz extends React.Component<IProps, IState> {
         d3.extent(chartData.getData(), (d) => new Date(d.date)) as [Date, Date]
       );
 
-    let lastDayForViz = getLastDateToBeShownInViz(new Date());
-    let startDayForViz = getStartDateToBeShownInViz(new Date());
+      let lastDayForViz = getLastDateToBeShownInViz(new Date());
+      let startDayForViz = getStartDateToBeShownInViz(new Date());
+      const dateFormat = "%d-%m";
+      const formatDate = (domainValue: Date | d3.NumberValue, index: number) =>
+        timeFormat(dateFormat)(domainValue as Date);
 
-    const dateFormat = "%d-%m";
-    const formatDate = (domainValue: Date | d3.NumberValue, index: number) =>
-          timeFormat(dateFormat)(domainValue as Date);
-
-
-
-    x.domain([startDayForViz, lastDayForViz]);
-
-    svg
-      .append("g")
-      .attr("class", "x axis")
-      .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(x).tickFormat(formatDate))
-      .selectAll("text")
-      .style("font-size", "7px")
-      .attr("transform", "rotate(-65)") // Rotate labels by -65 degrees
+      x.domain([startDayForViz, lastDayForViz]);
+      svg
+        .append("g")
+        .attr("class", "x axis")
+        .style("stroke-width", viz_details.graph_line_width)
+        .attr("transform", "translate(0," + height + ")")
+        .call(d3.axisBottom(x).tickFormat(formatDate))
+        .selectAll("text")
+        .style("font-size", "7px")
+        .attr("transform", "rotate(-65)") // Rotate labels by -65 degrees
         .attr("x", -15) // Adjust x position of labels
         .attr("y", 10); // Adjust y position of labels
 
-
-
-    if (this.maxRange == 0 && this.minRange == 0) {
-      y.domain(
-        d3.extent(chartData.getData(), (d) => Math.abs(d.value)) as [
-          number,
-          number
-        ]
-      );
-    } else {
-      y.domain([this.minRange, this.maxRange]);
-    }
-
-    svg.append("g").attr("class", "y axis").call(d3.axisLeft(y));
-
-    svg
-      .append("path")
-      .datum(chartData.getData())
-      .attr("class", "line")
-      .attr("d", line)
-      .style("fill", "none")
-      .style("stroke", colour)
-      .style("stroke-width", 0.75);
+      // eslint-disable-next-line eqeqeq
+      if (this.maxRange == 0 && this.minRange == 0) {
+        const maxVal = d3.max(chartData.getData(), (d) =>
+          Math.abs(d.value)
+        ) as number;
+        y.domain([0, maxVal]);
+      } else {
+        y.domain([this.minRange, this.maxRange]);
+      }
+      svg
+        .append("g")
+        .attr("class", "y axis")
+        .call(d3.axisLeft(y))
+        .style("stroke-width", viz_details.graph_line_width)
+        .style("font-size", "7px");
 
       svg
-      .selectAll(".dot")
-      .data(chartData.getData())
-      .enter()
-      .append("circle")
-      .attr("class", "dot")
-      .attr("cx", (d) => x(d.date))
-      .attr("cy", (d) => y(Math.abs(d.value)))
-      .attr("r", 1) // Adjust the radius of the dots as needed
-      .style("fill",  colourDark); // Change the fill color of the dots as needed
+        .append("path")
+        .datum(chartData.getData())
+        .attr("class", "line")
+        .attr("d", line)
+        .style("fill", "none")
+        .style("stroke", colour)
+        .style("stroke-width", 1.7);
 
+      svg
+        .selectAll(".dot")
+        .data(chartData.getData())
+        .enter()
+        .append("circle")
+        .attr("class", "dot")
+        .attr("cx", (d) => x(d.date))
+        .attr("cy", (d) => y(Math.abs(d.value)))
+        .attr("r", 3) // Adjust the radius of the dots as needed
+        .style("fill", colourDark); // Change the fill color of the dots as needed
+
+      svg
+        .selectAll(".invisible-dot")
+        .data(chartData.getData())
+        .enter()
+        .append("circle")
+        .attr("class", "invisible-dot")
+        .attr("cx", (d) => x(d.date))
+        .attr("cy", (d) => y(Math.abs(d.value)))
+        .attr("r", 10) // Adjust the larger radius for the invisible circles as needed
+        .style("fill", "transparent") // Make the invisible circles transparent
+        .on("mouseover", (event, d) => {
+          this.props.setTooltipData({
+            visible: true,
+            date: d.date,
+            value: d.value.toString(),
+            isPositive: this.isPositive,
+          });
+        })
+        .on("mouseout", () => {
+          this.props.setTooltipData({
+            visible: false,
+            date: new Date(),
+            value: "",
+            isPositive: false,
+          });
+        });
     });
   }
 
