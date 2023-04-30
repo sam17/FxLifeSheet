@@ -7,6 +7,7 @@ import { getDateInString, getLastDateToBeShownInViz, getStartDateToBeShownInViz 
 import { viz_details } from "src/models/constants";
 import {timeDay} from "d3-time";
 import {timeFormat, timeMonth} from "d3";
+import { tooltipData } from "./Tooltip";
 
 interface IProps {
   name: string;
@@ -15,7 +16,7 @@ interface IProps {
   minRange: number;
   isPositive: boolean;
   url: string;
-  setTooltipData: (tooltipData: { visible: boolean; content: string }) => void;
+  setTooltipData: (tooltipData: tooltipData) => void;
 }
 
 interface IState {
@@ -144,13 +145,17 @@ class LineChartViz extends React.Component<IProps, IState> {
         .on("mouseover", (event, d) => {
             this.props.setTooltipData({
               visible: true,
-              content: `${d.value} </br> ${getDateInString(d.date)} `,
+              date: d.date,
+              value: d.value.toString(),
+              isPositive: this.isPositive,
           });
         })
         .on("mouseout", () => {
           this.props.setTooltipData({
             visible: false,
-            content: "",
+            date: new Date(),
+            value: "",
+            isPositive: false,
           });
         });
     });

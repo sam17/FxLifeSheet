@@ -1,11 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styles from '../Tooltip.module.css';
+import { getDateInString } from 'src/utils/date';
+
+export interface tooltipData {
+    visible: boolean;
+    date : Date;
+    value : string;
+    isPositive : boolean;
+}
 
 interface TooltipProps {
-  tooltipData: {
-    visible: boolean;
-    content: string;
-  };
+    tooltipData: tooltipData;
 }
 
 const useMousePosition = () => {
@@ -25,6 +30,13 @@ const useMousePosition = () => {
 
   return mousePosition;
 };
+
+const getContentString = (tooltipData: tooltipData) => {
+    const { date, value, isPositive } = tooltipData;
+    const dateString = getDateInString(date);
+    return `${value} </br> ${dateString}`;
+}
+
 
 const Tooltip: React.FC<TooltipProps> = ({ tooltipData }) => {
   const tooltipRef = useRef<HTMLDivElement | null>(null);
@@ -54,9 +66,11 @@ const Tooltip: React.FC<TooltipProps> = ({ tooltipData }) => {
     top: position.top + 'px',
   };
 
+  const tooltipClass = `${styles.tooltip} ${tooltipData.isPositive ? styles.positiveTooltip : styles.negativeTooltip}`;
+
   return (
-    <div ref={tooltipRef} className={styles.tooltip} style={style}>
-      <div dangerouslySetInnerHTML={{ __html: tooltipData.content }} />
+    <div ref={tooltipRef} className={tooltipClass} style={style}>
+      <div dangerouslySetInnerHTML={{ __html: getContentString(tooltipData) }} />
     </div>
   );
 };

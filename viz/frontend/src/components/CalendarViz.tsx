@@ -5,6 +5,7 @@ import styles from "../stylesheets.module.scss";
 import { ArrayDateData, RawDateData } from "src/models/date_data";
 import { getDateInString, getLastDateToBeShownInViz, getStartDateToBeShownInViz, weeksToShowInViz } from "src/utils/date";
 import {viz_details} from "../models/constants";
+import { tooltipData } from "./Tooltip";
 
 interface IProps {
   name: string;
@@ -15,7 +16,7 @@ interface IProps {
   isPositive: boolean;
   isReverse: boolean;
   cadence: string;
-  setTooltipData: (tooltipData: { visible: boolean; content: string }) => void;
+  setTooltipData: (tooltipData: tooltipData) => void;
 }
 
 interface IState {}
@@ -127,14 +128,18 @@ class CalendarViz extends React.Component<IProps, IState> {
             const value = cadence === "week" ? calendarData.getValueInWeekOfDate(new Date(d)).value : calendarData.getModifiedValue(new Date(d));
             this.props.setTooltipData({
               visible: true,
-              content: `${value} </br> ${getDateInString(new Date(d))} `,
+              date: new Date(d),
+              value: value?.toString() ?? "",
+              isPositive: this.props.isPositive,
             });
           })
           .on("mouseout", () => {
             // Hide the tooltip
             this.props.setTooltipData({
               visible: false,
-              content: "",
+              date: new Date(),
+              value: "",
+              isPositive: this.props.isPositive,
             });
           });
 

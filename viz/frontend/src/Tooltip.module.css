@@ -1,12 +1,21 @@
 .tooltip {
     position: absolute;
-    background-color: #f9f9f9;
-    border: 1px solid #d3d3d3;
+    color: #666666;
     border-radius: 5px;
     padding: 5px;
     font-size: 14px;
     pointer-events: none;
     opacity: 0.9;
     z-index: 10;
-    /* width: 200px; */
+  }
+
+  .positiveTooltip {
+    /* Example: */
+    background-color: #ebf7e3;
+    border: 1px solid #1b3409;
+  }
+  
+  .negativeTooltip {
+    background-color: #f7e3e3;
+    border: 1px solid #340909;
   }
