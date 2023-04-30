@@ -5,6 +5,8 @@ import styles from "../stylesheets.module.scss";
 import { ArrayDateData, RawDateData } from "src/models/date_data";
 import { getDateInString, getLastDateToBeShownInViz, getStartDateToBeShownInViz } from "src/utils/date";
 import { viz_details } from "src/models/constants";
+import {timeDay} from "d3-time";
+import {timeFormat, timeMonth} from "d3";
 
 interface IProps {
   name: string;
@@ -81,6 +83,9 @@ class LineChartViz extends React.Component<IProps, IState> {
 
     let lastDayForViz = getLastDateToBeShownInViz(new Date());
     let startDayForViz = getStartDateToBeShownInViz(new Date());
+    const dateFormat = "%d-%m";
+    const formatDate = (domainValue: Date | d3.NumberValue, index: number) =>
+          timeFormat(dateFormat)(domainValue as Date);
 
      x.domain([startDayForViz, lastDayForViz]);
       svg
@@ -88,10 +93,12 @@ class LineChartViz extends React.Component<IProps, IState> {
         .attr("class", "x axis")
         .style("stroke-width", viz_details.graph_line_width)
         .attr("transform", "translate(0," + height + ")")
-        .call(d3.axisBottom(x))
+        .call(d3.axisBottom(x).tickFormat(formatDate))
         .selectAll("text") 
-        .style("font-size", "8px") 
-        // .attr("y", 40); 
+        .style("font-size", "7px")
+        .attr("transform", "rotate(-65)") // Rotate labels by -65 degrees
+        .attr("x", -15) // Adjust x position of labels
+        .attr("y", 10); // Adjust y position of labels
 
       // eslint-disable-next-line eqeqeq
       if (this.maxRange == 0 && this.minRange == 0) {
@@ -134,8 +141,6 @@ class LineChartViz extends React.Component<IProps, IState> {
             content: "",
           });
         });
-  
-
     });
   }
 

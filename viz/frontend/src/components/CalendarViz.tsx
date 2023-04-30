@@ -31,12 +31,13 @@ class CalendarViz extends React.Component<IProps, IState> {
   cadence: string = this.props.cadence;
 
   private buildCalendar(url: string, name: string, cadence: string) {
-    const margin = { top: 20, right: 0, bottom: 50, left: 0 };
+    const margin = { top: 20, right: 0, bottom: 50, left: 20 };
 
+    const cellSize = 17;
     // Set the dimensions of the calendar heatmap
     const width = viz_details.viz_width - margin.left - margin.right;
-    const height = viz_details.viz_height - margin.top - margin.bottom;
-    const cellSize = 17;
+    let num_days = cadence === "week" ? 2 : 8;
+    const height = (cellSize * num_days) + margin.top + margin.bottom;
 
     // Set the colors for the calendar heatmap
     const positiveColors = d3
@@ -61,7 +62,8 @@ class CalendarViz extends React.Component<IProps, IState> {
       .attr("width", width)
       .attr("height", height)
       .attr("class", "RdYlGn")
-      .append("g");
+      .append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 
     const rect = svg
@@ -94,10 +96,7 @@ class CalendarViz extends React.Component<IProps, IState> {
         })
         .datum(d3.timeFormat("%Y-%m-%d"));
 
-    let y_offset = cellSize * 3;
-    if (cadence === "day") {
-      y_offset = y_offset + (cellSize * 7);
-    }
+    let y_offset = cellSize * num_days;
 
     d3.json(url).then((data) => {
       let d3data = Object.assign(new Array<RawDateData>(), data);
@@ -123,15 +122,6 @@ class CalendarViz extends React.Component<IProps, IState> {
             }
           });
 
-      //TODO(dementor): This will break when year changes but future soumyadeep can fix it
-      const year = calendarData['data'][0].date.getFullYear();
-
-      svg.append("text")
-          .attr("class", "yearLabel")
-          .attr("x", cellSize*20 / 2)
-          .attr("y", y_offset + cellSize)
-          .style("text-anchor", "middle")
-          .text(year);
     });
 
     // Append the week labels to the calendar heatmap
@@ -144,6 +134,26 @@ class CalendarViz extends React.Component<IProps, IState> {
         .style("text-anchor", "middle")
         .attr("class", "weekLabel")
         .attr("font-size", "6px");
+
+    const dayFormat = d3.timeFormat("%a");
+    const dayIndices = [0, 1, 2, 3, 4, 5, 6];
+
+    if (cadence === "day") {
+      svg.selectAll(".dayLabel")
+          .data(dayIndices)
+          .enter().append("text")
+          .text(function (d) {
+            return dayFormat(new Date(2023, 0, d)).charAt(0);
+          }) // Get the first character of the day abbreviation
+          .attr("x", 0)
+          .attr("y", function (d, i) {
+            return i * cellSize;
+          })
+          // .style("text-anchor", "end")
+          .attr("transform", "translate(-10," + cellSize / 1.5 + ")")
+          .style("font-weight", "300")
+          .style("font-size", "8px");
+    }
 
   }
 
