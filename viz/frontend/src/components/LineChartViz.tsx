@@ -81,10 +81,6 @@ class LineChartViz extends React.Component<IProps, IState> {
 
     let lastDayForViz = getLastDateToBeShownInViz(new Date());
     let startDayForViz = getStartDateToBeShownInViz(new Date());
-    var tooltip = d3.select("body")
-    .append("div")
-    .attr("id", "tooltip")
-    .style("opacity", 0);
 
      x.domain([startDayForViz, lastDayForViz]);
       svg
