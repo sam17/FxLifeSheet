@@ -12,7 +12,7 @@ const useMousePosition = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   const updateMousePosition = (event: MouseEvent) => {
-    setMousePosition({ x: event.clientX, y: event.clientY });
+    setMousePosition({ x: event.pageX, y: event.pageY });
   };
 
   useEffect(() => {
@@ -32,13 +32,11 @@ const Tooltip: React.FC<TooltipProps> = ({ tooltipData }) => {
   const mousePosition = useMousePosition();
   useEffect(() => {
     if (tooltipData.visible && tooltipRef.current) {
-      console.log(tooltipData.content);
-      const tooltipWidth = tooltipRef.current.clientWidth;
-      const tooltipHeight = tooltipRef.current.clientHeight;
       const offset = 10; // Adjust this offset as needed
 
       const left = mousePosition.x + offset;
-      const top = mousePosition.y -  - offset;
+      const top = mousePosition.y -  offset;
+      console.log(left, top);
 
       setPosition({
         left,
@@ -52,10 +50,8 @@ const Tooltip: React.FC<TooltipProps> = ({ tooltipData }) => {
   }
 
   const style = {
-    // left: position.left + 'px',
-    // top: position.top + 'px',
-    left: '100px',
-    top: '100px',
+    left: position.left + 'px',
+    top: position.top + 'px',
   };
 
   return (

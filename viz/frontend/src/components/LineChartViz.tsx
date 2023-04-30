@@ -129,6 +129,18 @@ class LineChartViz extends React.Component<IProps, IState> {
         .attr("cy", (d) => y(Math.abs(d.value)))
         .attr("r", 3) // Adjust the radius of the dots as needed
         .style("fill",  colourDark) // Change the fill color of the dots as needed
+
+
+        svg
+  .selectAll(".invisible-dot")
+  .data(chartData.getData())
+  .enter()
+  .append("circle")
+  .attr("class", "invisible-dot")
+  .attr("cx", (d) => x(d.date))
+  .attr("cy", (d) => y(Math.abs(d.value)))
+  .attr("r", 10) // Adjust the larger radius for the invisible circles as needed
+  .style("fill", "transparent") // Make the invisible circles transparent
         .on("mouseover", (event, d) => {
             this.props.setTooltipData({
               visible: true,
