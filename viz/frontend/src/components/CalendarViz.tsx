@@ -164,7 +164,7 @@ class CalendarViz extends React.Component<IProps, IState> {
           .data(dayIndices)
           .enter().append("text")
           .text(function (d) {
-            return dayFormat(new Date(2023, 0, d)).charAt(0);
+            return dayFormat(new Date(2023, 0, d + 1)).charAt(0);
           }) // Get the first character of the day abbreviation
           .attr("x", 0)
           .attr("y", function (d, i) {
