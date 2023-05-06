@@ -2,16 +2,6 @@ use models::models::collector::raw_data::RawDataObj;
 use crate::utils::db::Db;
 use crate::utils::error::ModelError;
 
-
-// #[derive(sqlx::Type, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-// #[sqlx(type_name = "todo_status_enum")]
-// #[sqlx(rename_all = "lowercase")]
-// pub enum TodoStatus {
-// 	Open,
-// 	Close,
-// }
-// sqlb::bindable!(TodoStatus);
-
 pub struct RawData;
 
 impl RawData {
