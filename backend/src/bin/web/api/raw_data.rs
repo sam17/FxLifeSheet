@@ -25,13 +25,6 @@ pub fn raw_data_rest_filters(
 		.and(common.clone())
 		.and_then(data_get_all);
 
-	// // GET todo `GET /todos/100`
-	// let get = data_path
-	// 	.and(warp::get())
-	// 	.and(common.clone())
-	// 	.and(warp::path::param())
-	// 	.and_then(data_get);
-
 	let get = data_path
 		.and(warp::get())
 		.and(common.clone())

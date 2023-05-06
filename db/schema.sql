@@ -36,6 +36,8 @@ CREATE TABLE IF NOT EXISTS questions
     show        boolean not null,
     display_name text not null,
     is_positive boolean not null,
+    cadence                  varchar(255),
+    graph_type               varchar(255),
     UNIQUE (key)
 );
 

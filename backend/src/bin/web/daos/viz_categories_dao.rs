@@ -18,4 +18,12 @@ impl VizCategories {
         let viz_categories_list = sb.fetch_all(db).await?;
         Ok(viz_categories_list)
     }
+
+    pub async fn get_id_by_name(db: &Db, name: &str) -> Result<i32, ModelError> {
+        let query = sqlx::query!("SELECT id FROM category WHERE name = $1", name)
+            .fetch_one(db)
+            .await?;
+
+        Ok(query.id)
+    }
 }

@@ -3,21 +3,24 @@ mod api;
 mod utils;
 mod daos;
 
+use std::borrow::Cow;
 use std::env;
 use serde_json::json;
 use std::convert::Infallible;
 use std::sync::Arc;
 use warp::{Filter, Rejection, Reply};
+use warp::http::StatusCode;
 use crate::api::raw_data::raw_data_rest_filters;
 use crate::api::viz_categories::viz_categories_rest_filters;
 use crate::api::viz_metadata::viz_metadata_rest_filters;
 use crate::api::viz_questions::viz_questions_rest_filters;
 use crate::utils::db::{Db, init_db};
-use crate::utils::error::{Error, WebErrorMessage};
+use crate::utils::error::{Error, ModelError, WebErrorMessage};
 
 async fn start_web(web_port: u16, db: Arc<Db>) -> Result<(), Error> {
     // Apis
-    let raw_data_apis = raw_data_rest_filters("api", &db);
+    //TODO(soumyadeep): Uncomment
+    // let raw_data_apis = raw_data_rest_filters("api", &db);
     let metadata_apis = viz_metadata_rest_filters("api", &db);
     let questions_apis = viz_questions_rest_filters("api", &db);
     let categories_apis = viz_categories_rest_filters("api", &db);
@@ -30,7 +33,9 @@ async fn start_web(web_port: u16, db: Arc<Db>) -> Result<(), Error> {
     let log = warp::log("access");
 
     // Combine all routes
-    let routes = raw_data_apis.or(metadata_apis).or(questions_apis).or(categories_apis)
+    // let routes = raw_data_apis.or(metadata_apis).or(questions_apis).or(categories_apis)
+    //     .or(static_s).recover(handle_rejection).with(cors).with(log);
+    let routes = metadata_apis.or(questions_apis).or(categories_apis)
         .or(static_s).recover(handle_rejection).with(cors).with(log);
 
     println!("Start 0.0.0.0:{}", web_port);
@@ -40,21 +45,31 @@ async fn start_web(web_port: u16, db: Arc<Db>) -> Result<(), Error> {
 }
 
 async fn handle_rejection(err: Rejection) -> Result<impl Reply, Infallible> {
-    // Print to server side
-    println!("ERROR - {:?}", err);
+    let code;
+    let message: Cow<str>;
 
-    // TODO - Call log API for capture and store
+    if err.is_not_found() {
+        code = StatusCode::NOT_FOUND;
+        message = Cow::Borrowed("Not Found");
+    } else if let Some(model_error) = err.find::<ModelError>() {
+        code = StatusCode::INTERNAL_SERVER_ERROR;
+        let detailed_message = format!("ModelError at {}: {}: {}", file!(), line!(), model_error);
+        message = Cow::Owned(detailed_message);
+    } else if let Some(_) = err.find::<warp::reject::MethodNotAllowed>() {
+        code = StatusCode::METHOD_NOT_ALLOWED;
+        message = Cow::Borrowed("Method Not Allowed");
+    } else {
+        eprintln!("unhandled rejection: {:?}", err);
+        code = StatusCode::INTERNAL_SERVER_ERROR;
+        message = Cow::Borrowed("Internal Server Error");
+    }
 
-    // Build user message
-    let user_message = match err.find::<WebErrorMessage>() {
-        Some(err) => err.typ.to_string(),
-        None => "Unknown".to_string(),
-    };
+    let json = warp::reply::json(&json!({
+        "status": code.as_u16(),
+        "message": message,
+    }));
 
-    let result = json!({ "errorMessage": user_message });
-    let result = warp::reply::json(&result);
-
-    Ok(warp::reply::with_status(result, warp::http::StatusCode::BAD_REQUEST))
+    Ok(warp::reply::with_status(json, code))
 }
 
 
