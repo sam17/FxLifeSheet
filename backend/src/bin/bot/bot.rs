@@ -8,8 +8,8 @@ use models::models::questions::viz_questions::QuestionKey;
 use teloxide::dispatching::DpHandlerDescription;
 use teloxide::prelude::*;
 use teloxide::RequestError;
+use teloxide::types::{KeyboardButton, KeyboardMarkup};
 use teloxide::utils::command::BotCommands;
-use warp::hyper::upgrade::on;
 mod commands;
 mod question_manager_global;
 
@@ -177,9 +177,63 @@ async fn ask_next_question(bot: Bot, msg: Message) -> ResponseResult<()> {
     }
 
     let id = msg.chat.id.0;
-    let question = question_manager_global::get_first_question(id).unwrap().question;
-    bot.send_message(msg.chat.id, question).await?;
+    let question = question_manager_global::get_first_question(id).unwrap();
+
+    if question.answer_type == "range" {
+        send_range_options(&bot, msg.chat.id, question.question.as_str()).await?;
+        return Ok(());
+    }
+
+    if question.answer_type == "boolean" {
+        send_boolean_options(&bot, msg.chat.id, question.question.as_str()).await?;
+        return Ok(());
+    }
+
+    if question.answer_type == "location" {
+  
+    }
+
+    bot.send_message(msg.chat.id, question.question).await?;
     Ok(())
+}
+
+async fn send_range_options(bot: &Bot, chat_id: ChatId, question_text: &str) -> ResponseResult<()> {
+    let options: Vec<String> = (1..=5).map(|i| i.to_string()).collect();
+
+    let keyboard = make_keyboard(options);
+
+    bot.send_message(chat_id, question_text)
+        .reply_markup(keyboard)
+        .await?;
+
+    Ok(())
+}
+
+async fn send_boolean_options(bot: &Bot, chat_id: ChatId, question_text: &str) -> ResponseResult<()> {
+    let options: Vec<String> = vec!["Yes".to_string(), "No".to_string()];
+
+    let keyboard = make_keyboard(options);
+
+    bot.send_message(chat_id, question_text)
+        .reply_markup(keyboard)
+        .await?;
+
+    Ok(())
+}
+
+fn make_keyboard(options: Vec<String>) -> KeyboardMarkup {
+    let mut keyboard: Vec<Vec<KeyboardButton>> = vec![];
+
+    for option in options.chunks(3) {
+        let row = option
+            .iter()
+            .map(|version| KeyboardButton::new(version.to_owned()))
+            .collect();
+
+        keyboard.push(row);
+    }
+
+    KeyboardMarkup::new(keyboard).one_time_keyboard(true)
 }
 
 fn is_valid_command(command: &str) -> bool {
@@ -210,7 +264,7 @@ fn get_all_questions(command: &str) -> Vec<Question> {
         id: 2,
         key: QuestionKey("age".to_string()),
         question: "What is your age?".to_string(),
-        answer_type: "number".to_string(),
+        answer_type: "range".to_string(),
         parent_question: None,
         parent_question_option: None,
         category: None,
@@ -219,8 +273,7 @@ fn get_all_questions(command: &str) -> Vec<Question> {
         show: false,
         display_name: "Age".to_string(),
         is_positive: true
-    },
-    
+    }
     ]
 
 }
