@@ -22,7 +22,6 @@ pub fn viz_categories_rest_filters(
 }
 
 async fn get_all_categories(db: Arc<Db>) -> Result<Json, warp::Rejection> {
-    println!("get_all_categories");
     let categories = VizCategories::get_all_categories(&db).await?;
     let response = json!(categories);
     Ok(warp::reply::json(&response))

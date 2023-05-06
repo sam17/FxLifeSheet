@@ -3,6 +3,7 @@ mod api;
 mod utils;
 mod daos;
 
+use std::borrow::Cow;
 use std::env;
 use serde_json::json;
 use std::convert::Infallible;
@@ -14,7 +15,7 @@ use crate::api::viz_categories::viz_categories_rest_filters;
 use crate::api::viz_metadata::viz_metadata_rest_filters;
 use crate::api::viz_questions::viz_questions_rest_filters;
 use crate::utils::db::{Db, init_db};
-use crate::utils::error::{Error, WebErrorMessage};
+use crate::utils::error::{Error, ModelError, WebErrorMessage};
 
 async fn start_web(web_port: u16, db: Arc<Db>) -> Result<(), Error> {
     // Apis
@@ -43,26 +44,31 @@ async fn start_web(web_port: u16, db: Arc<Db>) -> Result<(), Error> {
     Ok(())
 }
 
-async fn handle_rejection(err: Rejection) -> Result<impl Reply, std::convert::Infallible> {
+async fn handle_rejection(err: Rejection) -> Result<impl Reply, Infallible> {
     let code;
-    let message;
+    let message: Cow<str>;
 
     if err.is_not_found() {
         code = StatusCode::NOT_FOUND;
-        message = "Not Found";
-    } else if let Some(_) = err.find::<warp::reject::InvalidQuery>() {
-        code = StatusCode::BAD_REQUEST;
-        message = "Invalid Query";
+        message = Cow::Borrowed("Not Found");
+    } else if let Some(model_error) = err.find::<ModelError>() {
+        code = StatusCode::INTERNAL_SERVER_ERROR;
+        let detailed_message = format!("ModelError at {}: {}: {}", file!(), line!(), model_error);
+        message = Cow::Owned(detailed_message);
     } else if let Some(_) = err.find::<warp::reject::MethodNotAllowed>() {
         code = StatusCode::METHOD_NOT_ALLOWED;
-        message = "Method Not Allowed";
+        message = Cow::Borrowed("Method Not Allowed");
     } else {
         eprintln!("unhandled rejection: {:?}", err);
         code = StatusCode::INTERNAL_SERVER_ERROR;
-        message = "Internal Server Error";
+        message = Cow::Borrowed("Internal Server Error");
     }
 
-    let json = warp::reply::json(&json!({ "message": message }));
+    let json = warp::reply::json(&json!({
+        "status": code.as_u16(),
+        "message": message,
+    }));
+
     Ok(warp::reply::with_status(json, code))
 }
 

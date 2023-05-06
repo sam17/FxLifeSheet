@@ -83,14 +83,8 @@ impl<'r> Decode<'r, Postgres> for QuestionKey {
     }
 }
 
-// #[derive(Debug, Deserialize)]
-// pub struct VizQuestionsQuery {
-//     pub category: Option<i32>,
-//     pub is_visible: Option<bool>,
-// }
-
 #[derive(Debug, Deserialize)]
 pub struct VizQuestionsQuery {
-    pub category_name: Option<String>,
+    pub category: Option<String>,
     pub is_visible: Option<bool>,
 }

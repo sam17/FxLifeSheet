@@ -8,6 +8,7 @@ pub struct VizQuestions;
 impl VizQuestions {
     const TABLE: &'static str = "questions";
     const COLUMNS: &'static [&'static str] = &[
+        "id",
         "key",
         "question",
         "answer_type",
@@ -19,47 +20,6 @@ impl VizQuestions {
     ];
 }
 
-// impl VizQuestions {
-//     pub async fn get_questions_with_query(
-//         db: &Db,
-//         category: String,
-//         is_visible: bool,
-//     ) -> Result<Vec<Question>, ModelError> {
-//         let mut sb = sqlb::select().table(Self::TABLE).columns(Self::COLUMNS);
-//
-//         if is_visible {
-//             sb = sb.and_where_eq("show", true);
-//         }
-//
-//         if !category.is_empty() {
-//             sb = sb.and_where_eq("category", category);
-//         }
-//
-//         let questions_list = sb.fetch_all(db).await?;
-//         Ok(questions_list)
-//     }
-// }
-
-// impl VizQuestions {
-//     pub async fn get_questions_with_query(
-//         db: &Db,
-//         category: Option<i32>,
-//         is_visible: bool,
-//     ) -> Result<Vec<Question>, ModelError> {
-//         let mut sb = sqlb::select().table(Self::TABLE).columns(Self::COLUMNS);
-//
-//         if is_visible {
-//             sb = sb.and_where_eq("show", true);
-//         }
-//
-//         if let Some(cat_id) = category {
-//             sb = sb.and_where_eq("category", cat_id);
-//         }
-//
-//         let questions_list = sb.fetch_all(db).await?;
-//         Ok(questions_list)
-//     }
-// }
 
 impl VizQuestions {
     pub async fn get_questions_with_query(
@@ -67,6 +27,7 @@ impl VizQuestions {
         category_name: Option<String>,
         is_visible: bool,
     ) -> Result<Vec<Question>, ModelError> {
+        println!("category_name: {:?}", category_name);
         let mut sb = sqlb::select().table(Self::TABLE).columns(Self::COLUMNS);
 
         if is_visible {
@@ -79,6 +40,7 @@ impl VizQuestions {
         }
 
         let questions_list = sb.fetch_all(db).await?;
+        println!("questions_list: {:?}", questions_list);
         Ok(questions_list)
     }
 }
