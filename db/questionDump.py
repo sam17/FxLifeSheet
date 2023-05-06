@@ -7,7 +7,7 @@ import requests
 
 
 class Question:
-    def __init__(self, key, question, type, maxValue, minValue, isVisibleInVisualizer, buttons, category, displayName, isPositive, isReverse):
+    def __init__(self, key, question, type, maxValue, minValue, isVisibleInVisualizer, buttons, category, displayName, isPositive, isReverse, cadence, graphType):
         self.key = key
         self.question = question
         self.questionType = type
@@ -19,6 +19,8 @@ class Question:
         self.displayName = displayName
         self.isPositive = isPositive
         self.isReverse = isReverse
+        self.cadence = cadence
+        self.graphType = graphType
 
     @classmethod
     def from_json(cls, data):
@@ -44,6 +46,18 @@ class Question:
             else:
                 buttons = None
 
+
+            if 'cadence' in data:
+                cadence = data['cadence']
+            else:
+                cadence = "day"
+
+            if 'graphType' in data:
+                graph_type = data['graphType']
+            else:
+                graph_type = "calendar"
+
+
             if questions_type == 'range':
                 ranges = data['buttons']
                 list_of_keys = list(ranges.keys())
@@ -55,20 +69,20 @@ class Question:
                     max_value = 1
                     min_value = 0
                 else:
-                    max_value = None
-                    min_value = None
+                    max_value = 0
+                    min_value = 0
 
             if 'isVisibleInVisualizer' in data:
                 is_visible_in_visualizer = data['isVisibleInVisualizer']
             else:
                 is_visible_in_visualizer = False
 
-            return cls(key, question, questions_type, max_value, min_value, is_visible_in_visualizer, buttons, category, display_name, is_positive, is_reverse)
+            return cls(key, question, questions_type, max_value, min_value, is_visible_in_visualizer, buttons, category, display_name, is_positive, is_reverse, cadence, graph_type)
         except KeyError:
             raise ValueError('Invalid data structure')
 
     def __repr__(self):
-        return f"Question(key={self.key}, question={self.question}, type={self.questionType}, maxValue={self.maxValue}, minValue={self.minValue}, isVisibleInVisualizer={self.isVisibleInVisualizer}, options={self.buttons}, category={self.category}, displayName={self.displayName}, isPositive={self.isPositive}, isReverse={self.isReverse})"
+        return f"Question(key={self.key}, question={self.question}, type={self.questionType}, maxValue={self.maxValue}, minValue={self.minValue}, isVisibleInVisualizer={self.isVisibleInVisualizer}, options={self.buttons}, category={self.category}, displayName={self.displayName}, isPositive={self.isPositive}, isReverse={self.isReverse}, cadence={self.cadence}, graphType={self.graphType})"
 
 
 class Command:
@@ -118,7 +132,7 @@ cursor = conn.cursor()
 # Create the table if it doesn't exist
 table_name = 'questions'
 # create_table_query = f"CREATE TABLE IF NOT EXISTS {table_name} (column1 key, column2 question, column3 type, column4 maxValue, column5 minValue, column6 isVisibleInVisualizer, column7 buttons);"
-create_table_query = f"CREATE TABLE IF NOT EXISTS {table_name} (key VARCHAR(255), question VARCHAR(255), question_type VARCHAR(255), max_value int, min_value int, is_visible_in_visualizer BOOLEAN, buttons VARCHAR(255), category VARCHAR(255), display_name VARCHAR(255), is_positive BOOLEAN, is_reverse BOOLEAN);"
+create_table_query = f"CREATE TABLE IF NOT EXISTS {table_name} (key VARCHAR(255), question VARCHAR(255), question_type VARCHAR(255), max_value int, min_value int, is_visible_in_visualizer BOOLEAN, buttons VARCHAR(255), category VARCHAR(255), display_name VARCHAR(255), is_positive BOOLEAN, is_reverse BOOLEAN, cadence VARCHAR(255), graph_type VARCHAR(255));"
 cursor.execute(create_table_query)
 conn.commit()
 
@@ -130,9 +144,9 @@ conn.commit()
 for item in questions:
     # insert_query = f"INSERT INTO {table_name} VALUES ({item.key}, {item.question}, {item.type}, {item.maxValue}, {item.minValue}, {item.isVisibleInVisualizer}, {item.buttons});"
     # insert_query = f"INSERT INTO {table_name} VALUES ('{item.key}', '{item.question}', '{item.type}', '{item.maxValue}', '{item.minValue}', '{item.isVisibleInVisualizer}', '{item.buttons}');"
-    insert_query = f"INSERT INTO {table_name} VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
+    insert_query = f"INSERT INTO {table_name} VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
     cursor.execute(insert_query, (item.key, item.question, item.questionType,
-                   item.maxValue, item.minValue, item.isVisibleInVisualizer, item.buttons, item.category, item.displayName, item.isPositive, item.isReverse))
+                   item.maxValue, item.minValue, item.isVisibleInVisualizer, item.buttons, item.category, item.displayName, item.isPositive, item.isReverse, item.cadence, item.graphType))
 
 
 table_name = 'commands'
