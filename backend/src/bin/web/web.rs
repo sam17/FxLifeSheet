@@ -8,6 +8,7 @@ use serde_json::json;
 use std::convert::Infallible;
 use std::sync::Arc;
 use warp::{Filter, Rejection, Reply};
+use warp::http::StatusCode;
 use crate::api::raw_data::raw_data_rest_filters;
 use crate::api::viz_categories::viz_categories_rest_filters;
 use crate::api::viz_metadata::viz_metadata_rest_filters;
@@ -17,7 +18,8 @@ use crate::utils::error::{Error, WebErrorMessage};
 
 async fn start_web(web_port: u16, db: Arc<Db>) -> Result<(), Error> {
     // Apis
-    let raw_data_apis = raw_data_rest_filters("api", &db);
+    //TODO(soumyadeep): Uncomment
+    // let raw_data_apis = raw_data_rest_filters("api", &db);
     let metadata_apis = viz_metadata_rest_filters("api", &db);
     let questions_apis = viz_questions_rest_filters("api", &db);
     let categories_apis = viz_categories_rest_filters("api", &db);
@@ -30,7 +32,9 @@ async fn start_web(web_port: u16, db: Arc<Db>) -> Result<(), Error> {
     let log = warp::log("access");
 
     // Combine all routes
-    let routes = raw_data_apis.or(metadata_apis).or(questions_apis).or(categories_apis)
+    // let routes = raw_data_apis.or(metadata_apis).or(questions_apis).or(categories_apis)
+    //     .or(static_s).recover(handle_rejection).with(cors).with(log);
+    let routes = metadata_apis.or(questions_apis).or(categories_apis)
         .or(static_s).recover(handle_rejection).with(cors).with(log);
 
     println!("Start 0.0.0.0:{}", web_port);
@@ -39,22 +43,27 @@ async fn start_web(web_port: u16, db: Arc<Db>) -> Result<(), Error> {
     Ok(())
 }
 
-async fn handle_rejection(err: Rejection) -> Result<impl Reply, Infallible> {
-    // Print to server side
-    println!("ERROR - {:?}", err);
+async fn handle_rejection(err: Rejection) -> Result<impl Reply, std::convert::Infallible> {
+    let code;
+    let message;
 
-    // TODO - Call log API for capture and store
+    if err.is_not_found() {
+        code = StatusCode::NOT_FOUND;
+        message = "Not Found";
+    } else if let Some(_) = err.find::<warp::reject::InvalidQuery>() {
+        code = StatusCode::BAD_REQUEST;
+        message = "Invalid Query";
+    } else if let Some(_) = err.find::<warp::reject::MethodNotAllowed>() {
+        code = StatusCode::METHOD_NOT_ALLOWED;
+        message = "Method Not Allowed";
+    } else {
+        eprintln!("unhandled rejection: {:?}", err);
+        code = StatusCode::INTERNAL_SERVER_ERROR;
+        message = "Internal Server Error";
+    }
 
-    // Build user message
-    let user_message = match err.find::<WebErrorMessage>() {
-        Some(err) => err.typ.to_string(),
-        None => "Unknown".to_string(),
-    };
-
-    let result = json!({ "errorMessage": user_message });
-    let result = warp::reply::json(&result);
-
-    Ok(warp::reply::with_status(result, warp::http::StatusCode::BAD_REQUEST))
+    let json = warp::reply::json(&json!({ "message": message }));
+    Ok(warp::reply::with_status(json, code))
 }
 
 

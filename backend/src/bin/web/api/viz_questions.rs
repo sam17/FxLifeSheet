@@ -12,7 +12,6 @@ pub fn viz_questions_rest_filters(
     db: &Arc<Db>,
 ) -> impl Filter<Extract = impl warp::Reply, Error = warp::Rejection> + Clone {
     let data_path = warp::path(base_path).and(warp::path("questions"));
-    // let common = super::filter_utils::with_db(db.clone()).and(do_auth(db.clone()));
     let common = filter_utils::with_db(db.clone());
 
     // get with query params `GET questions/?category=foo&is_visible=true`
@@ -22,28 +21,25 @@ pub fn viz_questions_rest_filters(
         .and(common.clone())
         .and(warp::query::<VizQuestionsQuery>())
         .and_then(questions_with_query);
-    
+
     get_with_query
 }
 
+// async fn questions_with_query(db: Arc<Db>, query: VizQuestionsQuery) -> Result<Json, warp::Rejection> {
+//     let is_visible = query.is_visible.unwrap_or(false);
+//     let category = query.category;
+//
+//     let questions = VizQuestions::get_questions_with_query(&db, category, is_visible).await?;
+//     let response = json!(questions);
+//     Ok(warp::reply::json(&response))
+// }
 
 async fn questions_with_query(db: Arc<Db>, query: VizQuestionsQuery) -> Result<Json, warp::Rejection> {
-    let is_visible = query.is_visible;
-    let category = query.category;
+    let is_visible = query.is_visible.unwrap_or(false);
+    let category_name = query.category_name;
 
-    let unwrapped_visibility = match is_visible {
-        Some(b) => b,
-        None => false,
-    };
-
-    let unwrapped_category = match category {
-        Some(s) => s,
-        None => "".to_string(),
-    };
-
-    let questions = VizQuestions::get_questions_with_query(&db,
-                                                           unwrapped_category,
-                                                           unwrapped_visibility).await?;
+    let questions = VizQuestions::get_questions_with_query(&db, category_name, is_visible).await?;
     let response = json!(questions);
     Ok(warp::reply::json(&response))
 }
+
