@@ -62,6 +62,19 @@ impl VizQuestions {
         Ok(questions_list)
     }
 
+    pub async fn get_child_questions(
+        db: &Db,
+        parent_question_key: &str,
+        parent_question_option: &str,
+    ) -> Result<Vec<Question>, ModelError> {
+        let mut sb = sqlb::select().table(Self::TABLE).columns(Self::COLUMNS);
+        sb = sb.and_where_eq("parent_question", parent_question_key)
+            .and_where_eq("parent_question_option", parent_question_option);
+
+        let questions_list: Vec<Question> = sb.fetch_all(db).await?;
+        Ok(questions_list)
+    }
+
 }
 
 pub struct VizQuestionOptions;
