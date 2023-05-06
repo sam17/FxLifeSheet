@@ -22,22 +22,22 @@ use sqlx::postgres::{PgRow, PgValueRef};
 // }
 
 #[derive(Debug, PartialEq, Eq, Hash, Deserialize, Serialize, Clone)]
-pub struct QuestionKey(String);
+pub struct QuestionKey(pub String);
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct Question {
-    id: i32,
-    key: QuestionKey,
-    question: String,
-    answer_type: String,
-    parent_question: Option<QuestionKey>,
-    parent_question_option: Option<String>,
-    category: Option<i32>,
-    max: Option<i32>,
-    min: Option<i32>,
-    show: bool,
-    display_name: String,
-    is_positive: bool,
+    pub id: i32,
+    pub key: QuestionKey,
+    pub question: String,
+    pub answer_type: String,
+    pub parent_question: Option<QuestionKey>,
+    pub parent_question_option: Option<String>,
+    pub category: Option<i32>,
+    pub max: Option<i32>,
+    pub min: Option<i32>,
+    pub show: bool,
+    pub display_name: String,
+    pub is_positive: bool,
 }
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
