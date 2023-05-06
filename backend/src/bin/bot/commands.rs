@@ -30,5 +30,5 @@ pub enum HelperCommands {
      #[command(description = "Skip current question.")]
     Skip,
     #[command(description = "Skill all.")]
-    SkillAll,
+    SkipAll,
 }
