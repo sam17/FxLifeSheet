@@ -52,7 +52,18 @@ fn schema() -> Handler<'static, DependencyMap, Result<(), RequestError>, DpHandl
 }
 
 async fn message_handler(bot: Bot, msg: Message) -> ResponseResult<()> {
-    bot.send_message(msg.chat.id, "Message Handler").await?;
+    let message_text = msg.text().unwrap();
+    if message_text.starts_with("/") {
+        bot.send_message(msg.chat.id, "Invalid command").await?;
+        return Ok(());
+    }
+
+    let current_question = question_manager_global::get_current_question(msg.chat.id.0);
+    if (current_question.is_none()) {
+        bot.send_message(msg.chat.id, "Sorry, I forgot the question I asked, this usually means it took too long for you to respond, please trigger the question again by running the `/` command").await?;
+        return Ok(());
+    }
+
     Ok(())
 }
 
@@ -69,19 +80,23 @@ async fn inline_query_handler(bot: Bot, msg: Message) -> ResponseResult<()> {
 
 async fn on_question_command(bot: Bot, msg: Message) -> ResponseResult<()> {
     let command = msg.text().unwrap();
-
     if !is_valid_command(command) {
         bot.send_message(msg.chat.id, "Invalid command").await?;
         return Ok(());
-    } 
+    }
 
     let id = msg.chat.id.0;
+    let current_question = question_manager_global::get_current_question(msg.chat.id.0);
+
     let questions = get_all_questions(command);
-    question_manager_global::add_questions(id , questions);  
+    question_manager_global::add_questions(id, questions);
 
-    let question = question_manager_global::get_last_question(id).unwrap();
-
-    bot.send_message(msg.chat.id, question).await?;
+    if (current_question.is_some()) {
+        bot.send_message(msg.chat.id, "Okay, but answer my previous question first")
+            .await?;
+    } else {
+        ask_next_question(bot, msg).await?;
+    }
     Ok(())
 }
 
@@ -95,17 +110,18 @@ async fn on_skip(bot: Bot, msg: Message) -> ResponseResult<()> {
     Ok(())
 }
 
-async fn on_skip_all(
-    bot: Bot,
-    msg: Message,
-) -> ResponseResult<()> {
+async fn on_skip_all(bot: Bot, msg: Message) -> ResponseResult<()> {
     bot.send_message(msg.chat.id, "All questions removed from the queue")
         .await?;
+
+    question_manager_global::remove_all_questions(msg.chat.id.0);
     Ok(())
 }
 
-async fn ask_next_question(bot: Bot, msg: Message, question: &str) -> ResponseResult<()> {
-    bot.send_message(msg.chat.id, question).await?; // This is not working
+async fn ask_next_question(bot: Bot, msg: Message) -> ResponseResult<()> {
+    let id = msg.chat.id.0;
+    let question = question_manager_global::get_first_question(id).unwrap();
+    bot.send_message(msg.chat.id, question).await?;
     Ok(())
 }
 
@@ -115,7 +131,7 @@ fn is_valid_command(command: &str) -> bool {
 
 fn get_all_questions(command: &str) -> Vec<String> {
     vec![
-        "How are you?".to_string(),
+        "Did you wake up by yourself?".to_string(),
         "Where are you?".to_string(),
         "What are you doing?".to_string(),
     ]
