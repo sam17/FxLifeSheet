@@ -4,6 +4,11 @@ use sqlx::postgres::{PgRow, PgValueRef};
 use crate::models::questions::question_options::QuestionOption;
 
 
+#[derive(Debug, PartialEq, Eq, Hash, Deserialize, Serialize, Clone)]
+pub struct QuestionKey(pub String);
+
+
+
 #[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct Question {
     id: i32,
