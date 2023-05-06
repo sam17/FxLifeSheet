@@ -1,3 +1,4 @@
+use std::mem::size_of;
 use models::models::questions::viz_questions::Question;
 use crate::daos::viz_categories_dao::VizCategories;
 use crate::utils::db::Db;
@@ -17,6 +18,8 @@ impl VizQuestions {
         "show",
         "is_positive",
         "display_name",
+        "category",
+        "command"
     ];
 }
 
@@ -26,8 +29,8 @@ impl VizQuestions {
         db: &Db,
         category_name: Option<String>,
         is_visible: bool,
+        command: Option<String>,
     ) -> Result<Vec<Question>, ModelError> {
-        println!("category_name: {:?}", category_name);
         let mut sb = sqlb::select().table(Self::TABLE).columns(Self::COLUMNS);
 
         if is_visible {
@@ -39,8 +42,24 @@ impl VizQuestions {
             sb = sb.and_where_eq("category", category_id);
         }
 
+        if let Some(cmd) = command {
+            sb = sb.and_where_eq("command", cmd);
+        }
+
         let questions_list = sb.fetch_all(db).await?;
-        println!("questions_list: {:?}", questions_list);
+        Ok(questions_list)
+    }
+
+    pub async fn get_questions_for_command(
+        db: &Db,
+        command: String,
+    ) -> Result<Vec<Question>, ModelError> {
+        let mut sb = sqlb::select().table(Self::TABLE).columns(Self::COLUMNS);
+        sb = sb.and_where_eq("command", command);
+
+        let questions_list = sb.fetch_all(db).await?;
+        // print size of questions_list
+        println!("questions_list size: {}", size_of::<Vec<Question>>());
         Ok(questions_list)
     }
 }
