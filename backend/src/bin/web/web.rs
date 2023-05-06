@@ -10,6 +10,7 @@ use std::convert::Infallible;
 use std::sync::Arc;
 use warp::{Filter, Rejection, Reply};
 use warp::http::StatusCode;
+use crate::api::commands::commands_rest_filters;
 use crate::api::raw_data::raw_data_rest_filters;
 use crate::api::viz_categories::viz_categories_rest_filters;
 use crate::api::viz_metadata::viz_metadata_rest_filters;
@@ -24,6 +25,7 @@ async fn start_web(web_port: u16, db: Arc<Db>) -> Result<(), Error> {
     let metadata_apis = viz_metadata_rest_filters("api", &db);
     let questions_apis = viz_questions_rest_filters("api", &db);
     let categories_apis = viz_categories_rest_filters("api", &db);
+    let commands_apis = commands_rest_filters("api", &db);
 
     // Static content
     let static_s = warp::fs::dir("../frontend/build/");
@@ -35,7 +37,7 @@ async fn start_web(web_port: u16, db: Arc<Db>) -> Result<(), Error> {
     // Combine all routes
     // let routes = raw_data_apis.or(metadata_apis).or(questions_apis).or(categories_apis)
     //     .or(static_s).recover(handle_rejection).with(cors).with(log);
-    let routes = metadata_apis.or(questions_apis).or(categories_apis)
+    let routes = commands_apis.or(metadata_apis).or(questions_apis).or(categories_apis)
         .or(static_s).recover(handle_rejection).with(cors).with(log);
 
     println!("Start 0.0.0.0:{}", web_port);

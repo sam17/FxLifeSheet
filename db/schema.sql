@@ -17,6 +17,14 @@ CREATE TABLE IF NOT EXISTS category(
                                        UNIQUE (name)
 );
 
+create table commands
+(
+    name        varchar(255),
+    description varchar(255),
+    schedule    varchar(255),
+    unique (name)
+);
+
 CREATE TABLE IF NOT EXISTS questions
 (
     id          SERIAL,
@@ -38,6 +46,8 @@ CREATE TABLE IF NOT EXISTS questions
     is_positive boolean not null,
     cadence                  varchar(255),
     graph_type               varchar(255),
+    command                 varchar(255),
+    constraint fk_command FOREIGN KEY(command) REFERENCES commands (name),
     UNIQUE (key)
 );
 
@@ -90,6 +100,7 @@ CREATE TABLE IF NOT EXISTS raw_data (
 CREATE TABLE IF NOT EXISTS last_run (
     id SERIAL PRIMARY KEY,
     command text,
+    constraint fk_command FOREIGN KEY(command) REFERENCES commands (name),
     last_run bigint,
     last_message bigint,
     UNIQUE (command)
