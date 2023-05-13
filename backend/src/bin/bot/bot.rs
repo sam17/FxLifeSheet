@@ -1,3 +1,4 @@
+use std::println;
 use std::vec;
 use models::models::questions::viz_questions::Question;
 use commands::HelperCommands;
@@ -8,6 +9,7 @@ use models::models::questions::viz_questions::QuestionKey;
 use teloxide::dispatching::DpHandlerDescription;
 use teloxide::prelude::*;
 use teloxide::RequestError;
+use teloxide::types::ButtonRequest;
 use teloxide::types::{KeyboardButton, KeyboardMarkup};
 use teloxide::utils::command::BotCommands;
 mod commands;
@@ -96,11 +98,18 @@ async fn handle_answer(bot: Bot, msg: Message, question: Question) -> ResponseRe
             Ok(())
          }
         "range" => {
-        add_answer_to_db(msg.text().unwrap());
+            add_answer_to_db(msg.text().unwrap());
             ask_next_question(bot, msg).await?;
             Ok(())
      
         }
+        "location" => {
+            println!("location added");
+            // add_answer_to_db(msg.text().unwrap());
+            // ask_next_question(bot, msg).await?;
+            Ok(())
+        }
+
         _ => {
             bot.send_message(msg.chat.id, "Sorry, I don't know how to handle this answer type").await?;
             Ok(())
@@ -190,7 +199,8 @@ async fn ask_next_question(bot: Bot, msg: Message) -> ResponseResult<()> {
     }
 
     if question.answer_type == "location" {
-  
+        send_location_options(&bot, msg.chat.id, question.question.as_str()).await?;
+        return Ok(());
     }
 
     bot.send_message(msg.chat.id, question.question).await?;
@@ -221,6 +231,25 @@ async fn send_boolean_options(bot: &Bot, chat_id: ChatId, question_text: &str) -
     Ok(())
 }
 
+async fn send_location_options(bot: &Bot, chat_id: ChatId, question_text: &str) -> ResponseResult<()> {
+    let keyboard = make_location_keyboard();
+
+    bot.send_message(chat_id, question_text)
+        .reply_markup(keyboard)
+        .await?;
+
+    Ok(())
+}
+
+fn make_location_keyboard() -> KeyboardMarkup {
+    let mut keyboard: Vec<Vec<KeyboardButton>> = vec![];
+
+    let button = KeyboardButton::new("Share Location".to_owned()).request(ButtonRequest::Location);
+    keyboard.push(vec![button]);
+
+    KeyboardMarkup::new(keyboard).one_time_keyboard(true)
+}
+
 fn make_keyboard(options: Vec<String>) -> KeyboardMarkup {
     let mut keyboard: Vec<Vec<KeyboardButton>> = vec![];
 
@@ -248,9 +277,9 @@ fn get_all_questions(command: &str) -> Vec<Question> {
     vec![
         Question {
             id: 1,
-            key: QuestionKey("name".to_string()),
+            key: "name".to_string(),
             question: "What is your name?".to_string(),
-            answer_type: "text".to_string(),
+            answer_type: "location".to_string(),
             parent_question: None,
             parent_question_option: None,
             category: None,
@@ -258,11 +287,15 @@ fn get_all_questions(command: &str) -> Vec<Question> {
             min: None,
             show: false,
             display_name: "Name".to_string(),
-            is_positive: true
+            is_positive: true,
+            cadence: "daily".to_string(),
+            command: None,
+            graph_type: "Line".to_string(),
+            question_options: None
     },
     Question {
         id: 2,
-        key: QuestionKey("age".to_string()),
+        key: "age".to_string(),
         question: "What is your age?".to_string(),
         answer_type: "range".to_string(),
         parent_question: None,
@@ -272,8 +305,12 @@ fn get_all_questions(command: &str) -> Vec<Question> {
         min: None,
         show: false,
         display_name: "Age".to_string(),
-        is_positive: true
-    }
+        is_positive: true,
+            cadence: "daily".to_string(),
+            command: None,
+            graph_type: "Line".to_string(),
+            question_options: None
+     }
     ]
 
 }
