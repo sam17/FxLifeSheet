@@ -78,13 +78,13 @@ CREATE TABLE IF NOT EXISTS user_question_map
 
 
 CREATE TABLE IF NOT EXISTS raw_data (
-    id SERIAL PRIMARY KEY,
     timestamp bigint,
     "key" text,
-    "question" text,
-    "type" text,
     "value" text,
-    "source" text
+    "source" text,
+    "user_id" int,
+    constraint fk_user FOREIGN KEY(user_id) REFERENCES user_data (id),
+    UNIQUE (timestamp, key, source, user_id)
 );
 
 CREATE TABLE IF NOT EXISTS last_run (

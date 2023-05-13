@@ -102,7 +102,6 @@ class CalendarViz extends React.Component<IProps, IState> {
 
     d3.json(url).then((data) => {
       let d3data = Object.assign(new Array<RawDateData>(), data);
-      // console.log(this.maxRange, this.minRange);
       let calendarData = new ArrayDateData(d3data['data'], this.maxRange, this.minRange, this.isPositive, this.isReverse);
 
       let color = this.isPositive ? positiveColors : negativeColors;
@@ -121,7 +120,6 @@ class CalendarViz extends React.Component<IProps, IState> {
               const value = calendarData.getValueInWeekOfDate(new Date(d)).value;
               return value !== null ? color(value) : "gray"; // Replace "gray" with your default color
             } else {
-              // console.log(name, d, "color",calendarData.getModifiedValue(new Date(d)));
               return color(calendarData.getModifiedValue(new Date(d)));
             }
           })

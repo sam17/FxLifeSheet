@@ -3,6 +3,7 @@ use serde_json::json;
 use std::sync::Arc;
 use warp::reply::Json;
 use warp::Filter;
+use models::models::collector::raw_data::PublishableDataObj;
 use crate::daos::raw_data_dao::RawData;
 use crate::utils::db::Db;
 use crate::utils::filter_utils;
@@ -18,7 +19,6 @@ pub fn raw_data_rest_filters(
 	// let common = super::filter_utils::with_db(db.clone()).and(do_auth(db.clone()));
 	let common = filter_utils::with_db(db.clone());
 
-	// LIST raw_data `GET collector/`
 	let list = data_path
 		.and(warp::get())
 		.and(warp::path::end())
@@ -31,7 +31,20 @@ pub fn raw_data_rest_filters(
 		.and(warp::path::param())
 		.and_then(data_get_by_key);
 
-	list.or(get)
+	let post = data_path
+		.and(warp::post())
+		.and(common.clone())
+		.and(warp::body::json())
+		.and_then(data_post);
+
+	list.or(get).or(post)
+}
+
+
+// function to post data to the database in PublishableDataObj format
+pub async fn data_post(db: Arc<Db>, data: PublishableDataObj) -> Result<Json, warp::Rejection> {
+	let data = RawData::insert_data(&db, &data).await?;
+	json_response(data)
 }
 
 async fn data_get_all(db: Arc<Db>) -> Result<Json, warp::Rejection> {
