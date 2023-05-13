@@ -5,11 +5,11 @@ use commands::HelperCommands;
 use commands::QuestionCommands;
 use dotenv::dotenv;
 use dptree::case;
-use models::models::questions::viz_questions::QuestionKey;
 use teloxide::dispatching::DpHandlerDescription;
 use teloxide::prelude::*;
 use teloxide::RequestError;
 use teloxide::types::ButtonRequest;
+use teloxide::types::Location;
 use teloxide::types::{KeyboardButton, KeyboardMarkup};
 use teloxide::utils::command::BotCommands;
 mod commands;
@@ -59,11 +59,12 @@ fn schema() -> Handler<'static, DependencyMap, Result<(), RequestError>, DpHandl
 }
 
 async fn message_handler(bot: Bot, msg: Message) -> ResponseResult<()> {
-    let message_text = msg.text().unwrap();
+    if let Some(message_text) = msg.text() {
     if message_text.starts_with("/") {
         bot.send_message(msg.chat.id, "Invalid command, Try the following").await?;
         on_help(bot, msg).await?;
         return Ok(());
+    }
     }
 
     let current_question = question_manager_global::get_current_question(msg.chat.id.0);
@@ -82,7 +83,7 @@ async fn message_handler(bot: Bot, msg: Message) -> ResponseResult<()> {
 
 async fn handle_answer(bot: Bot, msg: Message, question: Question) -> ResponseResult<()> {
     match question.answer_type.as_str() {
-        "text" => {
+        "text"  => {
             add_answer_to_db(msg.text().unwrap());
             ask_next_question(bot, msg).await?;
             Ok(())
@@ -98,15 +99,26 @@ async fn handle_answer(bot: Bot, msg: Message, question: Question) -> ResponseRe
             Ok(())
          }
         "range" => {
+            // TODO add range validation
             add_answer_to_db(msg.text().unwrap());
             ask_next_question(bot, msg).await?;
             Ok(())
-     
+        }
+        "boolean" => {
+            // TODO add boolean validation
+            add_answer_to_db(msg.text().unwrap());
+            ask_next_question(bot, msg).await?;
+            Ok(())
         }
         "location" => {
             println!("location added");
-            // add_answer_to_db(msg.text().unwrap());
-            // ask_next_question(bot, msg).await?;
+            if let Some(location) = msg.location() {
+                add_location_to_db(location);
+            } else {
+                bot.send_message(msg.chat.id, "Invalid location, please try again").await?;
+                return Ok(());
+            }
+            ask_next_question(bot, msg).await?;
             Ok(())
         }
 
@@ -271,6 +283,10 @@ fn is_valid_command(command: &str) -> bool {
 
 fn add_answer_to_db(answer: &str) {
     println!("Answer: {}", answer)
+}
+
+fn add_location_to_db(location: &Location) {
+    println!("Location: {:?}", location)
 }
 
 fn get_all_questions(command: &str) -> Vec<Question> {
