@@ -5,9 +5,9 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct QuestionOption {
-    id: i32,
-    name: String,
-    question_key: String,
+    pub id: i32,
+    pub name: String,
+    pub question_key: String,
 }
 
 impl QuestionOption {

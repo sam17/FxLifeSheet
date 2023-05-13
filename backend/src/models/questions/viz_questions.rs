@@ -11,22 +11,22 @@ pub struct QuestionKey(pub String);
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct Question {
-    id: i32,
+    pub id: i32,
     pub key: String,
-    question: String,
-    answer_type: String,
-    parent_question: Option<String>,
-    parent_question_option: Option<String>,
-    category: Option<i32>,
-    max: Option<i32>,
-    min: Option<i32>,
-    show: bool,
-    display_name: String,
-    is_positive: bool,
-    cadence: String,
-    command: Option<String>,
-    graph_type: String,
-    question_options: Option<Vec<QuestionOption>>,
+    pub question: String,
+    pub answer_type: String,
+    pub parent_question: Option<String>,
+    pub parent_question_option: Option<String>,
+    pub category: Option<i32>,
+    pub max: Option<i32>,
+    pub min: Option<i32>,
+    pub show: bool,
+    pub display_name: String,
+    pub is_positive: bool,
+    pub cadence: String,
+    pub command: Option<String>,
+    pub graph_type: String,
+    pub question_options: Option<Vec<QuestionOption>>,
 }
 
 impl Question {
