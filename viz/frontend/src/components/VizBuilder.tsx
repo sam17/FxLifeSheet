@@ -78,7 +78,7 @@ function VizBuilder(props: props) {
       <Tooltip tooltipData={tooltipData} />
       {questionsForCategory.map((item) => {
         return (
-          <div>
+          <div key={item.category}>
             <Divider orientation="left" className={styles.divider}>
               {" "}
               {item.category}{" "}
