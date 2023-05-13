@@ -1,4 +1,3 @@
-use std::println;
 use std::vec;
 use models::models::questions::question_options::QuestionOption;
 use models::models::questions::viz_questions::Question;
