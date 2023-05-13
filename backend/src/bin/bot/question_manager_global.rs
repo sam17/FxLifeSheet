@@ -13,6 +13,11 @@ pub fn add_questions(user_id: i64, new_questions: Vec<Question>) {
     question_map.entry(user_id).or_insert(Vec::new()).extend(new_questions);
 }
 
+pub fn add_questions_to_front(user_id: i64, new_questions: Vec<Question>) {
+    let mut question_map = QUESTION_MAP.lock().unwrap();
+    question_map.entry(user_id).or_insert(Vec::new()).splice(0..0, new_questions);
+}
+
 pub fn set_current_question_nulled(user_id: i64) {
     let mut current_question = CURRENT_QUESTION.lock().unwrap();
     current_question.insert(user_id, None);
