@@ -1,5 +1,6 @@
 use std::println;
 use std::vec;
+use models::models::questions::question_options::QuestionOption;
 use models::models::questions::viz_questions::Question;
 use commands::HelperCommands;
 use commands::QuestionCommands;
@@ -83,9 +84,8 @@ async fn message_handler(bot: Bot, msg: Message) -> ResponseResult<()> {
 
 async fn handle_answer(bot: Bot, msg: Message, question: Question) -> ResponseResult<()> {
     match question.answer_type.as_str() {
-        "text"  => {
-            add_answer_to_db(msg.text().unwrap());
-            ask_next_question(bot, msg).await?;
+        "text" | "range" | "boolean"  => {
+            on_question_answered(bot, msg, question).await?;
             Ok(())
         }
         "number" => {
@@ -94,22 +94,9 @@ async fn handle_answer(bot: Bot, msg: Message, question: Question) -> ResponseRe
                 bot.send_message(msg.chat.id, "Invalid number, please try again").await?;
                 return Ok(());
             }
-            add_answer_to_db(msg.text().unwrap());
-            ask_next_question(bot, msg).await?;
+            on_question_answered(bot, msg, question).await?;
             Ok(())
          }
-        "range" => {
-            // TODO add range validation
-            add_answer_to_db(msg.text().unwrap());
-            ask_next_question(bot, msg).await?;
-            Ok(())
-        }
-        "boolean" => {
-            // TODO add boolean validation
-            add_answer_to_db(msg.text().unwrap());
-            ask_next_question(bot, msg).await?;
-            Ok(())
-        }
         "location" => {
             println!("location added");
             if let Some(location) = msg.location() {
@@ -126,6 +113,27 @@ async fn handle_answer(bot: Bot, msg: Message, question: Question) -> ResponseRe
             bot.send_message(msg.chat.id, "Sorry, I don't know how to handle this answer type").await?;
             Ok(())
         }
+    }
+}
+
+async fn on_question_answered(bot: Bot, msg: Message, question: Question) -> ResponseResult<()> {
+    add_answer_to_db(msg.text().unwrap());
+    add_follow_up_question(question, &msg);
+    ask_next_question(bot, msg).await?;
+    Ok(()) 
+}
+
+fn add_follow_up_question(question: Question, msg: &Message) {
+    let message_text = msg.text().unwrap();
+    let user_id = msg.chat.id.0;
+
+    if let Some(options) = question.question_options {
+        if let Some(option) = options.into_iter().find(|option| option.name == message_text) {
+            
+            let new_questions = get_question_for_option(option.question_key, option.id);
+        
+            question_manager_global::add_questions_to_front(user_id, new_questions)
+        } 
     }
 }
 
@@ -201,7 +209,7 @@ async fn ask_next_question(bot: Bot, msg: Message) -> ResponseResult<()> {
     let question = question_manager_global::get_first_question(id).unwrap();
 
     if question.answer_type == "range" {
-        send_range_options(&bot, msg.chat.id, question.question.as_str()).await?;
+        send_range_options(&bot, msg.chat.id, question.question.as_str(), question.question_options).await?;
         return Ok(());
     }
 
@@ -219,8 +227,11 @@ async fn ask_next_question(bot: Bot, msg: Message) -> ResponseResult<()> {
     Ok(())
 }
 
-async fn send_range_options(bot: &Bot, chat_id: ChatId, question_text: &str) -> ResponseResult<()> {
-    let options: Vec<String> = (1..=5).map(|i| i.to_string()).collect();
+async fn send_range_options(bot: &Bot, chat_id: ChatId, question_text: &str, question_options: Option<Vec<QuestionOption>>) -> ResponseResult<()> {
+    let options: Vec<String> = match question_options {
+        Some(options) => options.iter().map(|option| option.name.clone()).collect(),
+        None => vec![], // return an empty vector if question_options is None
+    };
 
     let keyboard = make_keyboard(options);
 
@@ -289,13 +300,53 @@ fn add_location_to_db(location: &Location) {
     println!("Location: {:?}", location)
 }
 
+fn get_question_for_option(parent_question_key: String, parent_question_option:i32) -> Vec<Question> {
+
+    if parent_question_option != 2 {
+        return vec![];
+    }    
+
+
+    vec![
+        Question {
+            id: 3,
+            key: "mood".to_string(),
+            question: "What is your mood?".to_string(),
+            answer_type: "range".to_string(),
+            parent_question: Some("name".to_string()),
+            parent_question_option: Some("Yes".to_string()),
+            category: None,
+            max: Some(100),
+            min: Some(0),
+            show: false,
+            display_name: "Age".to_string(),
+            is_positive: true,
+            cadence: "daily".to_string(),
+            command: None,
+            graph_type: "Line".to_string(),
+            question_options: Some(vec![
+                QuestionOption {
+                    id: 1,
+                    name: "Yes".to_string(),
+                    question_key: "3".to_string(),
+                },
+                QuestionOption {
+                    id: 2,
+                    name: "No".to_string(),
+                    question_key: "3".to_string(),
+                },
+            ]),
+        },
+    ]
+}
+
 fn get_all_questions(command: &str) -> Vec<Question> {
     vec![
         Question {
             id: 1,
             key: "name".to_string(),
             question: "What is your name?".to_string(),
-            answer_type: "location".to_string(),
+            answer_type: "text".to_string(),
             parent_question: None,
             parent_question_option: None,
             category: None,
@@ -325,7 +376,23 @@ fn get_all_questions(command: &str) -> Vec<Question> {
             cadence: "daily".to_string(),
             command: None,
             graph_type: "Line".to_string(),
-            question_options: None
+            question_options: Some(vec![
+                QuestionOption { 
+                    id: 1,
+                    name: "0-10".to_string(),
+                    question_key: "age".to_string(),
+                },
+                QuestionOption { 
+                    id: 2,
+                    name: "11-20".to_string(),
+                    question_key: "age".to_string(),
+                },
+                QuestionOption { 
+                    id: 3,
+                    name: "21-30".to_string(),
+                    question_key: "age".to_string(),
+                },
+            ])
      }
     ]
 
