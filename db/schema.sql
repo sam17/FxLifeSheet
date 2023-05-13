@@ -39,8 +39,8 @@ CREATE TABLE IF NOT EXISTS questions
 
     category    int,
     constraint fk_category FOREIGN KEY(category) REFERENCES category (id),
-    max         int,
-    min         int,
+    max_value         int,
+    min_value         int,
     show        boolean not null,
     display_name text not null,
     is_positive boolean not null,
@@ -78,23 +78,13 @@ CREATE TABLE IF NOT EXISTS user_question_map
 
 
 CREATE TABLE IF NOT EXISTS raw_data (
-    id SERIAL PRIMARY KEY,
     timestamp bigint,
-    "yearmonth" int,
-    "yearweek" int,
-    "year" smallint,
-    "quarter" smallint,
-    "month" smallint,
-    "day" smallint,
-    "hour" smallint,
-    "minute" smallint,
-    "week" smallint,
     "key" text,
-    "question" text,
-    "type" text,
     "value" text,
-    "matcheddate" date,
-    "source" text
+    "source" text,
+    "user_id" int,
+    constraint fk_user FOREIGN KEY(user_id) REFERENCES user_data (id),
+    UNIQUE (timestamp, key, source, user_id)
 );
 
 CREATE TABLE IF NOT EXISTS last_run (

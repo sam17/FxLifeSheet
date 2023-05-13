@@ -8,8 +8,8 @@ function App() {
   const development: boolean =
     !process.env.NODE_ENV || process.env.NODE_ENV === "development";
   const baseUrl: string = development
-    // ? "http://localhost:8080/api/"
-    ? "https://metrics.soumyadeep.in/api/"
+    ? "http://localhost:8080/api/"
+    // ? "https://metrics.soumyadeep.in/api/"
     : "/api/";
 
   const dataUrl = baseUrl + "data/";
