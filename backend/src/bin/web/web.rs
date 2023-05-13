@@ -19,9 +19,9 @@ use crate::utils::db::{Db, init_db};
 use crate::utils::error::{Error, ModelError, WebErrorMessage};
 
 async fn start_web(web_port: u16, db: Arc<Db>) -> Result<(), Error> {
+
     // Apis
-    //TODO(soumyadeep): Uncomment
-    // let raw_data_apis = raw_data_rest_filters("api", &db);
+    let raw_data_apis = raw_data_rest_filters("api", &db);
     let metadata_apis = viz_metadata_rest_filters("api", &db);
     let questions_apis = viz_questions_rest_filters("api", &db);
     let categories_apis = viz_categories_rest_filters("api", &db);
@@ -35,9 +35,7 @@ async fn start_web(web_port: u16, db: Arc<Db>) -> Result<(), Error> {
     let log = warp::log("access");
 
     // Combine all routes
-    // let routes = raw_data_apis.or(metadata_apis).or(questions_apis).or(categories_apis)
-    //     .or(static_s).recover(handle_rejection).with(cors).with(log);
-    let routes = commands_apis.or(metadata_apis).or(questions_apis).or(categories_apis)
+    let routes = raw_data_apis.or(commands_apis).or(metadata_apis).or(questions_apis).or(categories_apis)
         .or(static_s).recover(handle_rejection).with(cors).with(log);
 
     println!("Start 0.0.0.0:{}", web_port);

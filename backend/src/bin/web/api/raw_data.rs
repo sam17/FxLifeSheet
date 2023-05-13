@@ -14,7 +14,7 @@ pub fn raw_data_rest_filters(
 	base_path: &'static str,
 	db: &Arc<Db>,
 ) -> impl Filter<Extract = impl warp::Reply, Error = warp::Rejection> + Clone {
-	let data_path = warp::path(base_path).and(warp::path("collector"));
+	let data_path = warp::path(base_path).and(warp::path("data"));
 	// let common = super::filter_utils::with_db(db.clone()).and(do_auth(db.clone()));
 	let common = filter_utils::with_db(db.clone());
 
@@ -46,7 +46,7 @@ async fn data_get_by_key(db: Arc<Db>, key: String) -> Result<Json, warp::Rejecti
 
 // region:    Utils
 fn json_response<D: Serialize>(data: D) -> Result<Json, warp::Rejection> {
-	let response = json!({ "collector": data });
+	let response = json!({ "data": data });
 	Ok(warp::reply::json(&response))
 }
 // endregion: Utils

@@ -102,10 +102,11 @@ class CalendarViz extends React.Component<IProps, IState> {
 
     d3.json(url).then((data) => {
       let d3data = Object.assign(new Array<RawDateData>(), data);
-      let calendarData = new ArrayDateData(d3data['data'], this.props.maxRange, this.props.minRange, this.props.isPositive, this.props.isReverse);
+      // console.log(this.maxRange, this.minRange);
+      let calendarData = new ArrayDateData(d3data['data'], this.maxRange, this.minRange, this.isPositive, this.isReverse);
 
-      let color = this.props.isPositive ? positiveColors : negativeColors;
-      color.domain([this.props.minRange, this.props.maxRange]);
+      let color = this.isPositive ? positiveColors : negativeColors;
+      color.domain([this.minRange, this.maxRange]);
 
       rect
           .filter(function (d) {
@@ -120,6 +121,7 @@ class CalendarViz extends React.Component<IProps, IState> {
               const value = calendarData.getValueInWeekOfDate(new Date(d)).value;
               return value !== null ? color(value) : "gray"; // Replace "gray" with your default color
             } else {
+              // console.log(name, d, "color",calendarData.getModifiedValue(new Date(d)));
               return color(calendarData.getModifiedValue(new Date(d)));
             }
           })
@@ -130,7 +132,7 @@ class CalendarViz extends React.Component<IProps, IState> {
               visible: true,
               date: new Date(d),
               value: value?.toString() ?? "",
-              isPositive: this.props.isPositive,
+              isPositive: this.isPositive,
             });
           })
           .on("mouseout", () => {
@@ -139,7 +141,7 @@ class CalendarViz extends React.Component<IProps, IState> {
               visible: false,
               date: new Date(),
               value: "",
-              isPositive: this.props.isPositive,
+              isPositive: this.isPositive,
             });
           });
 
