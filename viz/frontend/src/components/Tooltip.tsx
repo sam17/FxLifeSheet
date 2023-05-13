@@ -48,7 +48,6 @@ const Tooltip: React.FC<TooltipProps> = ({ tooltipData }) => {
 
       const left = mousePosition.x + offset;
       const top = mousePosition.y -  offset;
-      console.log(left, top);
 
       setPosition({
         left,

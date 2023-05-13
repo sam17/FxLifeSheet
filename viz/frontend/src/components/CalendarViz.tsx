@@ -91,7 +91,7 @@ class CalendarViz extends React.Component<IProps, IState> {
         .attr("width", cellSize)
         .attr("height", cellSize)
         .attr("x", function(d) {
-          return (d3.timeWeek.count(d3.timeYear(d), d) - 1)  * cellSize;
+          return (d3.timeWeek.count(startDayForViz, d) - 1)  * cellSize;
         })
         .attr("y", function(d) {
           return d.getDay() * cellSize;
