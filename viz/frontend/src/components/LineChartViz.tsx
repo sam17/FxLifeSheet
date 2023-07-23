@@ -52,6 +52,8 @@ class LineChartViz extends React.Component<IProps, IState> {
     const negativeColorDark = "#340909";
 
     const colourDark = this.isPositive ? positiveColorDark : negativeColorDark;
+    let lastDayForViz = getLastDateToBeShownInViz(new Date());
+    let startDayForViz = getStartDateToBeShownInViz(new Date());
 
     const line = d3
       .line<{ date: Date; value: number }>()
@@ -84,12 +86,11 @@ class LineChartViz extends React.Component<IProps, IState> {
         d3.extent(chartData.getData(), (d) => new Date(d.date)) as [Date, Date]
       );
 
-      let lastDayForViz = getLastDateToBeShownInViz(new Date());
-      let startDayForViz = getStartDateToBeShownInViz(new Date());
-      const dateFormat = "%d-%m";
+     const dateFormat = "%d-%m";
       const formatDate = (domainValue: Date | d3.NumberValue, index: number) =>
         timeFormat(dateFormat)(domainValue as Date);
 
+      chartData.setData(chartData.getData().filter(d => d.date >= startDayForViz && d.date <= lastDayForViz));
       x.domain([startDayForViz, lastDayForViz]);
       svg
         .append("g")
