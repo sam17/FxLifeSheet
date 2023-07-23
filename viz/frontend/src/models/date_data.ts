@@ -87,6 +87,11 @@ class ArrayDateData {
     return this.data;
   }
 
+  // set data
+  setData(data: Array<DateData>) {
+      this.data = data;
+  }
+
   getValueInWeekOfDate(d: Date): { date: Date | null; value: number | null } {
     const targetWeekStart = this.getWeekStart(d);
 
