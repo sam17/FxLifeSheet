@@ -7,6 +7,7 @@ import {
   getDateInString,
   getLastDateToBeShownInViz,
   getStartDateToBeShownInViz,
+  getContinuousDates
 } from "src/utils/date";
 import { viz_details } from "src/models/constants";
 import { timeDay } from "d3-time";
@@ -54,16 +55,16 @@ class LineChartViz extends React.Component<IProps, IState> {
     const colourDark = this.isPositive ? positiveColorDark : negativeColorDark;
     let lastDayForViz = getLastDateToBeShownInViz(new Date());
     let startDayForViz = getStartDateToBeShownInViz(new Date());
+    const [startDate, endDate] = getContinuousDates();
 
     const line = d3
       .line<{ date: Date; value: number }>()
       .x((d) => x(d.date))
       .y((d) => y(Math.abs(d.value)));
 
-    const svg = d3
-      .select("." + this.name + "12")
+    const svg = d3.select("." + this.name + "12")
       .selectAll("svg")
-      .data(d3.range(2022, 2025))
+      .data([startDate.getFullYear(), endDate.getFullYear()])
       .enter()
       .append("svg")
       .attr("width", width + margin.left + margin.right)

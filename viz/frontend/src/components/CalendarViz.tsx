@@ -3,7 +3,7 @@ import * as d3 from "d3";
 import { Col } from "antd";
 import styles from "../stylesheets.module.scss";
 import { ArrayDateData, RawDateData } from "src/models/date_data";
-import { getDateInString, getLastDateToBeShownInViz, getStartDateToBeShownInViz, weeksToShowInViz } from "src/utils/date";
+import { getDateInString, getLastDateToBeShownInViz, getStartDateToBeShownInViz, weeksToShowInViz, getContinuousDates } from "src/utils/date";
 import {viz_details} from "../models/constants";
 import { tooltipData } from "./Tooltip";
 
@@ -196,10 +196,3 @@ class CalendarViz extends React.Component<IProps, IState> {
 export default CalendarViz;
 
 
-function getContinuousDates() {
-  const startYear = 2022;
-  const endYear = new Date().getFullYear(); // Or any end year you prefer
-  const startDate = new Date(startYear, 0, 1);
-  const endDate = new Date(endYear + 1, 0, 1); // Till the beginning of next year
-  return [startDate, endDate];
-}
