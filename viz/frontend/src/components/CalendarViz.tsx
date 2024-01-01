@@ -53,14 +53,16 @@ class CalendarViz extends React.Component<IProps, IState> {
     
     const startDayForViz = getStartDateToBeShownInViz(new Date())
     const lastDayForViz = getLastDateToBeShownInViz(new Date())
-
+    const [startDate, endDate] = getContinuousDates(); // Implement this utility function
+    const dateRange = cadence === 'week' 
+      ? d3.timeWeeks(startDate, endDate)
+      : d3.timeDays(startDate, endDate);
     // Create the SVG element for the calendar heatmap
-    const svg = d3
-      .select("." + this.name)
-      .selectAll("svg")
-      .data(d3.range(2022, 2024))
-      .enter()
-      .append("svg")
+    const svg = d3.select("." + this.name)
+    .selectAll("svg")
+    .data([startDate.getFullYear(), endDate.getFullYear()])
+    .enter()
+    .append("svg")
       .attr("width", width)
       .attr("height", height)
       .attr("class", "RdYlGn")
@@ -68,28 +70,20 @@ class CalendarViz extends React.Component<IProps, IState> {
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 
-    const rect = svg
-        .append("g")
-        .attr("fill", "none")
-        .attr("stroke", "#ccc")
-        .selectAll("rect")
-        .data(function(d) {
-          if (cadence === "week") {
-            return d3.timeWeeks(new Date(d, 0, 1), new Date(d + 1, 0, 1));
-          } else {
-            return d3.timeDays(new Date(d, 0, 1), new Date(d + 1, 0, 1));
-          }
-        })
-        .enter()
-        .append("rect")
-        .filter(function(d) {
-          if ( d > lastDayForViz || d < startDayForViz ){
-            return false;
-          }
-          return true;
-        })
-        .attr("width", cellSize)
-        .attr("height", cellSize)
+      const rect = svg
+      .append("g")
+      .attr("fill", "none")
+      .attr("stroke", "#ccc")
+      .selectAll("rect")
+      .data(dateRange) // Bind the continuous date range here
+      .enter()
+      .append("rect")
+      .filter(function (d) {
+        return d >= startDayForViz && d <= lastDayForViz;
+      })
+      // Set attributes for each rectangle
+      .attr("width", cellSize)
+      .attr("height", cellSize)
         .attr("x", function(d) {
           return (d3.timeWeek.count(startDayForViz, d) - 1)  * cellSize;
         })
@@ -200,3 +194,12 @@ class CalendarViz extends React.Component<IProps, IState> {
 }
 
 export default CalendarViz;
+
+
+function getContinuousDates() {
+  const startYear = 2022;
+  const endYear = new Date().getFullYear(); // Or any end year you prefer
+  const startDate = new Date(startYear, 0, 1);
+  const endDate = new Date(endYear + 1, 0, 1); // Till the beginning of next year
+  return [startDate, endDate];
+}

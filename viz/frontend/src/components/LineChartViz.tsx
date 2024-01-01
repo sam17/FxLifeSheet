@@ -63,7 +63,7 @@ class LineChartViz extends React.Component<IProps, IState> {
     const svg = d3
       .select("." + this.name + "12")
       .selectAll("svg")
-      .data(d3.range(2022, 2024))
+      .data(d3.range(2022, 2025))
       .enter()
       .append("svg")
       .attr("width", width + margin.left + margin.right)
