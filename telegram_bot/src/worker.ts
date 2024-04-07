@@ -131,8 +131,19 @@ function printGraph(
           "," +
           maximum;
         console.log(url);
-        ctx.replyWithPhoto({
-          url: url
+        // ctx.replyWithPhoto({
+        //   url: url
+        // });
+        ctx.replyWithPhoto({ url: url }).catch(error => {
+          console.error("Failed to send photo:", error);
+          if (error.response && error.response.status === 502) {
+            console.log(
+              "Sorry, there was a problem generating the graph. Please try again later."
+            );
+          } else {
+            // Handle other errors or rethrow them
+            console.log("An unexpected error occurred. Please try again.");
+          }
         });
       }
 
