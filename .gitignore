@@ -10,3 +10,4 @@ telegram_bot/local.env
 .idea/
 *.iml
 temp/
+.claude/
