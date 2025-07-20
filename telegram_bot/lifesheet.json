@@ -2,63 +2,64 @@
     "mood": {
         "description": "Track my current mood during the day",
         "schedule": "eightTimesADay",
-        "questions": [{
-            "key": "happyLevels",
-            "displayName": "Happiness",
-            "question": "How happy/excited are you feeling right now?",
-            "type": "range",
-            "isVisibleInVisualizer": true,
-            "category": "Mental Health",
-            "buttons": {
-                "5": "Very happy/excited",
-                "4": "Happy/excited",
-                "3": "Moderate",
-                "2": "Sad/dull",
-                "1": "Very sad/dull",
-                "0": "Extremely sad/dull"
+        "questions": [
+            {
+                "key": "happyLevels",
+                "displayName": "Happiness",
+                "question": "How happy/excited are you feeling right now?",
+                "type": "range",
+                "isVisibleInVisualizer": true,
+                "category": "Mental Health",
+                "buttons": {
+                    "0": "Extremely sad/dull",
+                    "1": "Very sad/dull",
+                    "2": "Sad/dull",
+                    "3": "Moderate",
+                    "4": "Happy/excited",
+                    "5": "Very happy/excited"
+                }
+            },
+            {
+                "key": "anxietyLevels",
+                "displayName": "Anxiety",
+                "question": "How anxious/stressed are you feeling right now?",
+                "isVisibleInVisualizer": true,
+                "isPositive": false,
+                "isReverse": true,
+                "category": "Mental Health",
+                "type": "range",
+                "buttons": {
+                    "0": "Extremely",
+                    "1": "Very much",
+                    "2": "Quite a bit",
+                    "3": "Moderate",
+                    "4": "A little",
+                    "5": "Not at all"
+                }
+            },
+            {
+                "key": "energyLevels",
+                "displayName": "Energy",
+                "question": "How much energy do you have right now?",
+                "isVisibleInVisualizer": true,
+                "category": "Mental Health",
+                "type": "range",
+                "buttons": {
+                    "0": "Extremely low",
+                    "1": "Very low",
+                    "2": "Low",
+                    "3": "Moderate",
+                    "4": "High",
+                    "5": "Very high"
+                }
             }
-        },
-        {
-            "key": "anxietyLevels",
-            "displayName": "Anxiety",
-            "question": "How anxious/stressed are you feeling right now?",
-            "isVisibleInVisualizer": true,
-            "isPositive": false,
-            "isReverse": true,
-            "category": "Mental Health",
-            "type": "range",
-            "buttons": {
-                "5": "Not at all",
-                "4": "A little",
-                "3": "Moderate",
-                "2": "Quite a bit",
-                "1": "Very much",
-                "0": "Extremely"
-            }
-        },
-        {
-            "key": "energyLevels",
-            "displayName": "Energy",
-            "question": "How much energy do you have right now?",
-            "isVisibleInVisualizer": true,
-            "category": "Mental Health",
-            "type": "range",
-            "buttons": {
-                "5": "Very high",
-                "4": "High",
-                "3": "Moderate",
-                "2": "Low",
-                "1": "Very low",
-                "0": "Extremely low"
-            }
-        }
-
-    ]
+        ]
     },
     "awake": {
         "description": "Use this right when you woke up",
         "schedule": "daily",
-        "questions": [{
+        "questions": [
+            {
                 "question": "🌇 Good morning",
                 "type": "header"
             },
@@ -71,9 +72,21 @@
                 "type": "boolean"
             },
             {
+                "key": "sleptOnTime",
+                "question": "Did you sleep on time yesterday?",
+                "displayName": "Slept on Time?",
+                "category": "Physical Health",
+                "isVisibleInVisualizer": true,
+                "type": "boolean",
+                "buttons": {
+                    "0": "No",
+                    "1": "Yes"
+                }
+            },
+            {
                 "key": "didVomit",
                 "isVisibleInVisualizer": true,
-                "displayName": "Vomited in morning",
+                "displayName": "Vomited in Morning",
                 "isPositive": false,
                 "category": "Physical Health",
                 "question": "Did you vomit this morning?",
@@ -87,21 +100,26 @@
                 "type": "text"
             },
             {
-                "key": "pomodoroPredicted",
-                "displayName": "Pomodoros predicted",
-                "question": "How many pomodoros do you think you'll get done today?",
-                "category": "Productivity",
+                "key": "sleepQuality",
+                "displayName": "Sleep Quality Feeling",
+                "question":"Rate your sleep quality feeling from 1 to 5. Also, note on App.",
                 "type": "range",
+                "category": "Physical Health",
+                "isVisibleInVisualizer": true,
                 "buttons": {
-                    "5": "16+",
-                    "4": "12-15",
-                    "3": "8-11",
-                    "2": "4-7",
-                    "1": "1-3",
-                    "0": "0"
+                    "0": "0",
+                    "1": "1",
+                    "2": "2",
+                    "3": "3",
+                    "4": "4",
+                    "5": "5"
                 }
+            },
+            {
+                "question": "Remember, Discipline, Depth and Courage!",
+                "type": "header"
             }
-       ]
+        ]
     },
     "asleep": {
         "description": "Use this right when going to bed",
@@ -128,12 +146,12 @@
                 "category": "Physical Health",
                 "type": "range",
                 "buttons": {
-                    "5": "No alcohol",
-                    "4": "Had 1 drink",
-                    "3": "Had 2 drinks",
-                    "2": "Had 3 drinks",
+                    "0": "Got wasted",
                     "1": "Had 4-5 drinks",
-                    "0": "Got wasted"
+                    "2": "Had 3 drinks",
+                    "3": "Had 2 drinks",
+                    "4": "Had 1 drink",
+                    "5": "No alcohol"
                 },
                 "replies": {
                     "0": "Haha, hope you had a good time and the calories were all worth it. Make sure to still hit your protein goal and eat extra clean the next few days"
@@ -147,54 +165,41 @@
                 "category": "Physical Health",
                 "type": "range",
                 "buttons": {
-                    "5": "5",
-                    "4": "4",
-                    "3": "3",
-                    "2": "2",
+                    "0": "What is food?",
                     "1": "1",
-                    "0": "What is food?"
+                    "2": "2",
+                    "3": "3",
+                    "4": "4",
+                    "5": "5"
                 }
             },
             {
-                "key": "caffeine",
-                "question": "How much caffeine did you drink today? (Coffee, Club Mate, Energy Drinks)",
-                "displayName": "Caffeine intake",
+                "key": "vegetables",
+                "question": "How many vegetables did you have today?",
                 "category": "Physical Health",
-                "isPositive": false,
-                "isReverse": true,
                 "isVisibleInVisualizer": true,
                 "type": "range",
+                "displayName": "Vegetable Variety",
                 "buttons": {
-                    "5": "No caffeine",
-                    "4": "1 drink",
-                    "3": "2 drinks",
-                    "2": "3 drinks",
-                    "1": "4 drinks",
-                    "0": "5 drinks or more"
+                    "0": "0",
+                    "1": "1",
+                    "2": "2",
+                    "3": "3",
+                    "4": "4",
+                    "5": "5"
                 }
             },
             {
-                "key": "caffeineLastDrink",
-                "question": "When was your last caffeine drink?",
-                "displayName": "Last caffeine drink",
+                "key": "breathing",
+                "question": "Did you do breathing exercises today?",
                 "category": "Physical Health",
-                "type": "range",
-                "buttons": {
-                    "5": "Before 3pm",
-                    "4": "Before 5pm",
-                    "3": "Before 7pm",
-                    "2": "Before 9pm",
-                    "1": "Before 11pm",
-                    "0": "Later"
-                }
-            },
-            {
-                "key": "vitamins",
+                "displayName": "Breathing Exercises",
+                "type": "boolean",
                 "isVisibleInVisualizer": true,
-                "category": "Physical Health",
-                "displayName": "Vitamins",
-                "question": "Did you take vitamins?",
-                "type": "boolean"
+                "buttons": {
+                    "0": "No",
+                    "1": "Yes"
+                }
             },
             {
                 "key": "gym",
@@ -211,20 +216,20 @@
                 "displayName": "Aerated drinks",
                 "isPositive": false,
                 "isReverse": true,
-                "isVisibleInVisualizer": true,
+                "isVisibleInVisualizer": false,
                 "type": "range",
                 "buttons": {
-                    "5": "0",
-                    "4": "1",
-                    "3": "2",
-                    "2": "3",
+                    "0": "5 or more",
                     "1": "4",
-                    "0": "5 or more"
+                    "2": "3",
+                    "3": "2",
+                    "4": "1",
+                    "5": "0"
                 }
             },
             {
                 "key": "lays",
-                "question": "How many packages of junk food did you have today?",
+                "question": "How many packages of junk/fried food did you have today?",
                 "category": "Physical Health",
                 "displayName": "Junk food",
                 "isPositive": false,
@@ -232,12 +237,24 @@
                 "isVisibleInVisualizer": true,
                 "type": "range",
                 "buttons": {
-                    "5": "0",
-                    "4": "1",
-                    "3": "2",
-                    "2": "3",
+                    "0": "5 or more",
                     "1": "4",
-                    "0": "5 or more"
+                    "2": "3",
+                    "3": "2",
+                    "4": "1",
+                    "5": "0"
+                }
+            },
+            {
+                "key": "supplements",
+                "question": "Did you take any supplements today?",
+                "category": "Physical Health",
+                "displayName": "Supplements",
+                "type": "boolean",
+                "isVisibleInVisualizer": true,
+                "buttons": {
+                    "0": "No",
+                    "1": "Yes"
                 }
             },
             {
@@ -261,14 +278,6 @@
                 "type": "boolean"
             },
             {
-                "key": "out",
-                "question": "Did you go out today?",
-                "displayName": "Went out",
-                "category": "Social",
-                "isVisibleInVisualizer": true,
-                "type": "boolean"
-            },
-            {
                 "question": "⚙️ Let's talk personal growth",
                 "type": "header"
             },
@@ -280,13 +289,28 @@
                 "category": "Productivity",
                 "isVisibleInVisualizer": true,
                 "buttons": {
-                    "5": "Learned so much my head will explode",
-                    "4": "Learned a lot of new things",
-                    "3": "Learned something new",
-                    "2": "I learned a little bit",
+                    "0": "Not at all, Grey matter might have turned to mush",
                     "1": "Barely learned anything",
-                    "0": "Not at all, Grey matter might have turned to mush"
-                }                
+                    "2": "I learned a little bit",
+                    "3": "Learned something new",
+                    "4": "Learned a lot of new things",
+                    "5": "Learned so much my head will explode"
+                }
+            },
+            {
+                "key": "whatlearned",
+                "question": "What did you learn today?",
+                "type": "text",
+                "category": "Productivity",
+                "displayName": "Learnings"
+            },
+            {
+                "key": "write",
+                "question": "Did you write today?",
+                "displayName": "Wrote",
+                "category": "Productivity",
+                "isVisibleInVisualizer": true,
+                "type": "boolean"
             },
             {
                 "key": "didRead",
@@ -297,11 +321,11 @@
                 "type": "boolean"
             },
             {
-                "key": "chess",
-                "displayName": "Played Chess",
-                "question": "Did you play chess today?",
+                "key": "piano",
+                "displayName": "Played Piano",
+                "question": "Did you play piano today?",
                 "category": "Hobbies",
-                "isVisibleInVisualizer": true,
+                "isVisibleInVisualizer": false,
                 "type": "boolean"
             },
             {
@@ -312,13 +336,15 @@
                 "key": "pomodoroDone",
                 "displayName": "Pomodoros Done",
                 "question": "How many pomodoros did you complete today? /skip ",
+                "isVisibleInVisualizer": true,
+                "graphType": "line",
                 "category": "Productivity",
                 "type": "number"
             },
             {
                 "key": "watchedTV",
-                "question": "Did you watch TV or a movie, outside of food?",
-                "displayName": "Watched TV",
+                "question": "Did you watch TV or a movie or played a game, outside of food?",
+                "displayName": "Watched TV, Played Game",
                 "isVisibleInVisualizer": true,
                 "isPositive": false,
                 "isReverse": false,
@@ -330,16 +356,56 @@
                 "displayName": "Work Meetings",
                 "question": "How many work meetings did you have today? This includes work-related phone calls",
                 "category": "Productivity",
+                "isVisibleInVisualizer": true,
+                "graphType": "line",
                 "isPositive": false,
                 "type": "number"
             },
             {
-                "key": "goalsNextDay",
-                "question": "Did you set goals for the next day?",
-                "isVisibleInVisualizer": true,
-                "displayName": "Planned Next Day",
+                "key": "tweetTodat",
+                "question": "Did you spend time thinking about marketing today?",
+                "isVisibleInVisualizer": false,
+                "displayName": "Marketing Effort Today",
                 "category": "Productivity",
                 "type": "boolean"
+            },
+            {
+                "question": "Lets talk about Dashtoon.",
+                "type": "header"
+            },
+            {
+                "key": "improveUserLife",
+                "question": "Was something shipped that improved user life today?",
+                "displayName": "User Empathy",
+                "isPositive": true,
+                "category": "Work",
+                "isVisibleInVisualizer": true,
+                "type": "boolean"
+            },
+            {
+                "key": "pushedResearch",
+                "question": "Was something figured that doesnt exist in the world?",
+                "displayName": "Research",
+                "isPositive": true,
+                "category": "Work",
+                "type": "boolean",
+                "isVisibleInVisualizer": true
+            },
+            {
+                "key": "teamGrowth",
+                "question": "Did you think at least one person from team impressed you today?",
+                "displayName": "Team Growth",
+                "isPositive": true,
+                "category": "Work",
+                "isVisibleInVisualizer": true,
+                "type": "boolean"
+            },
+            {
+                "key": "whoGrew",
+                "question": "Who grew? /skip ",
+                "displayName": "Who Grew?",
+                "type": "text",
+                "category": "Work"
             },
             {
                 "question": "🧩 Let's wrap things up",
@@ -368,36 +434,208 @@
                 "category": "Mental Health",
                 "type": "range",
                 "buttons": {
-                    "5": "Yes, Super excited",
-                    "4": "Yes, I'm excited about some things",
-                    "3": "I'm excited but still worried about some things",
-                    "2": "A little, but mostly worried",
+                    "0": "No, I'm not excited about anything",
                     "1": "Freaking out",
-                    "0": "No, I'm not excited about anything"
+                    "2": "A little, but mostly worried",
+                    "3": "I'm excited but still worried about some things",
+                    "4": "Yes, I'm excited about some things",
+                    "5": "Yes, Super excited"
                 }
+            }
+        ]
+    },
+    "workout": {
+        "description": "Details about your workout",
+        "schedule": "weekly",
+        "questions": [
+            {
+                "key": "workoutStrength",
+                "question": "How tough was your workout?",
+                "category": "Workout",
+                "isVisibleInVisualizer": true,
+                "graphType": "line",
+                "displayName": "Workout Difficulty Feeling",
+                "type": "range",
+                "buttons": {
+                    "0": "Breeze, felt like a walk",
+                    "1": "Some sweat, but not too much",
+                    "2": "Average",
+                    "3": "Tough, but doable",
+                    "4": "Hard",
+                    "5": "Died"
+                }
+            },
+            {
+                "key": "workoutMuscleGroup",
+                "question": "What muscle group did you work on?",
+                "category": "Workout",
+                "displayName": "Muscle Group",
+                "type": "range",
+                "buttons": {
+                    "0": "Legs",
+                    "1": "Pull",
+                    "2": "Push",
+                    "3": "Arms and Abs",
+                    "4": "Chest and Back",
+                    "5": "Shoulders and Legs"
+                }
+            },
+            {
+                "key": "squats",
+                "question": "How much did you barbell squat?, /skip",
+                "category": "Workout",
+                "isVisibleInVisualizer": true,
+                "graphType": "line",
+                "displayName": "Barbell Squats",
+                "type": "number"
+            },
+            {
+                "key": "weightedsquats",
+                "question": "How much did you dumbell squat?, /skip",
+                "category": "Workout",
+                "isVisibleInVisualizer": true,
+                "graphType": "line",
+                "displayName": "Dumbell Squats",
+                "type": "number"
+            },
+            {
+                "key": "hipthrust",
+                "question": "How much did you hip thrust?, /skip",
+                "category": "Workout",
+                "isVisibleInVisualizer": true,
+                "graphType": "line",
+                "displayName": "Hip Thrust",
+                "type": "number"
+            },
+            {
+                "key": "lunges",
+                "question": "How much did you lunge?, /skip",
+                "category": "Workout",
+                "isVisibleInVisualizer": true,
+                "graphType": "line",
+                "displayName": "Lunges",
+                "type": "number"
+            },
+            {
+                "key": "benchPress",
+                "question": "How much did you barbell bench press?, /skip",
+                "category": "Workout",
+                "isVisibleInVisualizer": true,
+                "graphType": "line",
+                "displayName": "Barbell Bench Press",
+                "type": "number"
+            },
+            {
+                "key": "dumbellbenchPress",
+                "question": "How much did you deumbell bench press?, /skip",
+                "category": "Workout",
+                "isVisibleInVisualizer": true,
+                "graphType": "line",
+                "displayName": "Dumbell Bench Press",
+                "type": "number"
+            },
+            {
+                "key": "deadlift",
+                "question": "How much did you barbell deadlift?, /skip",
+                "category": "Workout",
+                "isVisibleInVisualizer": true,
+                "graphType": "line",
+                "displayName": "Barbell Deadlift",
+                "type": "number"
+            },
+            {
+                "key": "dumbelldeadlift",
+                "question": "How much did you dumbell deadlift?, /skip",
+                "category": "Workout",
+                "isVisibleInVisualizer": true,
+                "graphType": "line",
+                "displayName": "Dumbell Deadlift",
+                "type": "number"
+            },
+            {
+                "key": "pullup",
+                "question": "How many pullups did you do?, /skip",
+                "category": "Workout",
+                "isVisibleInVisualizer": true,
+                "graphType": "line",
+                "displayName": "Pullups",
+                "type": "number"
+            },
+            {
+                "key": "shoulderPress",
+                "question": "How much did you barbell shoulder press?, /skip",
+                "category": "Workout",
+                "isVisibleInVisualizer": true,
+                "graphType": "line",
+                "displayName": "Barbell Shoulder Press",
+                "type": "number"
+            },
+            {
+                "key": "dumbellshoulderPress",
+                "question": "How much did you dumbell shoulder press?, /skip",
+                "category": "Workout",
+                "isVisibleInVisualizer": true,
+                "graphType": "line",
+                "displayName": "Dumbell Shoulder Press",
+                "type": "number"
+            },
+            {
+                "key": "curls",
+                "question": "How much did you curl?, /skip",
+                "category": "Workout",
+                "isVisibleInVisualizer": true,
+                "graphType": "line",
+                "displayName": "Curls",
+                "type": "number"
+            },
+            {
+                "key": "skullCrusher",
+                "question": "How much did you skull crush?, /skip",
+                "category": "Workout",
+                "isVisibleInVisualizer": true,
+                "graphType": "line",
+                "displayName": "Skull Crusher",
+                "type": "number"
+            },
+            {
+                "key": "pushups",
+                "question": "How many clean pushups did you do?, /skip",
+                "category": "Workout",
+                "isVisibleInVisualizer": true,
+                "graphType": "line",
+                "displayName": "Push-Ups",
+                "type": "number"
+            },
+            {
+                "key": "plank",
+                "question": "How long did you plank for in seconds?, /skip",
+                "category": "Workout",
+                "isVisibleInVisualizer": true,
+                "graphType": "line",
+                "displayName": "Plank",
+                "type": "number"
             }
         ]
     },
     "week": {
         "description": "Use this once a week, ideally Monday or Tuesday morning",
         "schedule": "weekly",
-        "questions": [{
+        "questions": [
+            {
                 "question": "💪 Let's talk fitness first",
                 "type": "header"
             },
             {
-                "key": "trainingAdherence",
-                "question": "How was last week's training sessions?",
+                "key": "climb",
+                "question": "Did you play a sport last week?",
                 "category": "Physical Health",
-                "displayName": "Training Adherence",
-                "type": "range",
+                "displayName": "Played a Sport",
+                "isVisibleInVisualizer": false,
+                "cadence": "week",
+                "type": "boolean",
                 "buttons": {
-                    "5": "Increased volume in all exercises",
-                    "4": "Increased some volumes",
-                    "3": "Workouts felt great",
-                    "2": "Workouts were good",
-                    "1": "Not enough energy for good workouts",
-                    "0": "Worked out less than 3 times last week"
+                    "true": "Yes",
+                    "false": "No"
                 }
             },
             {
@@ -408,7 +646,9 @@
                 "key": "branding",
                 "question": "Did you work on your personal branding last week?",
                 "category": "Productivity",
+                "cadence": "week",
                 "displayName": "Personal Branding",
+                "isVisibleInVisualizer": true,
                 "type": "boolean",
                 "buttons": {
                     "true": "Yes",
@@ -417,9 +657,11 @@
             },
             {
                 "key": "writing",
-                "question": "Did you write last week?",
-                "category": "Productivity",
+                "question": "Did you publish your writing last week?",
+                "category": "Hobbies",
+                "cadence": "week",
                 "displayName": "Writing",
+                "isVisibleInVisualizer": true,
                 "type": "boolean",
                 "buttons": {
                     "true": "Yes",
@@ -428,8 +670,10 @@
             },
             {
                 "key": "sidey",
-                "question": "Did you publish a side project last week?",
-                "category": "Productivity",
+                "question": "Did you work on a side project last week?",
+                "category": "Hobbies",
+                "cadence": "week",
+                "isVisibleInVisualizer": true,
                 "displayName": "Side Project",
                 "type": "boolean",
                 "buttons": {
@@ -440,7 +684,9 @@
             {
                 "key": "teach",
                 "question": "Did you spend time on teaching last week? Can be a teaching blog OR a talk. But should be replayable",
-                "category": "Productivity",
+                "category": "Hobbies",
+                "cadence": "week",
+                "isVisibleInVisualizer": true,
                 "displayName": "Teaching",
                 "type": "boolean",
                 "buttons": {
@@ -449,50 +695,195 @@
                 }
             },
             {
-                "key": "weekLifeProgress",
-                "question": "Do you feel like you moved into the right direction in life the past week?",
+                "key": "paper",
+                "question": "Did you read a paper last week?",
                 "category": "Productivity",
-                "displayName": "Life Progress",
-                "type": "range",
-                "buttons": {
-                    "5": "Had a plan and executed successfully",
-                    "4": "Followed previous plan and continued",
-                    "3": "Felt like it was the right direction",
-                    "2": "Not sure",
-                    "1": "Felt all over the place",
-                    "0": "Unsure where to go"
-                }
+                "cadence": "week",
+                "isVisibleInVisualizer": true,
+                "displayName": "Research Paper",
+                "type": "boolean"
             },
             {
                 "question": "👥 Let's talk social life",
                 "type": "header"
             },
             {
-                "key": "deepConversations",
-                "question": "Did you have deep conversations with close friends/family last week?",
+                "key": "partner",
                 "category": "Social",
-                "displayName": "Deep Conversations",
-                "type": "range",
-                "buttons": {
-                    "5": "Had one or more multi-hour long talks",
-                    "4": "Had one more more insightful talks",
-                    "3": "Some, but could be more",
-                    "2": "Some, but should be more",
-                    "1": "No real deep conversations",
-                    "0": "No deep conversations, but I need it"
-                }
+                "displayName": "Partner",
+                "cadence": "week",
+                "question": "Did you spend time with your partner?",
+                "type": "boolean"
             },
             {
-                "key": "deep-conversation-person",
-                "category": "Social",
-                "displayName": "Deep Conversation Person",
-                "question": "Who did you have deep conversations with?",
+                "question": "👥 Let's talk about startup life",
+                "type": "header"
+            },
+            {
+                "key": "dashtoon-wrong",
+                "category": "Work",
+                "displayName": "Wrong At Dashtoon",
+                "cadence": "week",
+                "question": "Write down one thing thats not going good at dashtoon?",
+                "type": "text"
+            },
+            {
+                "key": "dashtoon-good",
+                "category": "Work",
+                "displayName": "Good At Dashtoon",
+                "cadence": "week",
+                "question": "Write down one thing that going great at dashtoon?",
+                "type": "text"
+            },
+            {
+                "key": "better-as-cto",
+                "category": "Work",
+                "displayName": "CTO Improvements",
+                "cadence": "week",
+                "question": "What can you do to improve as CTO?",
                 "type": "text"
             },
             {
                 "question": "🎁 Let's wrap things up",
                 "type": "header"
             }
-         ]
+        ]
+    },
+    "whoop": {
+    "description": "Whoop health and fitness metrics",
+    "schedule": "manual",
+    "questions": [
+        {
+            "key": "whoopRecoveryScore",
+            "displayName": "Recovery Score",
+            "question": "Whoop Recovery Score",
+            "category": "Physical Health",
+            "type": "number",
+            "isVisibleInVisualizer": true,
+            "isPositive": true,
+            "graphType": "line"
+        },
+        {
+            "key": "whoopRHR",
+            "displayName": "Resting Heart Rate",
+            "question": "Whoop Resting Heart Rate",
+            "category": "Physical Health",
+            "type": "number",
+            "isVisibleInVisualizer": true,
+            "isPositive": false,
+            "isReverse": true,
+            "graphType": "line"
+        },
+        {
+            "key": "whoopHRV",
+            "displayName": "Heart Rate Variability",
+            "question": "Whoop Heart Rate Variability",
+            "category": "Physical Health",
+            "type": "number",
+            "isVisibleInVisualizer": true,
+            "isPositive": true,
+            "graphType": "line"
+        },
+        {
+            "key": "whoopSkinTemp",
+            "displayName": "Skin Temperature",
+            "question": "Whoop Skin Temperature",
+            "category": "Physical Health",
+            "type": "number",
+            "isVisibleInVisualizer": true,
+            "isPositive": true,
+            "graphType": "line"
+        },
+        {
+            "key": "whoopSleepPerformance",
+            "displayName": "Sleep Performance",
+            "question": "Whoop Sleep Performance",
+            "category": "Physical Health",
+            "type": "number",
+            "isVisibleInVisualizer": true,
+            "isPositive": true,
+            "graphType": "line"
+        },
+        {
+            "key": "whoopSleepEfficiency",
+            "displayName": "Sleep Efficiency",
+            "question": "Whoop Sleep Efficiency",
+            "category": "Physical Health",
+            "type": "number",
+            "isVisibleInVisualizer": true,
+            "isPositive": true,
+            "graphType": "line"
+        },
+        {
+            "key": "whoopRespiratoryRate",
+            "displayName": "Respiratory Rate",
+            "question": "Whoop Respiratory Rate",
+            "category": "Physical Health",
+            "type": "number",
+            "isVisibleInVisualizer": true,
+            "isPositive": true,
+            "graphType": "line"
+        },
+        {
+            "key": "whoopSleepConsistency",
+            "displayName": "Sleep Consistency",
+            "question": "Whoop Sleep Consistency",
+            "category": "Physical Health",
+            "type": "number",
+            "isVisibleInVisualizer": true,
+            "isPositive": true,
+            "graphType": "line"
+        },
+        {
+            "key": "whoopStrain",
+            "displayName": "Strain Score",
+            "question": "Whoop Strain Score",
+            "category": "Physical Health",
+            "type": "number",
+            "isVisibleInVisualizer": true,
+            "isPositive": true,
+            "graphType": "line"
+        },
+        {
+            "key": "whoopAvgHeartRate",
+            "displayName": "Average Heart Rate (Workout)",
+            "question": "Whoop Average Heart Rate",
+            "category": "Workout",
+            "type": "number",
+            "isVisibleInVisualizer": true,
+            "isPositive": true,
+            "graphType": "line"
+        },
+        {
+            "key": "whoopMaxHeartRate",
+            "displayName": "Max Heart Rate (Workout)",
+            "question": "Whoop Max Heart Rate",
+            "category": "Workout",
+            "type": "number",
+            "isVisibleInVisualizer": true,
+            "isPositive": true,
+            "graphType": "line"
+        },
+        {
+            "key": "whoopKilojoules",
+            "displayName": "Energy Expenditure",
+            "question": "Whoop Kilojoules",
+            "category": "Workout",
+            "type": "number",
+            "isVisibleInVisualizer": true,
+            "isPositive": true,
+            "graphType": "line"
+        },
+        {
+            "key": "whoopDistance",
+            "displayName": "Workout Distance",
+            "question": "Whoop Distance (meters)",
+            "category": "Workout",
+            "type": "number",
+            "isVisibleInVisualizer": false,
+            "isPositive": true,
+            "graphType": "line"
+        }
+    ]
     }
 }
