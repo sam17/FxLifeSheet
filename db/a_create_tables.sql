@@ -57,9 +57,10 @@ CREATE TABLE IF NOT EXISTS category(
 INSERT INTO category (name, priority, description) VALUES
 ('Mental Health', 1, 'Health and wellbeing'),
 ('Physical Health', 2, 'Health and wellbeing'),
-('Productivity', 3, 'Work and hobbies'),
-('Hobbies', 4, 'Work and hobbies'),
-('Social', 5, 'Relationships')
+('Workout', 3, 'Exercise and fitness tracking'),
+('Productivity', 4, 'Work and hobbies'),
+('Hobbies', 5, 'Work and hobbies'),
+('Social', 6, 'Relationships')
 
 -- View needed for metrics
 
