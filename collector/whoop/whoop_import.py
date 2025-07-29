@@ -28,6 +28,7 @@ import requests
 import psycopg2
 import psycopg2.extras
 from dotenv import load_dotenv
+from oauth_helper import WhoopOAuthHelper
 
 # Load environment variables
 load_dotenv()
@@ -44,19 +45,51 @@ class WhoopImporter:
         self.client_id = os.getenv("WHOOP_CLIENT_ID")
         self.client_secret = os.getenv("WHOOP_CLIENT_SECRET")
         self.access_token = os.getenv("WHOOP_ACCESS_TOKEN")
+        self.refresh_token = os.getenv("WHOOP_REFRESH_TOKEN")
         self.database_url = os.getenv("DATABASE_URL")
         
-        if not all([self.access_token, self.database_url]):
-            raise ValueError("Missing required environment variables: WHOOP_ACCESS_TOKEN, DATABASE_URL")
+        if not self.database_url:
+            raise ValueError("Missing required environment variable: DATABASE_URL")
+        
+        if not self.access_token and not self.refresh_token:
+            raise ValueError("Either WHOOP_ACCESS_TOKEN or WHOOP_REFRESH_TOKEN must be provided")
         
         self.base_url = "https://api.prod.whoop.com"
-        self.headers = {
-            "Authorization": f"Bearer {self.access_token}",
-            "Content-Type": "application/json"
-        }
+        self.headers = {"Content-Type": "application/json"}
         self.db_conn = None
         self.import_id = str(uuid.uuid4())
         self.import_timestamp = datetime.now()
+        
+    def ensure_valid_access_token(self) -> None:
+        """Ensure we have a valid access token, refreshing if necessary"""
+        if not self.access_token and self.refresh_token:
+            logger.info("No access token found, refreshing using refresh token...")
+            self.refresh_access_token()
+        elif self.access_token:
+            logger.info("Access token found, testing connection...")
+        
+        # Update headers with current access token
+        self.headers["Authorization"] = f"Bearer {self.access_token}"
+        
+    def refresh_access_token(self) -> None:
+        """Refresh access token using refresh token"""
+        try:
+            oauth_helper = WhoopOAuthHelper()
+            token_response = oauth_helper.refresh_access_token(self.refresh_token)
+            
+            self.access_token = token_response.get('access_token')
+            if not self.access_token:
+                raise ValueError("No access token received from refresh")
+                
+            # Update refresh token if a new one was provided
+            if 'refresh_token' in token_response:
+                self.refresh_token = token_response['refresh_token']
+                
+            logger.info("Successfully refreshed access token")
+            
+        except Exception as e:
+            logger.error(f"Failed to refresh access token: {e}")
+            raise
         
     def test_whoop_connection(self) -> None:
         """Test connection to Whoop API v2"""
@@ -396,7 +429,8 @@ class WhoopImporter:
             
             logger.info(f"Importing Whoop v2 data from {start_date.strftime('%Y-%m-%d')} to {end_date.strftime('%Y-%m-%d')}")
             
-            # Connect to services
+            # Ensure we have valid access token and connect to services
+            self.ensure_valid_access_token()
             self.test_whoop_connection()
             self.connect_database()
             
