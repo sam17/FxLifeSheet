@@ -29,4 +29,8 @@ RUN crontab /etc/cron.d/whoop-cron
 RUN touch /var/log/whoop_cron.log
 
 # Run cron in foreground and tail logs
-CMD cron && tail -f /var/log/whoop_cron.log
+CMD echo "Starting whoop collector..." && \
+    echo "Running initial import..." && \
+    cd /app && (/usr/local/bin/uv run whoop_import.py >> /var/log/whoop_cron.log 2>&1 || echo "Initial import failed (expected if no credentials), continuing with scheduler...") && \
+    echo "Starting cron scheduler..." && \
+    cron && exec tail -f /var/log/whoop_cron.log
