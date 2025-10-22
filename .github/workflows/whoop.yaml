@@ -3,7 +3,6 @@ on:
   push:
     branches:
       - 'master'
-      - 'whoop-ci-cd'
     paths:
       - 'collector/whoop/**'
 jobs:
