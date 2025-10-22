@@ -6,6 +6,10 @@ This is a fork only to make it more usable for mine and @charutaks taste and lik
 
 
 # TODO
+[] Change main branch from master to main
+[] Make whoop script into a daily cronjob on pokedesk
+[] Change repo name to epoch.me
+[] Add auth system and put some questions behind auth
 [] Auth in front of visual playground
 [] Get rid of all ruby and create visual playground from scratch
 [] API Server for integrations with other apps
