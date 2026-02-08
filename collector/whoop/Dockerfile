@@ -18,7 +18,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Set up cron job
-RUN echo "0 */6 * * * cd /app && python3 whoop_import.py >> /var/log/whoop_cron.log 2>&1" > /etc/cron.d/whoop-cron
+RUN echo "0 0 * * * cd /app && python3 whoop_import.py >> /var/log/whoop_cron.log 2>&1" > /etc/cron.d/whoop-cron
 RUN chmod 0644 /etc/cron.d/whoop-cron
 RUN crontab /etc/cron.d/whoop-cron
 RUN touch /var/log/whoop_cron.log
