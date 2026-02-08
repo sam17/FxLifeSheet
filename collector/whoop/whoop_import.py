@@ -414,85 +414,124 @@ class WhoopImporter:
             return True
         return False
         
-    def process_recovery_data(self, recovery_data: List[Dict[str, Any]]) -> None:
-        """Process and insert v2 recovery data into database"""
+    def process_cycles_and_recovery(self, cycle_data: List[Dict[str, Any]]) -> None:
+        """Fetch and process recovery data for each cycle"""
         records_inserted = 0
         records_skipped = 0
         date_range = set()
-        
-        for recovery in recovery_data:
+
+        for cycle in cycle_data:
             try:
-                # Get timestamp from created_at or updated_at
+                cycle_id = cycle.get('id')
+                if not cycle_id:
+                    logger.warning("Cycle record missing ID, skipping")
+                    continue
+
+                # Fetch recovery data for this cycle
+                try:
+                    recovery_url = f"{self.base_url}/developer/v2/cycle/{cycle_id}/recovery"
+                    response = requests.get(recovery_url, headers=self.headers)
+
+                    if response.status_code == 404:
+                        # No recovery data for this cycle yet
+                        continue
+
+                    response.raise_for_status()
+                    recovery = response.json()
+
+                except requests.exceptions.HTTPError as e:
+                    if e.response.status_code == 404:
+                        # No recovery data available for this cycle
+                        continue
+                    logger.warning(f"Failed to fetch recovery for cycle {cycle_id}: {e}")
+                    continue
+
+                # Get timestamp from recovery record
                 timestamp_str = recovery.get('created_at') or recovery.get('updated_at')
                 if not timestamp_str:
-                    logger.warning("No timestamp found for recovery record, skipping")
+                    logger.warning(f"No timestamp in recovery for cycle {cycle_id}")
                     continue
-                    
+
                 components = self.iso_to_components(timestamp_str)
-                
-                # Track date for summary
                 date_range.add(components['matcheddate'])
-                
-                # Extract recovery metrics from v2 API structure
-                if recovery.get('score_state') == 'SCORED' and 'score' in recovery:
+
+                # Check if recovery is scored
+                if recovery.get('score_state') != 'SCORED':
+                    continue
+
+                # Extract recovery metrics
+                if 'score' in recovery:
                     score_data = recovery['score']
-                    
+
                     # Recovery Score (0-100 percentage)
                     if 'recovery_score' in score_data:
                         if self.insert_raw_data(
-                            'whoopRecoveryScore', 
-                            'Whoop Recovery Score', 
-                            'number', 
-                            str(score_data['recovery_score']), 
+                            'whoopRecoveryScore',
+                            'Whoop Recovery Score',
+                            'number',
+                            str(score_data['recovery_score']),
                             components
                         ):
                             records_inserted += 1
                         else:
                             records_skipped += 1
-                    
+
                     # Resting Heart Rate
                     if 'resting_heart_rate' in score_data:
                         if self.insert_raw_data(
-                            'whoopRHR', 
-                            'Whoop Resting Heart Rate', 
-                            'number', 
-                            str(score_data['resting_heart_rate']), 
+                            'whoopRHR',
+                            'Whoop Resting Heart Rate',
+                            'number',
+                            str(score_data['resting_heart_rate']),
                             components
                         ):
                             records_inserted += 1
                         else:
                             records_skipped += 1
-                    
+
                     # Heart Rate Variability
                     if 'hrv_rmssd_milli' in score_data:
                         if self.insert_raw_data(
-                            'whoopHRV', 
-                            'Whoop Heart Rate Variability', 
-                            'number', 
-                            str(score_data['hrv_rmssd_milli']), 
+                            'whoopHRV',
+                            'Whoop Heart Rate Variability',
+                            'number',
+                            str(score_data['hrv_rmssd_milli']),
                             components
                         ):
                             records_inserted += 1
                         else:
                             records_skipped += 1
-                        
-                    # Additional v2 metrics
+
+                    # Skin Temperature
                     if 'skin_temp_celsius' in score_data:
                         if self.insert_raw_data(
-                            'whoopSkinTemp', 
-                            'Whoop Skin Temperature', 
-                            'number', 
-                            str(score_data['skin_temp_celsius']), 
+                            'whoopSkinTemp',
+                            'Whoop Skin Temperature',
+                            'number',
+                            str(score_data['skin_temp_celsius']),
                             components
                         ):
                             records_inserted += 1
                         else:
                             records_skipped += 1
-                
+
+                    # SpO2 (new in v2)
+                    if 'spo2_percentage' in score_data:
+                        if self.insert_raw_data(
+                            'whoopSpO2',
+                            'Whoop Blood Oxygen (SpO2)',
+                            'number',
+                            str(score_data['spo2_percentage']),
+                            components
+                        ):
+                            records_inserted += 1
+                        else:
+                            records_skipped += 1
+
             except Exception as e:
-                logger.error(f"Error processing recovery record: {e}")
+                logger.error(f"Error processing cycle {cycle.get('id', 'unknown')}: {e}")
                 continue
-                
+
         if date_range:
             date_min, date_max = min(date_range), max(date_range)
             logger.info(f"Recovery data: {records_inserted} inserted, {records_skipped} skipped (dates: {date_min} to {date_max})")
@@ -731,18 +770,19 @@ class WhoopImporter:
                 logger.error("Cannot connect to Whoop API - tokens may be expired. Skipping this run.")
                 return
             
-            # Fetch and process recovery data from cycles (contains recovery info)
-            logger.info("Fetching recovery data...")
-            recovery_data = self.get_whoop_data('developer/v1/recovery', start_date_str, end_date_str)
-            
-            if recovery_data:
-                self.process_recovery_data(recovery_data)
+            # Fetch cycles and then get recovery data for each cycle
+            logger.info("Fetching cycles...")
+            cycle_data = self.get_whoop_data('developer/v2/cycle', start_date_str, end_date_str)
+
+            if cycle_data:
+                logger.info(f"Fetching recovery data for {len(cycle_data)} cycles...")
+                self.process_cycles_and_recovery(cycle_data)
             else:
-                logger.info("No recovery data found for date range")
+                logger.info("No cycle data found for date range")
             
             # Fetch and process sleep data
             logger.info("Fetching sleep data...")
-            sleep_data = self.get_whoop_data('developer/v1/activity/sleep', start_date_str, end_date_str)
+            sleep_data = self.get_whoop_data('developer/v2/activity/sleep', start_date_str, end_date_str)
             if sleep_data:
                 self.process_sleep_data(sleep_data)
             else:
@@ -750,7 +790,7 @@ class WhoopImporter:
             
             # Fetch and process workout data
             logger.info("Fetching workout data...")
-            workout_data = self.get_whoop_data('developer/v1/activity/workout', start_date_str, end_date_str)
+            workout_data = self.get_whoop_data('developer/v2/activity/workout', start_date_str, end_date_str)
             if workout_data:
                 self.process_workout_data(workout_data)
             else:

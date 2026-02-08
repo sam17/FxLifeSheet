@@ -63,7 +63,7 @@ class WhoopOAuthHelper:
             'client_id': self.client_id,
             'redirect_uri': self.redirect_uri,
             'response_type': 'code',
-            'scope': 'offline read:recovery read:sleep read:workout read:profile',
+            'scope': 'offline read:recovery read:cycles read:sleep read:workout read:profile',
             'state': state,
             'code_challenge': code_challenge,
             'code_challenge_method': 'S256'
