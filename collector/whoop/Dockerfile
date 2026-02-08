@@ -7,10 +7,12 @@ RUN apt-get update && apt-get install -y \
     libpq-dev \
     gcc \
     cron \
+    curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Install uv
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
+# Install uv using the official install script (supports multiple architectures)
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh && \
+    mv /root/.cargo/bin/uv /usr/local/bin/uv
 
 # Copy uv files first for better layer caching
 COPY pyproject.toml uv.lock ./
