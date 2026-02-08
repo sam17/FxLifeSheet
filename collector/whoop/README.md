@@ -78,4 +78,4 @@ All data is stored in the `raw_data` table with:
 
 ## Visualization
 
-The imported data will appear in your FxLifeSheet dashboard with enhanced health and fitness tracking across recovery, sleep, and workout metrics.
+The imported data will appear in your FxLifeSheet dashboard with enhanced health and fitness tracking across recovery, sleep, and workout metrics.# Multi-arch build enabled
