@@ -12,7 +12,8 @@ RUN apt-get update && apt-get install -y \
 
 # Install uv using the official install script (supports multiple architectures)
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh && \
-    mv /root/.cargo/bin/uv /usr/local/bin/uv
+    mv /root/.local/bin/uv /usr/local/bin/uv && \
+    mv /root/.local/bin/uvx /usr/local/bin/uvx
 
 # Copy uv files first for better layer caching
 COPY pyproject.toml uv.lock ./
