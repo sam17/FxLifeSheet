@@ -37,13 +37,6 @@ impl RawData {
 		Ok(data_by_key)
 	}
 
-	pub async fn list(db: &Db) -> Result<Vec<RawDataObj>, model::Error> {
-		let sb = sqlb::select().table(Self::TABLE).columns(Self::COLUMNS);
-
-		// execute the query
-		let raw_data = sb.fetch_all(db).await?;
-		Ok(raw_data)
-	}
 }
 // endregion: TodoMac
 
