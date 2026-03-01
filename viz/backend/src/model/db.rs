@@ -3,7 +3,7 @@ use sqlx::{Pool, Postgres};
 use std::time::Duration;
 use dotenv::dotenv;
 
-const PG_APP_MAX_CON: u32 = 5;
+const PG_APP_MAX_CON: u32 = 20;
 
 pub type Db = Pool<Postgres>;
 
@@ -27,7 +27,7 @@ async fn new_db_pool(host: std::string::String, db: std::string::String, user: s
 	println!("con_string: {}", con_string);
 	PgPoolOptions::new()
 		.max_connections(max_con)
-		.acquire_timeout(Duration::from_millis(500)) // Needs to find replacement
+		.acquire_timeout(Duration::from_millis(5000))
 		.connect(&con_string)
 		.await
 }
