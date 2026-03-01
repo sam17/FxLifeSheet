@@ -66,7 +66,7 @@ function printGraph(
       console.log(res);
       if (err) {
         console.error(err);
-        ctx.reply(err);
+        ctx.reply("An error occurred while fetching data. Please try again.");
         return;
       }
 
@@ -602,6 +602,19 @@ function initBot() {
     }
 
     let key = ctx.match[1];
+
+    // Validate key exists in config to prevent arbitrary input in SQL
+    let validKeys = [];
+    for (let section in config.userConfig) {
+      for (let q of config.userConfig[section].questions || []) {
+        if (q.key) validKeys.push(q.key);
+      }
+    }
+    if (!validKeys.includes(key)) {
+      ctx.reply("Unknown metric key: " + key);
+      return;
+    }
+
     console.log("User wants to graph a specific value " + key);
 
     printGraph(key, ctx, 100, null, false);

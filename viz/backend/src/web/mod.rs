@@ -25,7 +25,9 @@ pub async fn start_web(web_port: u16, db: Arc<Db>) -> Result<(), Error> {
 	let static_s = warp::fs::dir("../frontend/build/");
 	// Combine all routes
 
-	let cors = warp::cors().allow_any_origin();
+	let cors = warp::cors()
+		.allow_origin("https://metrics.soumyadeep.in")
+		.allow_methods(vec!["GET"]);
 	let log = warp::log("access");
 
 	// Combine all routes
