@@ -8,6 +8,7 @@
         "scheduler": "node src/scheduler.js"
     },
     "dependencies": {
+        "@types/node": "~16.0.0",
         "moment": "^2.24.0",
         "needle": "^2.3.3",
         "node-cron": "^3.0.2",
@@ -15,8 +16,5 @@
         "prettier": "^1.19.1",
         "telegraf": "^3.36.0",
         "typescript": "^3.8.3"
-    },
-    "devDependencies": {
-        "@types/node": "~16.0.0"
     }
 }
