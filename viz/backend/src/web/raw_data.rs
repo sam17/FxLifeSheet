@@ -13,13 +13,11 @@ pub fn raw_data_rest_filters(
 	// let common = super::filter_utils::with_db(db.clone()).and(do_auth(db.clone()));
 	let common = super::filter_utils::with_db(db.clone());
 
-	let get = data_path
+	data_path
 		.and(warp::get())
 		.and(common.clone())
 		.and(warp::path::param())
-		.and_then(data_get_by_key);
-
-	get
+		.and_then(data_get_by_key)
 }
 
 async fn data_get_by_key(db: Arc<Db>, key: String) -> Result<Json, warp::Rejection> {
