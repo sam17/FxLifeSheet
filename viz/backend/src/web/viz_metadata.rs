@@ -1,5 +1,4 @@
 use crate::model::{Db, VizMetadata};
-use serde::Serialize;
 use serde_json::json;
 use std::sync::Arc;
 use warp::reply::Json;

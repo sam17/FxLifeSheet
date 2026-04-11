@@ -29,29 +29,21 @@ function VizBuilder(props: props) {
     isPositive: true,
   });
 
-  const getCategories = () => {
-    return fetch(baseUrl + "categories").then((response) => response.json());
-  };
-
-  const getQuestionsForCategory = (category: string) => {
-    return fetch(
-      baseUrl + "questions?is_visible=true&category=" + category
-    ).then((response) => response.json());
-  };
-
   useEffect(() => {
-    getCategories()
+    fetch(baseUrl + "categories")
+      .then((response) => response.json())
       .then((data) => {
         setCategories(data);
       })
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [baseUrl]);
 
   useEffect(() => {
     categories.forEach((element) => {
-      getQuestionsForCategory(element.name)
+      fetch(baseUrl + "questions?is_visible=true&category=" + element.name)
+        .then((response) => response.json())
         .then((data) => {
           setQuestionsForCategory((prev) => {
             const index = prev.findIndex(
@@ -68,10 +60,7 @@ function VizBuilder(props: props) {
           console.log(error);
         });
     });
-  }, [categories]);
-
-  useEffect(() => {
-  }, [questionsForCategory]);
+  }, [baseUrl, categories]);
 
   return (
     <div className="VizBuilder">

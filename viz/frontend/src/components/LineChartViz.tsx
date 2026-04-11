@@ -1,17 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 import * as d3 from "d3";
 import { Col } from "antd";
 import styles from "../stylesheets.module.scss";
 import { ArrayDateData, RawDateData } from "src/models/date_data";
 import {
-  getDateInString,
   getLastDateToBeShownInViz,
   getStartDateToBeShownInViz,
   getContinuousDates
 } from "src/utils/date";
 import { viz_details } from "src/models/constants";
-import { timeDay } from "d3-time";
-import { timeFormat, timeMonth } from "d3";
+import { timeFormat } from "d3";
 import { tooltipData } from "./Tooltip";
 
 interface IProps {
@@ -87,8 +85,8 @@ class LineChartViz extends React.Component<IProps, IState> {
         d3.extent(chartData.getData(), (d) => new Date(d.date)) as [Date, Date]
       );
 
-     const dateFormat = "%d-%m";
-      const formatDate = (domainValue: Date | d3.NumberValue, index: number) =>
+      const dateFormat = "%d-%m";
+      const formatDate = (domainValue: Date | d3.NumberValue) =>
         timeFormat(dateFormat)(domainValue as Date);
 
       chartData.setData(chartData.getData().filter(d => d.date >= startDayForViz && d.date <= lastDayForViz));
