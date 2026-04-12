@@ -1,8 +1,33 @@
-# Matrix
-Extremely inspired and started as a fork from (FxLifeSheet)[https://github.com/KrauseFx/FxLifeSheet].
-All credits to  [![Twitter: @KrauseFx](https://img.shields.io/badge/contact-@KrauseFx-blue.svg?style=flat)](https://twitter.com/KrauseFx) for giving this idea and motivating us to start this.
+# FxLifeSheet
 
-This is a fork only to make it more usable for mine and @charutaks taste and liking and is a WIP!
+A personal metrics tracking system. Collects life data via a Telegram bot and visualizes it on [metrics.soumyadeep.in](https://metrics.soumyadeep.in).
+
+Originally inspired by and forked from [KrauseFx/FxLifeSheet](https://github.com/KrauseFx/FxLifeSheet).
+
+## Architecture
+
+| Component | Stack | Description |
+|-----------|-------|-------------|
+| `telegram_bot/` | TypeScript / Node.js | Data collection via Telegram bot — asks questions on schedules and stores answers |
+| `viz/backend/` | Rust (Axum) | REST API serving metrics data from Postgres |
+| `viz/frontend/` | React / TypeScript | Interactive data visualization dashboard |
+| `collector/whoop/` | Python | Daily WHOOP health data collector |
+| `docker-compose.yaml` | Docker | Orchestrates all services + Postgres |
+
+## Quick Start
+
+```bash
+# Copy and fill in environment files
+cp telegram_bot/.env.example telegram_bot/.env
+cp viz/backend/.env.example viz/backend/.env
+
+# Start all services
+docker compose up -d
+```
+
+## Development
+
+See individual service READMEs for local dev setup. CI runs on all PRs via GitHub Actions.
 
 
 # TODO
