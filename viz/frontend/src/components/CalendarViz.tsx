@@ -178,17 +178,17 @@ class CalendarViz extends React.Component<IProps, IState> {
 
   render() {
     return (
-      <Col xxl={6} xl={8} lg={8} md={12} sm={24} xs={24} >
-      <div className={this.name}>
-        <h2 className={styles.vizHeading}>{this.displayName}</h2>
-        <svg
-          className="container"
-          ref={(ref: SVGSVGElement) => (this.ref = ref)}
-          width="0"
-          height="0"
-        ></svg>
-      </div>
-    </Col>
+      <Col xxl={6} xl={8} lg={8} md={12} sm={24} xs={24}>
+        <div className="metric-card">
+          <div className="metric-card-title">{this.displayName}</div>
+          <svg
+            className="container"
+            ref={(ref: SVGSVGElement) => (this.ref = ref)}
+            width="0"
+            height="0"
+          ></svg>
+        </div>
+      </Col>
     );
   }
 }

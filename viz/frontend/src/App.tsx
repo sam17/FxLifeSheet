@@ -26,13 +26,11 @@ function App() {
 
   return (
     <div className="App">
-      <h1>
-        <center> How is {name}? 🤔</center>
-      </h1>
+      <div className="app-header">
+        <h1>How is {name}? 🤔</h1>
+      </div>
       <div className="dateHeading">
-        <center>
-          <DateElement></DateElement>
-        </center>
+        <DateElement></DateElement>
       </div>
       <VizBuilder baseUrl={baseUrl}></VizBuilder>
     </div>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import CategoryData from "../models/category_data";
 import QuestionData from "../models/question_data";
 import styles from "../stylesheets.module.scss";
-import { Divider, Row } from "antd";
+import { Row } from "antd";
 import CalendarViz from "./CalendarViz";
 import LineChartViz from "./LineChartViz";
 import Tooltip, { tooltipData } from "./Tooltip";
@@ -68,10 +68,7 @@ function VizBuilder(props: props) {
       {questionsForCategory.map((item) => {
         return (
           <div key={item.category}>
-            <Divider orientation="left" className={styles.divider}>
-              {" "}
-              {item.category}{" "}
-            </Divider>
+            <div className="section-label">{item.category}</div>
             <Row gutter={[16, 16]}>
               {item.questions.map((question) => {
                 if (question.graph_type === "line") {
@@ -105,7 +102,6 @@ function VizBuilder(props: props) {
                 }
               })}
             </Row>
-            <br />
             <br />
           </div>
         );

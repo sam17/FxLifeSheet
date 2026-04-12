@@ -1,30 +1,73 @@
-.svg {
-  svg {
-      rect {
-          fill: orange;
-      }
+.App {
+  padding: 40px 48px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
 
-      text {
-          fill: white;
-          font: 10px sans-serif;
-          text-anchor: end;
-      }
+.app-header {
+  margin-bottom: 8px;
+
+  h1 {
+    font-family: 'Inter', sans-serif;
+    font-size: 2rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin: 0;
+    letter-spacing: -0.5px;
   }
 }
 
-.App {
-  padding: 30px;
-}
-
 .dateHeading {
-  font-size: 18px;
-  font-weight: normal;
-  margin-bottom: 10px;
-  color: #666666;
+  font-size: 15px;
+  font-weight: 400;
+  margin-bottom: 32px;
+  color: #888;
+  letter-spacing: 0.01em;
 }
 
-ant-divider {
-    background-color: #111;
-    font-size: 100px !important;
-    border-top: 1px #111 !important;
+.section-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #aaa;
+  margin: 32px 0 16px 0;
+  padding-left: 2px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  &::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #e8e6e0;
+  }
+}
+
+.metric-card {
+  background: #ffffff;
+  border: 1.5px solid #e8e6e0;
+  border-radius: 12px;
+  padding: 18px 20px 14px;
+  box-shadow: 2px 3px 0px #e0ded8;
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+
+  &:hover {
+    box-shadow: 3px 5px 0px #d4d1cb;
+    transform: translateY(-1px);
+  }
+
+  .metric-card-title {
+    font-size: 11px;
+    font-weight: 600;
+    color: #999;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+}
+
+.ant-divider {
+  border-color: transparent !important;
 }
