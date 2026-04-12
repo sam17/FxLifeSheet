@@ -20,30 +20,21 @@ pub fn viz_questions_rest_filters(
     let common = super::filter_utils::with_db(db.clone());
 
     // get with query params `GET questions/?category=foo&is_visible=true`
-    let get_with_query = data_path
+    data_path
         .and(warp::get())
         .and(warp::path::end())
         .and(common.clone())
         .and(warp::query::<VizQuestionsQuery>())
-        .and_then(questions_with_query);
-    
-    get_with_query
+        .and_then(questions_with_query)
 }
-
 
 async fn questions_with_query(db: Arc<Db>, query: VizQuestionsQuery) -> Result<Json, warp::Rejection> {
     let is_visible = query.is_visible;
     let category = query.category;
 
-    let unwrapped_visibility = match is_visible {
-        Some(b) => b,
-        None => false,
-    };
+    let unwrapped_visibility = is_visible.unwrap_or_default();
 
-    let unwrapped_category = match category {
-        Some(s) => s,
-        None => "".to_string(),
-    };
+    let unwrapped_category = category.unwrap_or_default();
 
     let questions = VizQuestions::get_questions_with_query(&db, unwrapped_category, unwrapped_visibility).await?;
     let response = json!(questions);

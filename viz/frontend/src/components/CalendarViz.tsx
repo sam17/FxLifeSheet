@@ -3,7 +3,7 @@ import * as d3 from "d3";
 import { Col } from "antd";
 import styles from "../stylesheets.module.scss";
 import { ArrayDateData, RawDateData } from "src/models/date_data";
-import { getDateInString, getLastDateToBeShownInViz, getStartDateToBeShownInViz, weeksToShowInViz, getContinuousDates } from "src/utils/date";
+import { getLastDateToBeShownInViz, getStartDateToBeShownInViz, weeksToShowInViz, getContinuousDates } from "src/utils/date";
 import {viz_details} from "../models/constants";
 import { tooltipData } from "./Tooltip";
 
@@ -140,7 +140,7 @@ class CalendarViz extends React.Component<IProps, IState> {
     });
 
     // Append the week labels to the calendar heatmap
-    const weekLabels = svg.selectAll(".weekLabel")
+    svg.selectAll(".weekLabel")
         .data(d3.range(1, weeksToShowInViz + 1))
         .enter().append("text")
         .text(function(d) { return "W" + d; })

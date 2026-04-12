@@ -38,9 +38,9 @@ impl VizQuestions {
 			sb = sb.and_where_eq("is_visible_in_visualizer", true);
 		}
 
-		if category != "" {
+		if !category.is_empty() {
 			sb = sb.and_where_eq("category", category);
-		}	
+		}
 
         let viz_questions_list = sb.fetch_all(db).await?;
         Ok(viz_questions_list)

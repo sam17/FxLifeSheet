@@ -44,7 +44,7 @@ fn handle_fetch_one_result(
 ) -> Result<VizMetadataObj, model::Error> {
 	result.map_err(|sqlx_error| match sqlx_error {
 		sqlx::Error::RowNotFound => model::Error::EntityNotFound(typ, key.to_string()),
-		other => model::Error::SqlxError(other),
+		other => model::Error::Sqlx(other),
 	})
 }
 //endregion: Utils

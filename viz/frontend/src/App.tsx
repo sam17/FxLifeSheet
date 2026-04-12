@@ -12,13 +12,9 @@ function App() {
     ? "https://metrics.soumyadeep.in/api/"
     : "/api/";
 
-  const dataUrl = baseUrl + "data/";
-  const getMetadata = () => {
-    return fetch(baseUrl + "metadata").then((response) => response.json());
-  };
-
   useEffect(() => {
-    getMetadata()
+    fetch(baseUrl + "metadata")
+      .then((response) => response.json())
       .then((data) => {
         setName(data.name);
       })
@@ -26,7 +22,7 @@ function App() {
         console.log(error);
         setName("error");
       });
-  }, []);
+  }, [baseUrl]);
 
   return (
     <div className="App">

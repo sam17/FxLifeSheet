@@ -68,13 +68,13 @@ pub enum Error {
 #[derive(Debug)]
 pub struct WebErrorMessage {
 	pub typ: &'static str,
-	pub message: String,
+	pub _message: String,
 }
 impl warp::reject::Reject for WebErrorMessage {}
 
 impl WebErrorMessage {
 	pub fn rejection(typ: &'static str, message: String) -> warp::Rejection {
-		warp::reject::custom(WebErrorMessage { typ, message })
+		warp::reject::custom(WebErrorMessage { typ, _message: message })
 	}
 }
 

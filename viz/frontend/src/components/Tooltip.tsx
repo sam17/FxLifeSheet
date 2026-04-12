@@ -32,7 +32,7 @@ const useMousePosition = () => {
 };
 
 const getContentString = (tooltipData: tooltipData) => {
-    const { date, value, isPositive } = tooltipData;
+    const { date, value } = tooltipData;
     const dateString = getDateInString(date);
     return `${value} </br> ${dateString}`;
 }
