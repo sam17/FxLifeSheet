@@ -61,3 +61,6 @@ logs/
 # Whoop collector specific
 collector/whoop/.env
 collector/whoop/__pycache__/
+-e 
+# Personal config data
+telegram_bot/lifesheet.json
