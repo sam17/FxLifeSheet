@@ -82,7 +82,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Set up stub env files for validation
         run: |
-          cp telegram_bot/sample.env telegram_bot/.env
+          cp telegram_bot/.env.example telegram_bot/.env
           cp viz/backend/sample.env viz/backend/.env
       - run: docker compose config --quiet
         env:
