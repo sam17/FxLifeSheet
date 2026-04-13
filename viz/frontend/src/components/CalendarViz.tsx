@@ -1,7 +1,6 @@
 import React from "react";
 import * as d3 from "d3";
 import { Col } from "antd";
-import styles from "../stylesheets.module.scss";
 import { ArrayDateData, RawDateData } from "src/models/date_data";
 import { getLastDateToBeShownInViz, getStartDateToBeShownInViz, weeksToShowInViz, getContinuousDates } from "src/utils/date";
 import {viz_details} from "../models/constants";

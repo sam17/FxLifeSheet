@@ -103,3 +103,6 @@ function mockResponse(data: unknown): Promise<Response> {
     headers: { 'Content-Type': 'application/json' },
   }));
 }
+
+// Auto-install at module load when env var is set (side-effect import)
+void (process.env.REACT_APP_USE_MOCK === 'true' && installMockFetch());

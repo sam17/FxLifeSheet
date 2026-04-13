@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import CategoryData from "../models/category_data";
 import QuestionData from "../models/question_data";
-import styles from "../stylesheets.module.scss";
 import { Row } from "antd";
 import CalendarViz from "./CalendarViz";
 import LineChartViz from "./LineChartViz";
