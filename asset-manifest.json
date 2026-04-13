@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/FxLifeSheet/static/css/main.c1e341d9.css",
+    "main.js": "/FxLifeSheet/static/js/main.f2c15f26.js",
+    "static/js/787.debba948.chunk.js": "/FxLifeSheet/static/js/787.debba948.chunk.js",
+    "index.html": "/FxLifeSheet/index.html",
+    "main.c1e341d9.css.map": "/FxLifeSheet/static/css/main.c1e341d9.css.map",
+    "main.f2c15f26.js.map": "/FxLifeSheet/static/js/main.f2c15f26.js.map",
+    "787.debba948.chunk.js.map": "/FxLifeSheet/static/js/787.debba948.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.c1e341d9.css",
+    "static/js/main.f2c15f26.js"
+  ]
+}
