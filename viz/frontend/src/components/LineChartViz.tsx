@@ -1,7 +1,6 @@
 import React from "react";
 import * as d3 from "d3";
 import { Col } from "antd";
-import styles from "../stylesheets.module.scss";
 import { ArrayDateData, RawDateData } from "src/models/date_data";
 import {
   getLastDateToBeShownInViz,
@@ -42,13 +41,13 @@ class LineChartViz extends React.Component<IProps, IState> {
     const x = d3.scaleTime().range([0, width]);
     const y = d3.scaleLinear().range([height, 0]);
 
-    const positiveColor = "#375F1B";
-    const negativeColor = "#5F1B1B";
+    const positiveColor = "#2563a8"; // ink blue
+    const negativeColor = "#c0392b"; // ink red
 
     const colour = this.isPositive ? positiveColor : negativeColor;
 
-    const positiveColorDark = "#1B3409";
-    const negativeColorDark = "#340909";
+    const positiveColorDark = "#1a4a8a";
+    const negativeColorDark = "#a93226";
 
     const colourDark = this.isPositive ? positiveColorDark : negativeColorDark;
     let lastDayForViz = getLastDateToBeShownInViz(new Date());
@@ -126,7 +125,9 @@ class LineChartViz extends React.Component<IProps, IState> {
         .attr("d", line)
         .style("fill", "none")
         .style("stroke", colour)
-        .style("stroke-width", 1.7);
+        .style("stroke-width", 2.8) // thick marker stroke
+        .style("stroke-linecap", "round")
+        .style("stroke-linejoin", "round");
 
       svg
         .selectAll(".dot")
@@ -175,8 +176,8 @@ class LineChartViz extends React.Component<IProps, IState> {
   render() {
     return (
       <Col xxl={6} xl={8} lg={8} md={12} sm={24} xs={24}>
-        <div className={this.name + "12"}>
-          <h2 className={styles.vizHeading}>{this.displayName}</h2>
+        <div className={"metric-card " + this.name + "12"}>
+          <div className="metric-card-title">{this.displayName}</div>
           <svg
             className="container"
             ref={(ref: SVGSVGElement) => (this.ref = ref)}

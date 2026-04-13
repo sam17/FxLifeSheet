@@ -1,30 +1,68 @@
-.svg {
-  svg {
-      rect {
-          fill: orange;
-      }
+.App {
+  padding: 48px 60px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
 
-      text {
-          fill: white;
-          font: 10px sans-serif;
-          text-anchor: end;
-      }
+.app-header {
+  margin-bottom: 4px;
+
+  h1 {
+    font-family: 'Patrick Hand', cursive;
+    font-size: 2.2rem;
+    font-weight: 400;
+    color: #111;
+    margin: 0;
   }
 }
 
-.App {
-  padding: 30px;
-}
-
 .dateHeading {
-  font-size: 18px;
-  font-weight: normal;
-  margin-bottom: 10px;
-  color: #666666;
+  font-family: 'Patrick Hand', cursive;
+  font-size: 16px;
+  font-weight: 400;
+  margin-bottom: 44px;
+  color: #777;
 }
 
-ant-divider {
-    background-color: #111;
-    font-size: 100px !important;
-    border-top: 1px #111 !important;
+/* Section header: underlined marker text, not a full-width rule */
+.section-label {
+  font-family: 'Patrick Hand', cursive;
+  font-size: 1.15rem;
+  font-weight: 400;
+  color: #222;
+  margin: 44px 0 18px 0;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  display: inline-block;
+  border-bottom: 2px solid #222;
+  padding-bottom: 2px;
+  /* Display as block after so the grid follows */
+  & + * {
+    clear: both;
+  }
 }
+
+/* Section wrapper to make label full-width then grid */
+.section-wrapper {
+  margin-bottom: 8px;
+}
+
+.metric-card {
+  background: #fff;
+  /* pencil-sketch style border */
+  border: 1px solid #c8c8c8;
+  border-radius: 3px;
+  padding: 16px 16px 10px;
+  box-shadow: 1px 1px 0 #e0e0e0, 2px 2px 0 #ebebeb;
+
+  .metric-card-title {
+    font-family: 'Patrick Hand', cursive;
+    font-size: 14px;
+    font-weight: 400;
+    color: #666;
+    margin-bottom: 6px;
+    letter-spacing: 0.02em;
+  }
+}
+
+.ant-divider { border-color: transparent !important; }

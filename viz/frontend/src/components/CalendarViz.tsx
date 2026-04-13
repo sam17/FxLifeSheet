@@ -1,7 +1,6 @@
 import React from "react";
 import * as d3 from "d3";
 import { Col } from "antd";
-import styles from "../stylesheets.module.scss";
 import { ArrayDateData, RawDateData } from "src/models/date_data";
 import { getLastDateToBeShownInViz, getStartDateToBeShownInViz, weeksToShowInViz, getContinuousDates } from "src/utils/date";
 import {viz_details} from "../models/constants";
@@ -178,17 +177,17 @@ class CalendarViz extends React.Component<IProps, IState> {
 
   render() {
     return (
-      <Col xxl={6} xl={8} lg={8} md={12} sm={24} xs={24} >
-      <div className={this.name}>
-        <h2 className={styles.vizHeading}>{this.displayName}</h2>
-        <svg
-          className="container"
-          ref={(ref: SVGSVGElement) => (this.ref = ref)}
-          width="0"
-          height="0"
-        ></svg>
-      </div>
-    </Col>
+      <Col xxl={6} xl={8} lg={8} md={12} sm={24} xs={24}>
+        <div className={"metric-card " + this.name}>
+          <div className="metric-card-title">{this.displayName}</div>
+          <svg
+            className="container"
+            ref={(ref: SVGSVGElement) => (this.ref = ref)}
+            width="0"
+            height="0"
+          ></svg>
+        </div>
+      </Col>
     );
   }
 }

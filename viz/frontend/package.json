@@ -47,5 +47,6 @@
     "jest": "^29.5.0",
     "sass": "^1.62.0",
     "ts-jest": "^29.1.0"
-  }
+  },
+  "homepage": "https://sam17.github.io/FxLifeSheet"
 }
