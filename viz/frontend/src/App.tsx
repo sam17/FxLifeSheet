@@ -5,12 +5,7 @@ import DateElement from "./components/DateElements";
 
 function App() {
   const [name, setName] = useState("unnamed");
-  const development: boolean =
-    !process.env.NODE_ENV || process.env.NODE_ENV === "development";
-  const baseUrl: string = development
-    // ? "http://localhost:8080/api/"
-    ? "https://metrics.soumyadeep.in/api/"
-    : "/api/";
+  const baseUrl: string = process.env.REACT_APP_API_URL || "/api/";
 
   useEffect(() => {
     fetch(baseUrl + "metadata")

@@ -68,7 +68,9 @@ function VizBuilder(props: props) {
       {questionsForCategory.map((item) => {
         return (
           <div key={item.category}>
-            <div className="section-label">{item.category}</div>
+            <div style={{display:'block'}}>
+            <span className="section-label">{item.category}</span>
+          </div>
             <Row gutter={[16, 16]}>
               {item.questions.map((question) => {
                 if (question.graph_type === "line") {
