@@ -17,15 +17,17 @@ COPY requirements.txt .
 # Install Python dependencies using pip (better ARM compatibility)
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Set up cron job
-RUN echo "0 0 * * * cd /app && python3 whoop_import.py >> /var/log/whoop_cron.log 2>&1" > /etc/cron.d/whoop-cron
-RUN chmod 0644 /etc/cron.d/whoop-cron
-RUN crontab /etc/cron.d/whoop-cron
+# cron runs with a minimal PATH and no container env vars, so the crontab
+# is generated at container startup with PATH + WHOOP_*/DATABASE_URL inlined.
 RUN touch /var/log/whoop_cron.log
 
-# Run cron in foreground and tail logs
-CMD echo "Starting whoop collector..." && \
+CMD set -e && \
+    echo "Starting whoop collector..." && \
+    { echo "PATH=/usr/local/bin:/usr/bin:/bin"; \
+      env | grep -E '^(WHOOP_|DATABASE_URL)='; \
+      echo "0 */6 * * * cd /app && /usr/local/bin/python3 whoop_import.py >> /var/log/whoop_cron.log 2>&1"; \
+    } | crontab - && \
     echo "Running initial import..." && \
-    cd /app && (python3 whoop_import.py >> /var/log/whoop_cron.log 2>&1 || echo "Initial import failed (expected if no credentials), continuing with scheduler...") && \
+    cd /app && (/usr/local/bin/python3 whoop_import.py >> /var/log/whoop_cron.log 2>&1 || echo "Initial import failed (expected if no credentials), continuing with scheduler...") && \
     echo "Starting cron scheduler..." && \
     cron && exec tail -f /var/log/whoop_cron.log
