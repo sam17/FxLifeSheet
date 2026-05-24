@@ -3,9 +3,12 @@
 # still has to compile it from source -- but only inside the builder layer.
 FROM python:3.11-slim AS builder
 
+# libc6-dev is needed for stdlib.h etc. -- with --no-install-recommends gcc
+# doesn't pull it in transitively the way it used to.
 RUN apt-get update && apt-get install -y --no-install-recommends \
         libpq-dev \
         gcc \
+        libc6-dev \
     && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt /tmp/requirements.txt
