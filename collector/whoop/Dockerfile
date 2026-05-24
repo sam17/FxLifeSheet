@@ -24,7 +24,7 @@ RUN touch /var/log/whoop_cron.log
 CMD set -e && \
     echo "Starting whoop collector..." && \
     { echo "PATH=/usr/local/bin:/usr/bin:/bin"; \
-      env | grep -E '^(WHOOP_|DATABASE_URL)='; \
+      env | grep -E '^WHOOP_|^DATABASE_URL='; \
       echo "0 */6 * * * cd /app && /usr/local/bin/python3 whoop_import.py >> /var/log/whoop_cron.log 2>&1"; \
     } | crontab - && \
     echo "Running initial import..." && \
