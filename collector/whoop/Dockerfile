@@ -1,21 +1,29 @@
-FROM python:3.11-slim
+# Multi-stage build: keep gcc + libpq-dev only in the builder so the runtime
+# image stays small. psycopg2-binary has no prebuilt wheel for arm/v6, so pip
+# still has to compile it from source -- but only inside the builder layer.
+FROM python:3.11-slim AS builder
 
-WORKDIR /app
-
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    libpq-dev \
-    gcc \
-    cron \
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        libpq-dev \
+        gcc \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy application code
-COPY whoop_import.py .
-COPY oauth_helper.py .
-COPY requirements.txt .
+COPY requirements.txt /tmp/requirements.txt
+RUN pip install --no-cache-dir --prefix=/install --no-warn-script-location \
+        -r /tmp/requirements.txt
 
-# Install Python dependencies using pip (better ARM compatibility)
-RUN pip install --no-cache-dir -r requirements.txt
+# ---- runtime ----
+FROM python:3.11-slim
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        libpq5 \
+        cron \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY --from=builder /install /usr/local
+
+WORKDIR /app
+COPY whoop_import.py oauth_helper.py ./
 
 # cron runs with a minimal PATH and no container env vars, so the crontab
 # is generated at container startup with PATH + WHOOP_*/DATABASE_URL inlined.
